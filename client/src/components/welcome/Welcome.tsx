@@ -9,6 +9,9 @@ export default function Welcome() {
     useState<Record<string | number, any>>();
 
   useEffect(() => {
+    // fetch("/lottie/dance-party.json")
+    //   .then((res) => res.json())
+    //   .then((data) => setAnimationData(data));
     import("./dance-party.json").then(setAnimationData);
   }, []);
 
