@@ -9,7 +9,7 @@
 @use "./components/about/about";
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap");
-@import "https://fonts.googleapis.com/css?family=Raleway";
+@import url("https://fonts.googleapis.com/css?family=Raleway");
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
 
@@ -26,6 +26,7 @@
   font-family: "Montserrat-Light-Alt1";
   letter-spacing: 5px;
   white-space: nowrap;
+  user-select: none;
 }
 .custom-icon {
   margin-right: 5px;

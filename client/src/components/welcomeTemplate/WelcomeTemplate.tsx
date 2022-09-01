@@ -32,7 +32,7 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
   return (
     <div className="main">
       <div className="nav-section">
-        <Link
+        <CustomLink
           to="/welcome"
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
@@ -42,7 +42,7 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
               RTIVITY
             </div>
           </div>
-        </Link>
+        </CustomLink>
         <div className={"nav-bar" + (show ? " show" : " hide")}>
           <div className="balloon-outer">
             <Lottie

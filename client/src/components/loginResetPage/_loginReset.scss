@@ -1,0 +1,213 @@
+$lightBlue: #b2a4ff;
+$darkBlue: #554994;
+
+#reset-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+
+  #reset-content {
+    height: 525px;
+    background-color: white;
+    text-align: center;
+    width: 900px;
+    max-width: 100%;
+    min-width: 650px;
+    border-radius: 10px;
+    box-shadow: -3px 5px 10px 3px rgba(0, 0, 0, 0.229);
+    position: relative;
+    margin: auto;
+
+    .login-form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      // display: none;
+      width: 50%;
+      height: 100%;
+      gap: 15px;
+      h1 {
+        margin-bottom: 40px;
+        font-weight: bold;
+        font-size: 48px;
+      }
+      #title {
+        margin-bottom: 15px;
+      }
+
+      .form-input {
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        background-color: #eee;
+        padding: 13px;
+        font-size: 1.1rem;
+        width: 80%;
+      }
+
+      #form-input {
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        background-color: #eee;
+        padding: 13px;
+        font-size: 1.1rem;
+        width: 40%;
+        text-align: center;
+        animation-delay: 2s;
+        animation: input 1s ease-in-out;
+      }
+
+      .submit-btn {
+        padding: 14px 45px;
+        background-color: $darkBlue;
+        border: none;
+        color: white;
+        border-radius: 18px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        font-weight: 700;
+        cursor: pointer;
+        text-transform: uppercase;
+        border: 1px solid white;
+        transition: background-color 0.2s linear;
+
+        &:hover {
+          background-color: darken($color: #baaefc, $amount: 10);
+        }
+      }
+
+      .link {
+        color: rgba(46, 46, 46, 0.658);
+        text-decoration: none;
+        &:hover {
+          color: rgba(0, 0, 0, 0.672);
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .overlay-panel {
+      background-color: $lightBlue;
+      border-radius: 10px;
+      width: 50%;
+      height: 100%;
+      color: white;
+      animation: center 1s ease-out, color 1s ease-out;
+      animation-delay: 0.5s;
+      animation-fill-mode: forwards;
+
+      .email-animation {
+        margin: 0;
+        // margin-top: 30px;
+        padding: 0;
+        width: 100px;
+        height: 100px;
+        pointer-events: none;
+        // flex: 1;
+        // align-self: center;
+        z-index: 999;
+      }
+      .submit-btn {
+        transition: transform 0.3s ease-out;
+        &:hover {
+          transform: scale(1.05);
+          background-color: $darkBlue;
+        }
+      }
+    }
+    .right {
+      position: absolute;
+      top: 0;
+      right: 0%;
+      width: 50%;
+    }
+    .left {
+      position: absolute;
+      top: 0;
+      left: 0%;
+      opacity: 0;
+      animation: disappear 1s ease-out;
+      // animation-fill-mode: forwards;
+      z-index: 0;
+    }
+
+    &.switch {
+      .right,
+      .left {
+        left: 50%;
+        transform: translateX(-50%);
+        transition: all 0.3s ease-in;
+      }
+      .right {
+        right: 50%;
+      }
+    }
+  }
+
+  .back-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+  }
+}
+
+@keyframes middleToRight {
+  from {
+    right: 50%;
+    transform: translateX(50%);
+  }
+  to {
+    right: 0%;
+  }
+}
+
+@keyframes middleToLeft {
+  from {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  to {
+    left: 0%;
+  }
+}
+
+@keyframes disappear {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes center {
+  from {
+    width: 50%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes color {
+  from {
+    background-color: $lightBlue;
+  }
+  to {
+    background-color: $darkBlue;
+  }
+}
+
+@keyframes input {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 40%;
+  }
+}

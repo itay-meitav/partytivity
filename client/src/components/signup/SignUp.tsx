@@ -45,7 +45,6 @@ function SignUp() {
           <p>already have an account?</p>
           <button
             className="submit-btn"
-            data-cluster="login"
             onClick={(e) => {
               content.current?.classList.add("switch");
               setTimeout(() => {
