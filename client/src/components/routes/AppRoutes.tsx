@@ -7,6 +7,7 @@ import About from "../about/About";
 import Dashboard from "../dashboard/Dashboard";
 import { useEffect } from "react";
 import Submit from "../signup/Submit";
+import Unknown from "../unknown/Unknown";
 
 const AppRoutes = () => {
   let NavigateWelcome = () => {
@@ -19,6 +20,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<NavigateWelcome />} />
+      <Route path="*" element={<Unknown />} />
       <Route path="/welcome">{WelcomeRoutes()}</Route>
       <Route path="/login">
         <Route index element={<Login />} />

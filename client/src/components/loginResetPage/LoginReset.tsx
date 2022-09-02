@@ -2,10 +2,10 @@ import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie-player";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CustomLink from "../Link";
 
-function Login() {
+function LoginReset() {
   const content = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [animationData, setAnimationData] =
@@ -79,4 +79,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginReset;
