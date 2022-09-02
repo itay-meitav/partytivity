@@ -33,13 +33,13 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
     <div className="main">
       <div className="nav-section">
         <CustomLink
-          to="/welcome"
+          to="/"
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
           <div className="nav-logo">
             <div className="nav-logo-text">
               P<img src={hat} className="nav-logo-img" />
-              RTIVITY
+              RTYTIVITY
             </div>
           </div>
         </CustomLink>

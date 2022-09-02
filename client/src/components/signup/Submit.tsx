@@ -1,27 +1,32 @@
-import { ArrowBack } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Lottie from "react-lottie-player";
+import { useNavigate } from "react-router-dom";
 import CustomLink from "../Link";
 
-function SignUp() {
+function Submit() {
   const navigate = useNavigate();
-  const [submit, setSubmit] = useState<boolean>(false);
+  const [animationData, setAnimationData] =
+    useState<Record<string | number, any>>();
   const content = useRef<HTMLDivElement>(null);
   const username = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {}, [submit]);
+  useEffect(() => {
+    import("./conffetti.json").then(setAnimationData);
+  }, []);
 
+  if (!animationData)
+    return (
+      <ul className="loader">
+        <li className="loader-item"></li>
+        <li className="loader-item"></li>
+        <li className="loader-item"></li>
+      </ul>
+    );
   return (
-    <div id="register-container">
-      <CustomLink to="/welcome" className="back-icon">
-        <IconButton>
-          <ArrowBack></ArrowBack>
-        </IconButton>
-      </CustomLink>
-      <div id="register-content" ref={content}>
+    <div id="submit-container">
+      <div id="submit-content" ref={content}>
         <form
           className="register-form right"
           onSubmit={(e) => {
@@ -70,25 +75,26 @@ function SignUp() {
           </button>
         </form>
         <div className="register-form overlay-panel left">
-          <p style={{ fontSize: "40px" }}>PARTYTIVITY</p>
-          <h1>Hello, Party!</h1>
-          <p>Enter your info and start to party!</p>
-          <p>already have an account?</p>
-          <button
+          <Lottie
+            className="conffetti-animation"
+            animationData={animationData}
+            play={true}
+            loop={true}
+          />
+          <h1 id="title">Lit!</h1>
+          <p>The party is about to start.</p>
+          <p id="last">Verify your email and we'll start right away!</p>
+          <CustomLink
+            to="/login"
+            style={{ color: "inherit", textDecoration: "inherit" }}
             className="submit-btn"
-            onClick={(e) => {
-              content.current?.classList.add("switch");
-              setTimeout(() => {
-                navigate("/login");
-              }, 300);
-            }}
           >
-            Log In
-          </button>
+            BACK TO LOGIN PAGE
+          </CustomLink>
         </div>
       </div>
     </div>
   );
 }
 
-export default SignUp;
+export default Submit;

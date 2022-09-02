@@ -36,7 +36,7 @@ function Login() {
           </button>
         </form>
         <div className="login-form overlay-panel right">
-          <p style={{ fontSize: "40px" }}>PARTIVITY</p>
+          <p style={{ fontSize: "40px" }}>PARTYTIVITY</p>
           <h1>Hello, Party!</h1>
           <p>Enter your info and start to party!</p>
           <p>if you don't have an account</p>

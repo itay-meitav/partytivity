@@ -31,7 +31,7 @@ export default function Welcome() {
     <WelcomeTemplate>
       <div className="center-section">
         <div className="logos">
-          <div className="center-logo-main">PARTIVITY</div>
+          <div className="center-logo-main">PARTYTIVITY</div>
           <div className="center-logo-subs">
             <div className="center-logo-sub1">Party.</div>
             <div className="center-logo-sub2">Simple.</div>

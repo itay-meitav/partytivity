@@ -29,8 +29,8 @@ function About() {
               Let's face it, if you've come this far - it's a sign that you have
               a strong need to celebrate.
               <br /> So where do we come into the picture? What if we told you
-              that a team of developers programmed a tool that connects you, the
-              party fans, to a social network that brings <br />
+              that a team of developers <br /> programmed a tool that connects
+              you, the party fans, to a social network that brings <br />
               together all the people with the need to party - just like you!
               <br />
               Sounds crazy and beyond imagination isn't it? So, please meet{" "}
@@ -42,7 +42,7 @@ function About() {
                     className="nav-logo-img custom-icon"
                     style={{ height: 15 }}
                   />
-                  RTIVITY
+                  RTYTIVITY
                 </span>
               </span>{" "}
               .

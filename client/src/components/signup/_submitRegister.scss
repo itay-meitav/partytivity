@@ -1,13 +1,14 @@
 $lightBlue: #b2a4ff;
+$darkBlue: #554994;
 
-#register-container {
+#submit-container {
   width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
   // justify-content: center;
 
-  #register-content {
+  #submit-content {
     height: 525px;
     background-color: white;
     text-align: center;
@@ -32,6 +33,10 @@ $lightBlue: #b2a4ff;
         font-weight: bold;
         font-size: 48px;
       }
+      #title {
+        margin-bottom: 15px;
+        animation: bounce 0.4s ease infinite alternate;
+      }
 
       .form-input {
         border: none;
@@ -45,7 +50,7 @@ $lightBlue: #b2a4ff;
 
       .submit-btn {
         padding: 14px 45px;
-        background-color: $lightBlue;
+        background-color: $darkBlue;
         border: none;
         color: white;
         border-radius: 18px;
@@ -78,11 +83,32 @@ $lightBlue: #b2a4ff;
       width: 50%;
       height: 100%;
       color: white;
+      animation: center 1s ease-out, color 1s ease-out;
+      animation-fill-mode: forwards;
+      position: relative;
+      #last {
+        margin-bottom: 20px;
+      }
+      .conffetti-animation {
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        // margin-top: 30px;
+        padding: 0;
+        width: 600px;
+        height: 600px;
+        pointer-events: none;
+        // flex: 1;
+        // align-self: center;
+        z-index: 999;
+      }
       .submit-btn {
         transition: transform 0.3s ease-out;
         &:hover {
           transform: scale(1.05);
-          background-color: $lightBlue;
+          background-color: $darkBlue;
         }
       }
     }
@@ -90,13 +116,12 @@ $lightBlue: #b2a4ff;
       position: absolute;
       top: 0;
       right: 0%;
-      animation: middleToRight 0.3s ease-out;
+      animation: disappear 1s ease-out;
     }
     .left {
       position: absolute;
       top: 0;
       left: 0%;
-      animation: middleToLeft 0.3s ease-out;
     }
 
     &.switch {
@@ -116,5 +141,14 @@ $lightBlue: #b2a4ff;
     position: absolute;
     top: 20px;
     left: 20px;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    text-shadow: 0 3px 0 #ccc;
+  }
+  100% {
+    transform: translateY(-20px);
   }
 }
