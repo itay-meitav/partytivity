@@ -1,0 +1,104 @@
+#newpass-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(#c689c66a, #fcc5c069);
+
+  #newpass-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    height: 525px;
+    background-color: #937dc2;
+    color: white;
+    text-align: center;
+    width: 900px;
+    max-width: 100%;
+    min-width: 650px;
+    border-radius: 10px;
+    box-shadow: -1px 1px 10px 1px rgba(0, 0, 0, 0.229);
+    position: relative;
+    margin: auto;
+
+    .submit-btn {
+      padding: 14px 30px;
+      background-color: #937dc2;
+      border: none;
+      color: white;
+      border-radius: 18px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      border: 1px solid white;
+      transform: scale(1);
+      transition: transform 0.5s ease;
+      margin: 0;
+      &:hover {
+        transform: scale(1.05);
+        transition: transform 0.5s ease;
+      }
+    }
+
+    .confirm-animation {
+      margin: 0;
+      // margin-top: 30px;
+      padding: 0;
+      width: 150px;
+      height: 150px;
+      pointer-events: none;
+      // flex: 1;
+      // align-self: center;
+      z-index: 999;
+    }
+
+    .inputs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 15px;
+      input {
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        background-color: #eee;
+        padding: 7px 40px 10px 15px;
+        font-size: 1.1rem;
+        width: 80%;
+      }
+      & > div {
+        margin-bottom: 20px;
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .confirm {
+      margin: 0;
+      padding: 0;
+      opacity: 0;
+      position: relative;
+      animation: float-up 0.5s ease-in;
+      animation-fill-mode: forwards;
+    }
+  }
+}
+
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    top: 1rem;
+  }
+  100% {
+    opacity: 1;
+    top: 0;
+  }
+}
