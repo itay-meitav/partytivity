@@ -1,26 +1,44 @@
 import express, { Request, Response } from "express";
-import { addUser } from "src/db/users";
+import { addUser, checkIfUserExist } from "src/db/users";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import authConfig from "./auth/auth.config";
 const router = express.Router();
 
 router.post("/", async (res: Response, req: Request) => {
   const { username, password, email } = req.body;
-  if (username && password && email) {
-    await addUser({ username, password, email })
-      .then(() => {
-        res.json({
-          success: true,
-        });
+  const token = jwt.sign({ email: email }, authConfig.secret);
+  const check = await checkIfUserExist(username);
+  if (!check) {
+    if (username && password && email) {
+      const hashedPassword = await bcrypt.hash(password, 12);
+      return await addUser({
+        username: username,
+        password: hashedPassword,
+        email: email,
+        confirmationCode: token,
       })
-      .catch((err) => {
-        console.log(err);
-        res.json({
-          message: "something went wrong please try again later",
-          success: false,
+        .then(() => {
+          return res.json({
+            success: true,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.json({
+            message: "something went wrong please try again later",
+            success: false,
+          });
         });
+    } else {
+      return res.json({
+        message: "make sure to send all the necessary fields",
+        success: false,
       });
+    }
   } else {
-    res.json({
-      message: "make sure to send all the necessary fields",
+    return res.json({
+      message: "This user already exists",
       success: false,
     });
   }

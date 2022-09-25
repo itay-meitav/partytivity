@@ -20,6 +20,8 @@ async function initDB() {
     username: "admin",
     password: "admin",
     email: "admin",
+    status: undefined,
+    confirmationCode: undefined,
     isAdmin: true,
   });
   console.log("done!");
@@ -30,13 +32,15 @@ async function dropAllTables() {
 }
 
 async function addUsersToDb() {
+  await pool.query(`CREATE TYPE STATUS AS ENUM ('pending', 'active')`);
   await pool.query(
     `CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
-        username TEXT NOT NULL,
+        username TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
-        email TEXT NOT NULL,
-        confirmed BOOLEAN DEFAULT false,   
+        email TEXT NOT NULL UNIQUE,
+        status STATUS DEFAULT 'pending',   
+        confirmation_code TEXT UNIQUE,
         is_admin BOOLEAN DEFAULT false
 		)`
   );
