@@ -1,16 +1,14 @@
+import path from "path";
+require("dotenv").config({ path: path.resolve(__dirname + "/../../.env") });
 import fs from "fs/promises";
 const cheerio = require("cheerio");
 import nodemailer from "nodemailer";
-import authConfig from "./auth.config";
-
-const user = authConfig.user;
-const pass = authConfig.pass;
 
 const transport = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: user,
-    pass: pass,
+    user: process.env.USER,
+    pass: process.env.PASS,
   },
 });
 
@@ -27,7 +25,7 @@ export async function sendConfirmationEmail(name, email, confirmationCode) {
 
   transport
     .sendMail({
-      from: user,
+      from: process.env.USER,
       to: email,
       subject: "Please confirm your account",
       html: newHtml,
