@@ -21,7 +21,6 @@ async function initDB() {
     password: "admin",
     email: "admin",
     status: undefined,
-    confirmationCode: undefined,
     isAdmin: true,
   });
   console.log("done!");
@@ -40,7 +39,6 @@ async function addUsersToDb() {
         password TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
         status STATUS DEFAULT 'pending',   
-        confirmation_code TEXT UNIQUE,
         is_admin BOOLEAN DEFAULT false
 		)`
   );

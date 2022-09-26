@@ -8,7 +8,9 @@ const router = express.Router();
 
 router.post("/", async (res: Response, req: Request) => {
   const { username, password, email } = req.body;
-  const token = jwt.sign({ email: email }, authConfig.secret);
+  const token = jwt.sign({ email: email }, authConfig.secret, {
+    expiresIn: "10m",
+  });
   const check = await checkIfUserExist(username);
   if (!check) {
     if (username && password && email) {
@@ -18,7 +20,6 @@ router.post("/", async (res: Response, req: Request) => {
           username: username,
           password: hashedPassword,
           email: email,
-          confirmationCode: token,
         });
         res.send({
           message: "User was registered successfully! Please check your email",

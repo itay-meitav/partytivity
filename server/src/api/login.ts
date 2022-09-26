@@ -1,7 +1,7 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { checkIfUserExist } from "src/db/users";
+import { checkIfUserExist, checkUserId } from "src/db/users";
 import authConfig from "./auth/auth.config";
 const router = express.Router();
 
@@ -11,11 +11,16 @@ router.post("/", async (req: Request, res: Response) => {
 
   if (check) {
     const token = jwt.sign({ id: check.id }, authConfig.secret, {
-      expiresIn: 86400, // 24 hours
+      expiresIn: "10m",
     });
-    if (check.status == "pending") {
-      return bcrypt.compare(password, check.password, (err, result) => {
+    if (check.status == "active") {
+      return bcrypt.compare(password, check.password, async (err, result) => {
         if (result) {
+          res.cookie("token", token, {
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+            httpOnly: true,
+            secure: true,
+          });
           return res.json({
             success: true,
           });
