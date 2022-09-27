@@ -15,7 +15,7 @@ export async function isAuthenticated(
   const cookie = req.cookies;
   if (!cookie) {
     return res.status(401).json({
-      msg: "No cookie was found",
+      message: "No cookie was found",
       success: false,
     });
   }
@@ -23,7 +23,7 @@ export async function isAuthenticated(
   if (!token) {
     return res.status(401).json({
       success: false,
-      msg: "You are not authorized to do that",
+      message: "You are not authorized to do that",
     });
   }
   try {

@@ -18,7 +18,7 @@ app.use(
 
 app.use((req, res, next) => {
   res.status(404).json({
-    msg: "Requested resource was not found on this server",
+    message: "Requested resource was not found on this server",
     status: 404,
   });
   next();

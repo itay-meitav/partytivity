@@ -1,34 +1,55 @@
 import path from "path";
-require("dotenv").config({ path: path.resolve(__dirname + "/../../.env") });
+require("dotenv").config({ path: path.resolve(__dirname + "/../../../.env") });
 import fs from "fs/promises";
 const cheerio = require("cheerio");
-import nodemailer from "nodemailer";
+const nodemailer = require("nodemailer");
 
 const transport = nodemailer.createTransport({
-  service: "Gmail",
+  host: "smtp.ethereal.email",
+  port: 587,
   auth: {
-    user: process.env.USER,
-    pass: process.env.PASS,
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-export async function sendConfirmationEmail(name, email, confirmationCode) {
+export async function sendConfirmationEmail(
+  name: string,
+  email: string,
+  token: string
+) {
   const content = await fs.readFile(
-    __dirname + "/VerifyEmailStatic/index.html",
+    __dirname + "/EmailStaticFiles/verify.html",
     "utf8"
   );
-  const $ = cheerio.load(content);
-  const newHtml = $('div:contains("Verify Email")')
+
+  let $ = cheerio.load(content);
+  $('div:contains("Verify Email")')
     .find("a")
     .attr("href")
-    .replace(`http://localhost:5000/confirm/${confirmationCode}}`);
+    .replace(`http://localhost:5000/auth/confirm/${token}}`);
 
-  transport
-    .sendMail({
-      from: process.env.USER,
-      to: email,
-      subject: "Please confirm your account",
-      html: newHtml,
-    })
-    .catch((err) => console.log(err));
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  let info = await transporter.sendMail({
+    from: `"Partytivity 🎉" <${process.env.EMAIL_USER}>`,
+    to: "gibogo3508@pahed.com",
+    subject: "Please confirm your account",
+    html: $.html(),
+  });
+
+  console.log("Message sent: %s", info.messageId);
 }
+
+(async () =>
+  await sendConfirmationEmail("itay", "gibogo3508@pahed.com", "bla")
+    .then(() => console.log("done"))
+    .catch((err) => console.log(err)))();

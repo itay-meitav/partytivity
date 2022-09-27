@@ -21,7 +21,7 @@ router.get("/confirm/:token", async (req: Request, res: Response) => {
         return res
           .status(200)
           .send({ message: "User is now active" })
-          .redirect("/dashboard");
+          .redirect("/login");
       });
     }
   );

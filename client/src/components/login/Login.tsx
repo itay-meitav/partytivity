@@ -2,9 +2,27 @@ import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import config from "../../assets/config";
 import CustomLink from "../Link";
 
+async function loginReq(username: string, password: string) {
+  return await fetch(`${config.apiHost}/api/login`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: username,
+      password: password,
+    }),
+  });
+}
+
 function Login() {
+  const username = useRef<HTMLInputElement>(null);
+  const password = useRef<HTMLInputElement>(null);
+  const message = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   return (
@@ -17,16 +35,39 @@ function Login() {
       <div id="login-content" ref={content}>
         <form
           className="login-form left"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
+            await loginReq(
+              username.current!.value,
+              password.current!.value
+            ).then(async (res) => {
+              if (res.ok) {
+                navigate("/dashboard");
+              } else {
+                const data = await res.json();
+                message.current!.innerHTML = data.message;
+              }
+            });
           }}
         >
           <h1>Log in</h1>
-          <input className="form-input" type="text" placeholder="Username" />
           <input
+            ref={username}
+            className="form-input"
+            type="text"
+            placeholder="Username"
+            onInput={() => {
+              message.current!.innerHTML = "";
+            }}
+          />
+          <input
+            ref={password}
             className="form-input"
             type="password"
             placeholder="Password"
+            onInput={() => {
+              message.current!.innerHTML = "";
+            }}
           />
           <Link to={"/login/reset"} className="link">
             forgot your password?
@@ -34,6 +75,7 @@ function Login() {
           <button className="submit-btn" type="submit">
             LOG IN
           </button>
+          <div className="msg" ref={message}></div>
         </form>
         <div className="login-form overlay-panel right">
           <p style={{ fontSize: "40px" }}>PARTYTIVITY</p>
