@@ -28,3 +28,13 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`app on http://localhost:${port}`);
 });
+
+//This will output unhandled Rejection
+process.on("unhandledRejection", (error: Error, promise) => {
+  console.log(`unhandled Rejection: ${error} \n ErrorStack: ${error.stack}`);
+});
+
+//This will output unhandled Exception
+process.on("uncaughtException", (error: Error, promise) => {
+  console.log(`uncaught Exception: ${error} \n ErrorStack: ${error.stack}`);
+});

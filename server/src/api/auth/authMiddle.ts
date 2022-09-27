@@ -28,10 +28,10 @@ export async function isAuthenticated(
   }
   try {
     const decoded = jwt.verify(token, authConfig.secret);
-    if (!decoded) return res.status(401).send({ message: "Unauthorized!" });
+    if (!decoded) return res.status(401).json({ message: "Unauthorized!" });
     await checkUserId({ id: (decoded as JWTData).id }).then(async (user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found" });
+        return res.status(404).json({ message: "User Not found" });
       }
       next();
     });

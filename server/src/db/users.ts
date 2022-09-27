@@ -59,3 +59,11 @@ export async function changeUserStatus(user: { username: string }) {
   };
   return execQuery(query).then((data) => data.rows[0]);
 }
+
+export async function changeUserPass(details: { id: any; password: string }) {
+  const query = {
+    text: `UPDATE users SET password = $1 WHERE id = $2`,
+    values: [details.password, details.id],
+  };
+  return execQuery(query).then((data) => data.rows[0]);
+}

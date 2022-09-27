@@ -53,3 +53,39 @@ export async function sendConfirmationEmail(
   await sendConfirmationEmail("itay", "gibogo3508@pahed.com", "bla")
     .then(() => console.log("done"))
     .catch((err) => console.log(err)))();
+
+export async function sendResetEmail(
+  name: string,
+  email: string,
+  token: string
+) {
+  const content = await fs.readFile(
+    __dirname + "/EmailStaticFiles/reset.html",
+    "utf8"
+  );
+
+  let $ = cheerio.load(content);
+  $('div:contains("Reset Password")')
+    .find("a")
+    .attr("href")
+    .replace(`http://localhost:5000/auth/reset/${token}}`);
+
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  let info = await transporter.sendMail({
+    from: `"Partytivity 🎉" <${process.env.EMAIL_USER}>`,
+    to: "gibogo3508@pahed.com",
+    subject: "Reset your password",
+    html: $.html(),
+  });
+
+  console.log("Message sent: %s", info.messageId);
+}

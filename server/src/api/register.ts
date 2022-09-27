@@ -21,28 +21,27 @@ router.post("/", async (res: Response, req: Request) => {
           password: hashedPassword,
           email: email,
         });
-        res.send({
+        await sendConfirmationEmail(username, email, token);
+        return res.status(401).json({
           message: "User was registered successfully! Please check your email",
+          success: false,
         });
-        await sendConfirmationEmail(username, password, token).then(() =>
-          res.redirect("/")
-        );
       } catch (err) {
         console.log(err);
-        return res.json({
+        return res.status(401).json({
           message: "something went wrong please try again later",
           success: false,
         });
       }
     } else {
-      return res.json({
+      return res.status(401).json({
         message: "make sure to send all the necessary fields",
         success: false,
       });
     }
   } else {
-    return res.json({
-      message: "This user already exists",
+    return res.status(401).json({
+      message: "This username already exists",
       success: false,
     });
   }

@@ -56,6 +56,7 @@ function Login() {
             className="form-input"
             type="text"
             placeholder="Username"
+            required
             onInput={() => {
               message.current!.innerHTML = "";
             }}
@@ -65,6 +66,7 @@ function Login() {
             className="form-input"
             type="password"
             placeholder="Password"
+            required
             onInput={() => {
               message.current!.innerHTML = "";
             }}

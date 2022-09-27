@@ -3,7 +3,7 @@ import Lottie from "react-lottie-player";
 import { useNavigate } from "react-router-dom";
 import CustomLink from "../Link";
 
-function Submit() {
+function SubmitSignup() {
   const navigate = useNavigate();
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
@@ -97,4 +97,4 @@ function Submit() {
   );
 }
 
-export default Submit;
+export default SubmitSignup;

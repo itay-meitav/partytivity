@@ -6,7 +6,7 @@ import WelcomeRoutes from "./WelcomeRoutes";
 import About from "../about/About";
 import Dashboard from "../dashboard/Dashboard";
 import { useEffect } from "react";
-import Submit from "../signup/Submit";
+import SubmitSignup from "../signup/SubmitSignup";
 import Unknown from "../unknown/Unknown";
 import ConfirmEmail from "../confirm/ConfirmEmail";
 import NewPassForm from "../loginResetPage/NewPassForm";
@@ -28,12 +28,14 @@ const AppRoutes = () => {
         <Route index element={<Login />} />
         <Route path="reset">
           <Route index element={<LoginReset />} />
-          <Route path="new" element={<NewPassForm />} />
+          <Route path="new">
+            <Route path="*" element={<NewPassForm />} />
+          </Route>
         </Route>
       </Route>
       <Route path="/register">
         <Route index element={<SignUp />} />
-        <Route path="success" element={<Submit />} />
+        <Route path="success" element={<SubmitSignup />} />
         <Route path="verified" element={<ConfirmEmail />} />
       </Route>
       <Route path="about" element={<About />} />
@@ -42,3 +44,4 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+// auth/reset
