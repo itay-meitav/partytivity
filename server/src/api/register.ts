@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { addUser, checkIfUserExist } from "src/db/users";
+import { addUser, checkIfUserExist } from "../db/users";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import authConfig from "./auth/auth.config";
@@ -22,13 +22,13 @@ router.post("/", async (res: Response, req: Request) => {
           email: email,
         });
         await sendConfirmationEmail(username, email, token);
-        return res.status(401).json({
+        return res.status(200).json({
           message: "User was registered successfully! Please check your email",
-          success: false,
+          success: true,
         });
       } catch (err) {
         console.log(err);
-        return res.status(401).json({
+        return res.status(500).json({
           message: "something went wrong please try again later",
           success: false,
         });

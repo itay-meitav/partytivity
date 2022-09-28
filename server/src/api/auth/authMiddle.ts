@@ -14,7 +14,7 @@ export async function isAuthenticated(
 ) {
   const cookie = req.cookies;
   if (!cookie) {
-    return res.status(401).json({
+    return res.status(404).json({
       message: "No cookie was found",
       success: false,
     });

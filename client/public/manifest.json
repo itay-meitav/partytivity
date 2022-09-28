@@ -1,10 +1,11 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Partytivity",
+  "name": "party planner application for business and client",
   "icons": [
     {
-      "src": "../src/assets/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "old_sizes": "64x64 48x48 32x32 24x24 16x16",
       "type": "image/x-icon"
     }
   ],

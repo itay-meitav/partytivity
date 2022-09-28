@@ -1,7 +1,6 @@
 import path from "path";
 require("dotenv").config({ path: path.resolve(__dirname + "/../../../.env") });
 import fs from "fs/promises";
-const cheerio = require("cheerio");
 const nodemailer = require("nodemailer");
 
 const transport = nodemailer.createTransport({
@@ -23,11 +22,10 @@ export async function sendConfirmationEmail(
     "utf8"
   );
 
-  let $ = cheerio.load(content);
-  $('div:contains("Verify Email")')
-    .find("a")
-    .attr("href")
-    .replace(`http://localhost:5000/auth/confirm/${token}}`);
+  const html = content.replaceAll(
+    "{{TOKEN_LINK}}",
+    `http://localhost:5000/auth/confirm/${token}`
+  );
 
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -41,18 +39,13 @@ export async function sendConfirmationEmail(
 
   let info = await transporter.sendMail({
     from: `"Partytivity 🎉" <${process.env.EMAIL_USER}>`,
-    to: "gibogo3508@pahed.com",
+    to: email,
     subject: "Please confirm your account",
-    html: $.html(),
+    html,
   });
 
   console.log("Message sent: %s", info.messageId);
 }
-
-(async () =>
-  await sendConfirmationEmail("itay", "gibogo3508@pahed.com", "bla")
-    .then(() => console.log("done"))
-    .catch((err) => console.log(err)))();
 
 export async function sendResetEmail(
   name: string,
@@ -64,11 +57,10 @@ export async function sendResetEmail(
     "utf8"
   );
 
-  let $ = cheerio.load(content);
-  $('div:contains("Reset Password")')
-    .find("a")
-    .attr("href")
-    .replace(`http://localhost:5000/auth/reset/${token}}`);
+  const html = content.replaceAll(
+    "{{TOKEN_LINK}}",
+    `http://localhost:5000/auth/reset/${token}}`
+  );
 
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -82,9 +74,9 @@ export async function sendResetEmail(
 
   let info = await transporter.sendMail({
     from: `"Partytivity 🎉" <${process.env.EMAIL_USER}>`,
-    to: "gibogo3508@pahed.com",
+    to: email,
     subject: "Reset your password",
-    html: $.html(),
+    html,
   });
 
   console.log("Message sent: %s", info.messageId);

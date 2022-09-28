@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { changeUserStatus, checkUserEmail } from "src/db/users";
+import { changeUserStatus, checkUserEmail } from "../../db/users";
 import jwt from "jsonwebtoken";
 import authConfig from "./auth.config";
 const router = express.Router();

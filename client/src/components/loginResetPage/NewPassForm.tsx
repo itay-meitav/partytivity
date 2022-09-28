@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie-player";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import config from "../../assets/config";
 
 function NewPassForm() {
   const content = useRef<HTMLDivElement>(null);
@@ -13,12 +14,23 @@ function NewPassForm() {
   const secondPassword = useRef<HTMLInputElement | null>(null);
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
+  const [authenticated, setAuthenticated] = useState(false);
+  const { token } = useParams();
 
   useEffect(() => {
     import("./password.json").then(setAnimationData);
+    fetch(config.apiHost + `/reset/verify/${token}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setAuthenticated(true);
+        } else {
+          navigate("/login");
+        }
+      });
   }, []);
 
-  if (!animationData)
+  if (!animationData || !authenticated)
     return (
       <ul className="loader">
         <li className="loader-item"></li>
@@ -26,6 +38,7 @@ function NewPassForm() {
         <li className="loader-item"></li>
       </ul>
     );
+
   return (
     <div id="newpass-container">
       <div id="newpass-content" ref={content}>

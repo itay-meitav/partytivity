@@ -16,17 +16,16 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`app on http://localhost:${port}`);
+});
+
+app.use((req, res) => {
   res.status(404).json({
     message: "Requested resource was not found on this server",
     status: 404,
   });
-  next();
-});
-
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-  console.log(`app on http://localhost:${port}`);
 });
 
 //This will output unhandled Rejection

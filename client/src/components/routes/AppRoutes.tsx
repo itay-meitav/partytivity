@@ -29,7 +29,7 @@ const AppRoutes = () => {
         <Route path="reset">
           <Route index element={<LoginReset />} />
           <Route path="new">
-            <Route path="*" element={<NewPassForm />} />
+            <Route path=":token" element={<NewPassForm />} />
           </Route>
         </Route>
       </Route>
