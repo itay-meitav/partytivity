@@ -21,7 +21,7 @@ router.post("/", async (res: Response, req: Request) => {
           password: hashedPassword,
           email: email,
         });
-        await sendConfirmationEmail(username, email, token);
+        await sendConfirmationEmail(email, token);
         return res.status(200).json({
           message: "User was registered successfully! Please check your email",
           success: true,

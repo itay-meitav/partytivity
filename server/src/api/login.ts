@@ -72,7 +72,7 @@ router.post("/reset", async (res: Response, req: Request) => {
       success: false,
     });
   }
-  await sendResetEmail(check.username, email, token);
+  await sendResetEmail(email, token);
   return res.json({
     message: "Please check your email",
     success: true,
