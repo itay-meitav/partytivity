@@ -24,7 +24,7 @@ app.listen(port, () => {
 app.use((req, res) => {
   res.status(404).json({
     message: "Requested resource was not found on this server",
-    status: 404,
+    success: false,
   });
 });
 

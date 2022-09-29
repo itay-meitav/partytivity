@@ -36,7 +36,11 @@ const AppRoutes = () => {
       <Route path="/register">
         <Route index element={<SignUp />} />
         <Route path="success" element={<SubmitSignup />} />
-        <Route path="verified" element={<ConfirmEmail />} />
+      </Route>
+      <Route path="/auth">
+        <Route path="confirm">
+          <Route path=":token" element={<ConfirmEmail />} />
+        </Route>
       </Route>
       <Route path="about" element={<About />} />
     </Routes>

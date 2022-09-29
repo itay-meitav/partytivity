@@ -19,7 +19,7 @@ function NewPassForm() {
 
   useEffect(() => {
     import("./password.json").then(setAnimationData);
-    fetch(config.apiHost + `/reset/verify/${token}`)
+    fetch(config.apiHost + `login/reset/new/${token}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {

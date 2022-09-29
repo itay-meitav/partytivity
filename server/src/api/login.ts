@@ -20,19 +20,16 @@ router.post("/", async (req: Request, res: Response) => {
   const check = await checkIfUserExist(username);
 
   if (check) {
-    const token = jwt.sign(
-      { id: check.id, role: "session" },
-      authConfig.secret,
-      {
-        expiresIn: "48h",
-      }
-    );
+    const token = jwt.sign({ id: check.id }, authConfig.secret, {
+      expiresIn: "24h",
+    });
     if (check.status == "active") {
       return bcrypt.compare(password, check.password, async (err, result) => {
         if (result) {
           res.cookie("token", token, {
-            expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
             httpOnly: true,
+            sameSite: "none",
             secure: true,
           });
           return res.json({
@@ -79,10 +76,8 @@ router.post("/reset", async (res: Response, req: Request) => {
   });
 });
 
-router.get("/reset/verify/:token", async (req, res) => {
+router.get("/reset/new/:token", async (req, res) => {
   const token = req.params.token;
-  const password = req.body.password;
-  const hashedPassword = await bcrypt.hash(password, 12);
   const decoded = jwt.verify(token, authConfig.secret);
   if (!decoded) return res.status(401).json({ message: "Unauthorized!" });
   await checkUserId({ id: (decoded as JWTData).id }).then(async (user) => {
@@ -118,7 +113,7 @@ router.post("/reset/new/:token", async (req: Request, res: Response) => {
         .catch((err) => {
           console.log(err);
           return res.status(500).json({
-            message: "something went wrong please try again later",
+            message: "Internal Server Error",
             success: false,
           });
         });

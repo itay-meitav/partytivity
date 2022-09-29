@@ -42,7 +42,7 @@ export async function sendResetEmail(email: string, token: string) {
 
   const html = content.replaceAll(
     "{{TOKEN_LINK}}",
-    `http://localhost:5000/auth/reset/${token}}`
+    `http://localhost:5000/login/reset/new/${token}}`
   );
 
   let info = await transporter.sendMail({

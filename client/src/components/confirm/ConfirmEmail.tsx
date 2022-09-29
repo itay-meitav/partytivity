@@ -1,21 +1,33 @@
 import { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie-player";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import config from "../../assets/config";
 
 function ConfirmEmail() {
   const content = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
+  const [authenticated, setAuthenticated] = useState(false);
+  const { token } = useParams();
 
   useEffect(() => {
     import("./V.json").then(setAnimationData);
-    setTimeout(() => {
-      navigate("/login");
-    }, 3000);
+    fetch(config.apiHost + `/auth/confirm/${token}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setAuthenticated(true);
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
+        } else {
+          navigate("/register");
+        }
+      });
   }, []);
 
-  if (!animationData)
+  if (!animationData || !authenticated)
     return (
       <ul className="loader">
         <li className="loader-item"></li>

@@ -5,17 +5,17 @@ export async function addUser(details: {
   password: string;
   email: string;
   status?: string;
-  isAdmin?: boolean;
+  role?: string;
 }) {
-  if (details.isAdmin) {
+  if (details.role == "admin") {
     const query = {
-      text: `INSERT INTO users(username, password, email, status, is_admin) VALUES($1, $2, $3, $4, $5)`,
+      text: `INSERT INTO users(username, password, email, status, role) VALUES($1, $2, $3, $4, $5)`,
       values: [
         details.username,
         details.password,
         details.email,
         "active",
-        true,
+        "admin",
       ],
     };
     return execQuery(query).then((data) => data.rows);
