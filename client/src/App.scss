@@ -6,10 +6,16 @@
 @use "./components/signup/signupPage";
 @use "./components/template/template.scss";
 @use "./components/welcomeTemplate/welcome_template";
-@use "./components/providersWelcome/proviers_welcome";
-@use "./components/about/about";
+@use "./components/welcome/providersWelcome/proviers_welcome";
+@use "./components/welcome/about/about";
 @use "./components/signup/_submitRegister";
 @use "./components/confirm/_confirm";
+@use "./components/my-parties/_myParties";
+@use "./components/discover/_discover";
+@use "./components/statistics/_statistics";
+@use "./components/providers/_providers";
+@use "./components/photos/_photos";
+@use "./components/recommendations/_recommendations";
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Raleway");

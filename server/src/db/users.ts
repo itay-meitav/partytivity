@@ -4,16 +4,18 @@ export async function addUser(details: {
   username: string;
   password: string;
   email: string;
+  name: string;
   status?: string;
   role?: string;
 }) {
   if (details.role == "admin") {
     const query = {
-      text: `INSERT INTO users(username, password, email, status, role) VALUES($1, $2, $3, $4, $5)`,
+      text: `INSERT INTO users(username, password, email, name, status, role) VALUES($1, $2, $3, $4, $5, $6)`,
       values: [
         details.username,
         details.password,
         details.email,
+        "admin",
         "active",
         "admin",
       ],
@@ -21,8 +23,8 @@ export async function addUser(details: {
     return execQuery(query).then((data) => data.rows);
   } else {
     const query = {
-      text: `INSERT INTO users(username, password, email) VALUES($1, $2, $3)`,
-      values: [details.username, details.password, details.email],
+      text: `INSERT INTO users(username, password, email, name) VALUES($1, $2, $3, $4)`,
+      values: [details.username, details.password, details.email, details.name],
     };
     return execQuery(query).then((data) => data.rows);
   }

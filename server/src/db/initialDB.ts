@@ -20,6 +20,7 @@ async function initDB() {
     username: "admin",
     password: "admin",
     email: "admin",
+    name: undefined,
     status: undefined,
     role: "admin",
   });
@@ -53,6 +54,7 @@ async function createAllTables() {
         username TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
+        name TEXT NOT NULL,
         status STATUS DEFAULT 'pending',   
         role ROLE DEFAULT 'client'
 		)`

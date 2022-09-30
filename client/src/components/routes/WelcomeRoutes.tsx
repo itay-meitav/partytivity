@@ -1,6 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import ProvidersWelcome from "../providersWelcome/ProvidersWelcome";
+import ProvidersWelcome from "../welcome/providersWelcome/ProvidersWelcome";
 import Welcome from "../welcome/Welcome";
 
 const WelcomeRoutes = () => {

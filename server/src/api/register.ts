@@ -7,7 +7,7 @@ import { sendConfirmationEmail } from "./auth/nodemailer.config";
 const router = express.Router();
 
 router.post("/", async (res: Response, req: Request) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, name } = req.body;
   const token = jwt.sign({ email: email }, authConfig.secret, {
     expiresIn: "10m",
   });
@@ -20,6 +20,7 @@ router.post("/", async (res: Response, req: Request) => {
           username: username,
           password: hashedPassword,
           email: email,
+          name: name,
         });
         await sendConfirmationEmail(email, token);
         return res.status(200).json({

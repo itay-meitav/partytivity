@@ -3,7 +3,7 @@ import Login from "../login/Login";
 import LoginReset from "../loginResetPage/LoginReset";
 import SignUp from "../signup/SignUp";
 import WelcomeRoutes from "./WelcomeRoutes";
-import About from "../about/About";
+import About from "../welcome/about/About";
 import Dashboard from "../dashboard/Dashboard";
 import { useEffect } from "react";
 import SubmitSignup from "../signup/SubmitSignup";
@@ -42,6 +42,7 @@ const AppRoutes = () => {
           <Route path=":token" element={<ConfirmEmail />} />
         </Route>
       </Route>
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="about" element={<About />} />
     </Routes>
   );
