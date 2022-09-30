@@ -3,13 +3,12 @@ import Login from "../login/Login";
 import LoginReset from "../loginResetPage/LoginReset";
 import SignUp from "../signup/SignUp";
 import WelcomeRoutes from "./WelcomeRoutes";
-import About from "../welcome/about/About";
-import Dashboard from "../dashboard/Dashboard";
 import { useEffect } from "react";
 import SubmitSignup from "../signup/SubmitSignup";
 import Unknown from "../unknown/Unknown";
 import ConfirmEmail from "../confirm/ConfirmEmail";
 import NewPassForm from "../loginResetPage/NewPassForm";
+import DashboardRoutes from "./DashboardRoutes";
 
 const AppRoutes = () => {
   let NavigateWelcome = () => {
@@ -42,8 +41,7 @@ const AppRoutes = () => {
           <Route path=":token" element={<ConfirmEmail />} />
         </Route>
       </Route>
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="about" element={<About />} />
+      <Route path="/dashboard">{DashboardRoutes()}</Route>
     </Routes>
   );
 };

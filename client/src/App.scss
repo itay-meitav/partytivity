@@ -1,11 +1,10 @@
 @use "./components/login/login";
-@use "./components/dashboard/dashboard";
 @use "./components/welcome/welcome";
 @use "./components/loginResetPage/loginReset";
 @use "./components/loginResetPage/_newPassForm";
 @use "./components/signup/signupPage";
 @use "./components/template/template.scss";
-@use "./components/welcomeTemplate/welcome_template";
+@use "./components/welcome/welcomeTemplate/welcome_template";
 @use "./components/welcome/providersWelcome/proviers_welcome";
 @use "./components/welcome/about/about";
 @use "./components/signup/_submitRegister";

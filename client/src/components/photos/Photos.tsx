@@ -1,7 +1,12 @@
 import React from "react";
+import DashboardTemplate from "../dashboard/DashboardTemplate";
 
 function Photos() {
-  return <div>Photos</div>;
+  return (
+    <DashboardTemplate>
+      <div>Photos</div>
+    </DashboardTemplate>
+  );
 }
 
 export default Photos;

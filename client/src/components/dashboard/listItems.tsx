@@ -27,7 +27,7 @@ export const mainListItems = (
     </Link>
     <Link
       style={{ color: "inherit", textDecoration: "inherit" }}
-      to={"/my-parties"}
+      to={"/dashboard/my-parties"}
     >
       <ListItemButton>
         <ListItemIcon>
@@ -38,7 +38,7 @@ export const mainListItems = (
     </Link>
     <Link
       style={{ color: "inherit", textDecoration: "inherit" }}
-      to={"/discover"}
+      to={"/dashboard/discover"}
     >
       <ListItemButton>
         <ListItemIcon>
@@ -49,7 +49,7 @@ export const mainListItems = (
     </Link>
     <Link
       style={{ color: "inherit", textDecoration: "inherit" }}
-      to={"/statistics"}
+      to={"/dashboard/statistics"}
     >
       <ListItemButton>
         <ListItemIcon>
@@ -60,7 +60,7 @@ export const mainListItems = (
     </Link>
     <Link
       style={{ color: "inherit", textDecoration: "inherit" }}
-      to={"/providers"}
+      to={"/dashboard/providers"}
     >
       <ListItemButton>
         <ListItemIcon>
@@ -79,7 +79,7 @@ export const secondaryListItems = (
     </ListSubheader>
     <Link
       style={{ color: "inherit", textDecoration: "inherit" }}
-      to={"/photos"}
+      to={"/dashboard/photos"}
     >
       <ListItemButton>
         <ListItemIcon>
@@ -90,7 +90,7 @@ export const secondaryListItems = (
     </Link>
     <Link
       style={{ color: "inherit", textDecoration: "inherit" }}
-      to={"/recommendations"}
+      to={"/dashboard/recommendations"}
     >
       <ListItemButton>
         <ListItemIcon>

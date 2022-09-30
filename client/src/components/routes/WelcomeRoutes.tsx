@@ -6,8 +6,8 @@ import Welcome from "../welcome/Welcome";
 const WelcomeRoutes = () => {
   return (
     <>
-      <Route index element={<Welcome />}></Route>
-      <Route path="providers" element={<ProvidersWelcome />}></Route>
+      <Route index element={<Welcome />} />
+      <Route path="providers" element={<ProvidersWelcome />} />
     </>
   );
 };

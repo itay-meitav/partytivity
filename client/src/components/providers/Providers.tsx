@@ -1,7 +1,12 @@
 import React from "react";
+import DashboardTemplate from "../dashboard/DashboardTemplate";
 
 function Providers() {
-  return <div>Providers</div>;
+  return (
+    <DashboardTemplate>
+      <div>Providers</div>
+    </DashboardTemplate>
+  );
 }
 
 export default Providers;

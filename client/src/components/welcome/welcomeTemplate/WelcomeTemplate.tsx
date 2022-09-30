@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CustomLink from "../Link";
-import hat from "../../assets/icons/hat.png";
+import CustomLink from "../../Link";
+import hat from "../../../assets/icons/hat.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";

@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
 import CustomLink from "../Link";
-import WelcomeTemplate from "../welcomeTemplate/WelcomeTemplate";
+import WelcomeTemplate from "../welcome/welcomeTemplate/WelcomeTemplate";
 import { useNavigate } from "react-router-dom";
 
 function Unknown() {

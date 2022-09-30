@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
 import { Link } from "react-router-dom";
 import CustomLink from "../Link";
-import WelcomeTemplate from "../welcomeTemplate/WelcomeTemplate";
+import WelcomeTemplate from "./welcomeTemplate/WelcomeTemplate";
 
 export default function Welcome() {
   const [animationData, setAnimationData] =
