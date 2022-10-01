@@ -7,6 +7,7 @@ import Statistics from "../statistics/Statistics";
 import Providers from "../providers/Providers";
 import Photos from "../photos/Photos";
 import MyParties from "../my-parties/MyParties";
+import UserSettings from "../userSettings/UserSettings";
 
 const DashboardRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const DashboardRoutes = () => {
       <Route path="recommendations" element={<Recommendations />} />
       <Route path="statistics" element={<Statistics />} />
       <Route path="providers" element={<Providers />} />
+      <Route path="settings" element={<UserSettings />} />
     </>
   );
 };

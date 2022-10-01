@@ -3,11 +3,18 @@ import Typography from "@mui/material/Typography";
 
 interface TitleProps {
   children?: React.ReactNode;
+  style?: React.CSSProperties;
 }
 
 export default function Title(props: TitleProps) {
   return (
-    <Typography component="h2" variant="h6" color="primary" gutterBottom>
+    <Typography
+      style={props.style}
+      component="h2"
+      variant="h6"
+      color="secondary"
+      gutterBottom
+    >
       {props.children}
     </Typography>
   );

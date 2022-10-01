@@ -16,7 +16,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems, secondaryListItems } from "./listItems";
 import CustomLink from "../Link";
 import hat from "../../assets/icons/hatSvg.svg";
-import { Icon } from "@mui/material";
+import { Icon, Stack } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import { Link } from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -138,11 +141,29 @@ function DashboardTemplate({ children }: React.PropsWithChildren<{}>) {
                 noWrap
                 sx={{ flexGrow: 1 }}
               ></Typography>
-              <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+              <Stack direction="row" spacing={1}>
+                <IconButton color="inherit" title="Recent Notifications">
+                  <Badge badgeContent={4} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <Link
+                  to="/dashboard/settings"
+                  style={{ color: "inherit", textDecoration: "inherit" }}
+                >
+                  <IconButton color="inherit" title="User Settings">
+                    <ManageAccountsIcon />
+                  </IconButton>
+                </Link>
+                <Link
+                  to="/logout"
+                  style={{ color: "inherit", textDecoration: "inherit" }}
+                >
+                  <IconButton color="inherit" title="Logout">
+                    <LogoutIcon />
+                  </IconButton>
+                </Link>
+              </Stack>
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>
