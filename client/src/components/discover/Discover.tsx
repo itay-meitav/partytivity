@@ -6,6 +6,7 @@ import DashboardTemplate from "../dashboard/DashboardTemplate";
 import { Grid, IconButton, Paper } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import Title from "../dashboard/Title";
+
 function Discover() {
   return (
     <DashboardTemplate>

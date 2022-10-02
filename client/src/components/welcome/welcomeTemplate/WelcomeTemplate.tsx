@@ -59,7 +59,7 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
                 <CustomLink
                   onClick={closeNav}
                   style={{ color: "inherit", textDecoration: "inherit" }}
-                  to="/about"
+                  to="/welcome/about"
                 >
                   What We Do
                 </CustomLink>
@@ -77,7 +77,7 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
                 <CustomLink
                   onClick={closeNav}
                   style={{ color: "inherit", textDecoration: "inherit" }}
-                  to="/my-parties"
+                  to="/dashboard/my-parties"
                 >
                   Lets Party
                 </CustomLink>

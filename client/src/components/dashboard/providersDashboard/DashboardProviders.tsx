@@ -1,11 +1,11 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Chart from "./Chart";
-import Deposits from "./Deposits";
-import Orders from "./Orders";
-import DashboardTemplate from "./DashboardTemplate";
+import Chart from "./ChartProviders";
+import Deposits from "./DepositsProviders";
+import Orders from "./OrdersProviders";
+import DashboardTemplate from "../DashboardTemplate";
 
-function Dashboard() {
+function DashboardProviders() {
   return (
     <DashboardTemplate>
       <Grid container spacing={3}>
@@ -53,4 +53,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DashboardProviders;
