@@ -25,8 +25,16 @@ const MenuProps = {
 function BasicInformation() {
   const [collaborators, setCollaborators] = useState<string[]>([]);
   const [markedCollaborators, setMarkedCollaborators] = useState<string[]>([]);
+  const [title, setTitle] = useState<string>("");
+  const [des, setDes] = useState<string>("");
 
   useEffect(() => {
+    if (localStorage.getItem("details")) {
+      const details = JSON.parse(localStorage.getItem("details")!);
+      setMarkedCollaborators(details.collaborators);
+      setTitle(details.title);
+      setDes(details.description);
+    }
     setCollaborators(names);
   }, []);
 
@@ -41,6 +49,21 @@ function BasicInformation() {
             id="filled-textarea"
             label="Party Title"
             placeholder="Title"
+            onChange={(e) => {
+              const val = e.currentTarget.value;
+              setTitle(val);
+            }}
+            defaultValue={title}
+            onBlur={(e) => {
+              localStorage.setItem(
+                "details",
+                JSON.stringify({
+                  title: e.currentTarget.value,
+                  description: des,
+                  collaborators: markedCollaborators,
+                })
+              );
+            }}
             multiline
             required
           />
@@ -48,6 +71,21 @@ function BasicInformation() {
             sx={{ flex: 1 }}
             id="filled-textarea"
             label="Party Description"
+            onChange={(e) => {
+              const val = e.currentTarget.value;
+              setDes(val);
+            }}
+            onBlur={(e) => {
+              localStorage.setItem(
+                "details",
+                JSON.stringify({
+                  title: title,
+                  description: e.currentTarget.value,
+                  collaborators: markedCollaborators,
+                })
+              );
+            }}
+            defaultValue={des}
             placeholder="Description"
             multiline
           />
@@ -59,6 +97,16 @@ function BasicInformation() {
               labelId="demo-multiple-checkbox-label"
               id="demo-multiple-checkbox"
               multiple
+              onBlur={() => {
+                localStorage.setItem(
+                  "details",
+                  JSON.stringify({
+                    title: title,
+                    description: des,
+                    collaborators: markedCollaborators,
+                  })
+                );
+              }}
               value={markedCollaborators}
               input={<OutlinedInput label="Collaborators" />}
               renderValue={(selected) => selected.join(", ")}

@@ -125,12 +125,21 @@ function DashboardTemplate({ children }: React.PropsWithChildren<{}>) {
                   ...(open && { display: "none" }),
                 }}
               >
-                <Icon>
+                <Icon
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignContent: "center",
+                  }}
+                >
                   <img
                     src={hat}
-                    style={{ marginRight: 7 }}
-                    height={20}
-                    width={25}
+                    style={{
+                      width: 25,
+                      height: 20,
+                      margin: 0,
+                      padding: 0,
+                    }}
                   />
                 </Icon>
               </IconButton>
@@ -181,7 +190,7 @@ function DashboardTemplate({ children }: React.PropsWithChildren<{}>) {
                   <img
                     src={hat}
                     className="nav-logo-img custom-icon"
-                    style={{ height: 15 }}
+                    style={{ height: 15, marginBottom: 3 }}
                   />
                   RTYTIVITY
                 </span>

@@ -1,10 +1,10 @@
-import { Button, Grid, IconButton, Paper, Stack } from "@mui/material";
+import { Button, Grid, IconButton, Link, Paper, Stack } from "@mui/material";
 import DashboardTemplate from "../../dashboard/DashboardTemplate";
 import BasicInformation from "./BasicInformation";
 import AddServices from "./AddServices";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../dashboard/Title";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function NewParty() {
   return (
@@ -23,7 +23,7 @@ function NewParty() {
             <Title style={{ marginBottom: 20 }}>New Party</Title>
             <Link
               style={{ color: "inherit", textDecoration: "inherit" }}
-              to="/dashboard/my-parties/"
+              href="/dashboard/my-parties/"
             >
               <IconButton
                 size="small"
@@ -41,7 +41,7 @@ function NewParty() {
               <div />
               <Link
                 style={{ color: "inherit", textDecoration: "inherit" }}
-                to="/dashboard/my-parties/new/photos"
+                href="/dashboard/my-parties/new/photos"
               >
                 <Button
                   style={{ width: "max-content" }}
