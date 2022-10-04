@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { atom, useRecoilState } from "recoil";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -22,21 +23,36 @@ const MenuProps = {
   },
 };
 
+export const desState = atom({
+  key: "des",
+  default: JSON.parse(localStorage.getItem("details")!).description || "",
+});
+export const markedCollaboratorsState = atom({
+  key: "markedCollaborators",
+  default: JSON.parse(localStorage.getItem("details")!).collaborators || [],
+});
+export const titleState = atom({
+  key: "title",
+  default: JSON.parse(localStorage.getItem("details")!).title || "",
+});
+
 function BasicInformation() {
-  const [collaborators, setCollaborators] = useState<string[]>([]);
-  const [markedCollaborators, setMarkedCollaborators] = useState<string[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [des, setDes] = useState<string>("");
+  const [des, setDes] = useRecoilState(desState);
+  const [title, setTitle] = useRecoilState(titleState);
+  const [markedCollaborators, setMarkedCollaborators] = useRecoilState(
+    markedCollaboratorsState
+  );
 
   useEffect(() => {
-    if (localStorage.getItem("details")) {
-      const details = JSON.parse(localStorage.getItem("details")!);
-      setMarkedCollaborators(details.collaborators);
-      setTitle(details.title);
-      setDes(details.description);
-    }
-    setCollaborators(names);
-  }, []);
+    localStorage.setItem(
+      "details",
+      JSON.stringify({
+        title: title,
+        description: des,
+        collaborators: markedCollaborators,
+      })
+    );
+  }, [markedCollaborators, title, des]);
 
   return (
     <Stack direction="column" spacing={0.1}>
@@ -53,17 +69,7 @@ function BasicInformation() {
               const val = e.currentTarget.value;
               setTitle(val);
             }}
-            defaultValue={title}
-            onBlur={(e) => {
-              localStorage.setItem(
-                "details",
-                JSON.stringify({
-                  title: e.currentTarget.value,
-                  description: des,
-                  collaborators: markedCollaborators,
-                })
-              );
-            }}
+            value={title}
             multiline
             required
           />
@@ -75,17 +81,7 @@ function BasicInformation() {
               const val = e.currentTarget.value;
               setDes(val);
             }}
-            onBlur={(e) => {
-              localStorage.setItem(
-                "details",
-                JSON.stringify({
-                  title: title,
-                  description: e.currentTarget.value,
-                  collaborators: markedCollaborators,
-                })
-              );
-            }}
-            defaultValue={des}
+            value={des}
             placeholder="Description"
             multiline
           />
@@ -97,29 +93,19 @@ function BasicInformation() {
               labelId="demo-multiple-checkbox-label"
               id="demo-multiple-checkbox"
               multiple
-              onBlur={() => {
-                localStorage.setItem(
-                  "details",
-                  JSON.stringify({
-                    title: title,
-                    description: des,
-                    collaborators: markedCollaborators,
-                  })
-                );
-              }}
               value={markedCollaborators}
               input={<OutlinedInput label="Collaborators" />}
               renderValue={(selected) => selected.join(", ")}
               MenuProps={MenuProps}
             >
-              {collaborators.map((name, i) => (
+              {names.map((name, i) => (
                 <MenuItem
                   key={i}
                   value={name}
                   onClick={() => {
                     if (markedCollaborators.includes(name)) {
                       setMarkedCollaborators(
-                        markedCollaborators.filter((x) => x !== name)
+                        markedCollaborators.filter((x: any) => x !== name)
                       );
                     } else {
                       setMarkedCollaborators([...markedCollaborators, name]);

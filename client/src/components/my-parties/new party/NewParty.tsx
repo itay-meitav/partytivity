@@ -1,12 +1,28 @@
-import { Button, Grid, IconButton, Link, Paper, Stack } from "@mui/material";
+import { Button, Grid, IconButton, Paper, Link, Stack } from "@mui/material";
 import DashboardTemplate from "../../dashboard/DashboardTemplate";
-import BasicInformation from "./BasicInformation";
-import AddServices from "./AddServices";
+import BasicInformation, {
+  desState,
+  markedCollaboratorsState,
+  titleState,
+} from "./BasicInformation";
+import AddServices, { serviceState } from "./AddServices";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../dashboard/Title";
-import { useState } from "react";
+import { Link as Rlink } from "react-router-dom";
+import { useRecoilState } from "recoil";
+// import EntertainmentService from "./services/EntertainmentService";
+// import FoodService from "./services/FoodService";
+// import MusicService from "./services/MusicService";
+// import GeneralService from "./services/GeneralService";
+// import LocationService from "./services/LocationService";
 
 function NewParty() {
+  const [des, setDes] = useRecoilState(desState);
+  const [title, setTitle] = useRecoilState(titleState);
+  const [markedCollaborators, setMarkedCollaborators] = useRecoilState(
+    markedCollaboratorsState
+  );
+  const [serviceType, setServiceType] = useRecoilState(serviceState);
   return (
     <DashboardTemplate>
       <Grid item xs={12}>
@@ -21,9 +37,9 @@ function NewParty() {
             alignItems={"center"}
           >
             <Title style={{ marginBottom: 20 }}>New Party</Title>
-            <Link
+            <Rlink
               style={{ color: "inherit", textDecoration: "inherit" }}
-              href="/dashboard/my-parties/"
+              to="/dashboard/my-parties/"
             >
               <IconButton
                 size="small"
@@ -32,28 +48,49 @@ function NewParty() {
               >
                 <ArrowForwardIcon />
               </IconButton>
-            </Link>
+            </Rlink>
           </Stack>
-          <Stack direction="column" spacing={5}>
-            <BasicInformation />
-            <AddServices />
-            <Stack direction="row" justifyContent={"space-between"}>
-              <div />
-              <Link
-                style={{ color: "inherit", textDecoration: "inherit" }}
-                href="/dashboard/my-parties/new/photos"
-              >
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <Stack direction="column" spacing={5}>
+              <BasicInformation />
+              <AddServices />
+              <Stack direction="row" justifyContent={"space-between"}>
                 <Button
                   style={{ width: "max-content" }}
+                  color="warning"
                   variant="outlined"
                   size="small"
                   type="submit"
+                  onClick={() => {
+                    localStorage.removeItem("details");
+                    setMarkedCollaborators([]);
+                    setTitle("");
+                    setDes("");
+                    setServiceType("");
+                  }}
                 >
-                  Next Step
+                  Clear Fields
                 </Button>
-              </Link>
+                <Link
+                  style={{ color: "inherit", textDecoration: "inherit" }}
+                  href="/dashboard/my-parties/new/photos"
+                >
+                  <Button
+                    style={{ width: "max-content" }}
+                    variant="outlined"
+                    size="small"
+                    type="submit"
+                  >
+                    Next Step
+                  </Button>
+                </Link>
+              </Stack>
             </Stack>
-          </Stack>
+          </form>
         </Paper>
       </Grid>
     </DashboardTemplate>
