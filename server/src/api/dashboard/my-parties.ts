@@ -4,7 +4,6 @@ import { addParty, getUserParties } from "src/db/dashboard/my-parties";
 import authConfig from "../auth/auth.config";
 import { isAuthenticated } from "../auth/authMiddle";
 const router = express.Router();
-
 interface JWTData {
   id: any;
 }
@@ -26,3 +25,5 @@ router.get("/", isAuthenticated, async (req: Request, res: Response) => {
     success: true,
   });
 });
+
+export default router;

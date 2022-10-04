@@ -5,8 +5,7 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import { useAppDispatch } from "../redux/hooks";
-import { fadeOut, fadeIn } from "../redux/slices/Link.slice";
+import { atom, useRecoilState } from "recoil";
 
 type TProps = {
   to: string;
@@ -15,16 +14,20 @@ type TProps = {
   onClick?: Function;
 };
 
+export const linkTransitionState = atom({
+  key: "linkTransition",
+  default: "",
+});
+
 const CustomLink = (props: React.PropsWithChildren<TProps>) => {
-  const dispatch = useAppDispatch();
+  const [linkTransition, setLinkTransition] =
+    useRecoilState(linkTransitionState);
   const navigate = useNavigate();
-  // const location = useLocation();
 
   return (
     <a
-      href={props.to}
       className={props.className}
-      style={props.style || {}}
+      style={{ ...props.style, cursor: "pointer" } || { cursor: "pointer" }}
       onClick={(e) => {
         e.preventDefault();
         props.onClick && props.onClick();
@@ -33,9 +36,9 @@ const CustomLink = (props: React.PropsWithChildren<TProps>) => {
         const isDiff = props.to != pathname && props.to != href;
 
         if (isDiff) {
-          dispatch(fadeOut());
+          setLinkTransition("fade-out");
           setTimeout(() => {
-            dispatch(fadeIn());
+            setLinkTransition("fade-in");
             navigate(props.to);
           }, 500);
         }
