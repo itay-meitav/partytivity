@@ -53,6 +53,7 @@ function NewParty() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              window.location.pathname = "/dashboard/my-parties/new/photos";
             }}
           >
             <Stack direction="column" spacing={5}>
@@ -75,19 +76,14 @@ function NewParty() {
                 >
                   Clear Fields
                 </Button>
-                <Link
-                  style={{ color: "inherit", textDecoration: "inherit" }}
-                  href="/dashboard/my-parties/new/photos"
+                <Button
+                  style={{ width: "max-content" }}
+                  variant="outlined"
+                  size="small"
+                  type="submit"
                 >
-                  <Button
-                    style={{ width: "max-content" }}
-                    variant="outlined"
-                    size="small"
-                    type="submit"
-                  >
-                    Next Step
-                  </Button>
-                </Link>
+                  Next Step
+                </Button>
               </Stack>
             </Stack>
           </form>

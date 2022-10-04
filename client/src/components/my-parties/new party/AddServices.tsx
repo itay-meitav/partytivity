@@ -47,7 +47,6 @@ function AddServices() {
           id="demo-simple-select"
           label="Service Type"
           value={serviceType}
-          required
         >
           {services.map((x) => {
             return (
