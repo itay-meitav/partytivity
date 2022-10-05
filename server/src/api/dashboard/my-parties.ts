@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { addParty, getUserParties } from "src/db/dashboard/my-parties";
+import { addParty, getUserParties } from "../../db/dashboard/my-parties";
 import authConfig from "../auth/auth.config";
 import { isAuthenticated } from "../auth/authMiddle";
 const router = express.Router();

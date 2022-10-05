@@ -25,15 +25,21 @@ const MenuProps = {
 
 export const desState = atom({
   key: "des",
-  default: JSON.parse(localStorage.getItem("details")!).description || "",
+  default: localStorage.getItem("details")
+    ? JSON.parse(localStorage.getItem("details")!).description
+    : "",
 });
 export const markedCollaboratorsState = atom({
   key: "markedCollaborators",
-  default: JSON.parse(localStorage.getItem("details")!).collaborators || [],
+  default: localStorage.getItem("details")
+    ? JSON.parse(localStorage.getItem("details")!).collaborators
+    : [],
 });
 export const titleState = atom({
   key: "title",
-  default: JSON.parse(localStorage.getItem("details")!).title || "",
+  default: localStorage.getItem("details")
+    ? JSON.parse(localStorage.getItem("details")!).title
+    : "",
 });
 
 function BasicInformation() {

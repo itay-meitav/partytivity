@@ -4,24 +4,19 @@ import MenuItem from "@mui/material/MenuItem";
 import { FormControl, TextField } from "@mui/material";
 
 function EntertainmentService() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [openMenu, setOpenMenu] = React.useState(false);
   const [inputVal, setInputVal] = React.useState("");
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const anchorRef = React.useRef<HTMLInputElement>(null);
   return (
     <div>
       <FormControl variant="standard">
         <TextField
-          aria-controls={open ? "basic-menu" : undefined}
+          aria-controls={openMenu ? "basic-menu" : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={() => handleClick}
+          aria-expanded={openMenu ? "true" : undefined}
+          onClick={() => setOpenMenu(true)}
+          onBlur={() => setOpenMenu(false)}
+          ref={anchorRef}
           id="filled-textarea"
           label="Entertainment Service"
           placeholder="Service"
@@ -33,30 +28,33 @@ function EntertainmentService() {
           multiline
           required
         />
+
+        <Menu
+          anchorEl={anchorRef.current}
+          id="basic-menu"
+          open={openMenu}
+          MenuListProps={{
+            "aria-labelledby": "filled-textarea",
+          }}
+        >
+          {names
+            .filter((x) => x.includes(inputVal))
+            .map((x, i) => {
+              return (
+                <MenuItem
+                  key={i}
+                  onClick={(e) => {
+                    const val = e.currentTarget.value.toString();
+                    setInputVal(val);
+                    setOpenMenu(false);
+                  }}
+                >
+                  {x}
+                </MenuItem>
+              );
+            })}
+        </Menu>
       </FormControl>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        {names.map((x) => {
-          return (
-            <MenuItem
-              onClick={(e) => {
-                const val = e.currentTarget.value.toString();
-                setInputVal(val);
-                handleClose();
-              }}
-            >
-              {x}
-            </MenuItem>
-          );
-        })}
-      </Menu>
     </div>
   );
 }

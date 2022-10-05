@@ -1,4 +1,4 @@
-import { checkIfUserExist, checkUserId } from "src/db/users";
+import { checkIfUserExist, checkUserId } from "../../db/users";
 import { Request, Response, NextFunction } from "express";
 import authConfig from "./auth.config";
 import jwt from "jsonwebtoken";

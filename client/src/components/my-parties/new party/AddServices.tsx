@@ -8,7 +8,8 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { atom, useRecoilState } from "recoil";
+import { atom, RecoilState, useRecoilState } from "recoil";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const services = [
   "Location Service",
@@ -19,12 +20,14 @@ const services = [
 ];
 
 export const serviceState = atom({
-  key: "service",
-  default: "",
+  key: "service" as string,
+  default: [] as string[],
 });
 
 function AddServices() {
-  const [serviceType, setServiceType] = useRecoilState(serviceState);
+  const [msg, setMsg] = useState<boolean>(false);
+  const [markedService, setMarkedService] = useState<string>("");
+  const [serviceType, setServiceType] = useRecoilState<string[]>(serviceState);
   return (
     <>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
@@ -46,15 +49,15 @@ function AddServices() {
           placeholder="Service Type"
           id="demo-simple-select"
           label="Service Type"
-          value={serviceType}
+          value={markedService}
         >
-          {services.map((x) => {
+          {services.map((x, i) => {
             return (
               <MenuItem
                 value={x}
+                key={i}
                 onClick={() => {
-                  if (serviceType == x) return false;
-                  setServiceType(x);
+                  setMarkedService(x);
                 }}
               >
                 <ListItemText primary={x} />
@@ -62,14 +65,35 @@ function AddServices() {
             );
           })}
         </Select>
-        <Button
-          style={{ width: "max-content" }}
-          variant="outlined"
-          color="success"
-          size="small"
+        <OverlayTrigger
+          placement="top"
+          show={msg}
+          overlay={
+            <Tooltip id="button-tooltip-2">
+              At this stage you can add up to 5 services only. <br />
+              You will be able to add more later.
+            </Tooltip>
+          }
         >
-          Add New Service
-        </Button>
+          <Button
+            style={{ width: "max-content" }}
+            variant="outlined"
+            color="success"
+            size="small"
+            onClick={() => {
+              if (serviceType.length < 5) {
+                setServiceType([...serviceType, markedService]);
+              } else {
+                setMsg(true);
+                setTimeout(() => {
+                  setMsg(false);
+                }, 4000);
+              }
+            }}
+          >
+            Add New Service
+          </Button>
+        </OverlayTrigger>
       </FormControl>
     </>
   );

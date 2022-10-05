@@ -4,26 +4,20 @@ import MenuItem from "@mui/material/MenuItem";
 import { FormControl, TextField } from "@mui/material";
 
 function FoodService() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [openMenu, setOpenMenu] = React.useState(false);
   const [inputVal, setInputVal] = React.useState("");
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const anchorRef = React.useRef<HTMLInputElement>(null);
   return (
     <div>
       <FormControl variant="standard">
         <TextField
-          aria-controls={open ? "basic-menu" : undefined}
+          aria-controls={openMenu ? "basic-menu" : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={() => handleClick}
+          aria-expanded={openMenu ? "true" : undefined}
+          onClick={() => setOpenMenu(true)}
+          onBlur={() => setOpenMenu(false)}
           id="filled-textarea"
-          label="Entertainment Service"
+          label="Food Service"
           placeholder="Service"
           value={inputVal}
           onChange={(e) => {
@@ -36,26 +30,28 @@ function FoodService() {
       </FormControl>
       <Menu
         id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
+        open={openMenu}
+        ref={anchorRef}
         MenuListProps={{
-          "aria-labelledby": "basic-button",
+          "aria-labelledby": "filled-textarea",
         }}
       >
-        {names.map((x) => {
-          return (
-            <MenuItem
-              onClick={(e) => {
-                const val = e.currentTarget.value.toString();
-                setInputVal(val);
-                handleClose();
-              }}
-            >
-              {x}
-            </MenuItem>
-          );
-        })}
+        {names
+          .filter((x) => x.includes(inputVal))
+          .map((x, i) => {
+            return (
+              <MenuItem
+                key={i}
+                onClick={(e) => {
+                  const val = e.currentTarget.value.toString();
+                  setInputVal(val);
+                  setOpenMenu(false);
+                }}
+              >
+                {x}
+              </MenuItem>
+            );
+          })}
       </Menu>
     </div>
   );

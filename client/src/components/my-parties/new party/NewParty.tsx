@@ -9,20 +9,34 @@ import AddServices, { serviceState } from "./AddServices";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../dashboard/Title";
 import { Link as Rlink } from "react-router-dom";
-import { useRecoilState } from "recoil";
-// import EntertainmentService from "./services/EntertainmentService";
-// import FoodService from "./services/FoodService";
-// import MusicService from "./services/MusicService";
-// import GeneralService from "./services/GeneralService";
-// import LocationService from "./services/LocationService";
+import { useSetRecoilState, useRecoilState } from "recoil";
+import EntertainmentService from "./services/EntertainmentService";
+import FoodService from "./services/FoodService";
+import MusicService from "./services/MusicService";
+import GeneralService from "./services/GeneralService";
+import LocationService from "./services/LocationService";
 
 function NewParty() {
-  const [des, setDes] = useRecoilState(desState);
-  const [title, setTitle] = useRecoilState(titleState);
-  const [markedCollaborators, setMarkedCollaborators] = useRecoilState(
-    markedCollaboratorsState
-  );
-  const [serviceType, setServiceType] = useRecoilState(serviceState);
+  const setDes = useSetRecoilState(desState);
+  const setTitle = useSetRecoilState(titleState);
+  const setMarkedCollaborators = useSetRecoilState(markedCollaboratorsState);
+  const [ServiceType, setServiceType] = useRecoilState(serviceState);
+
+  function switchCaseService(x: string, i: number) {
+    switch (x) {
+      case "Entertainment Service":
+        return <EntertainmentService key={i} />;
+      case "Food Service":
+        return <FoodService key={i} />;
+      case "Music Service":
+        return <MusicService key={i} />;
+      case "General Service":
+        return <GeneralService key={i} />;
+      case "Location Service":
+        return <LocationService key={i} />;
+    }
+  }
+
   return (
     <DashboardTemplate>
       <Grid item xs={12}>
@@ -59,6 +73,16 @@ function NewParty() {
             <Stack direction="column" spacing={5}>
               <BasicInformation />
               <AddServices />
+              <Stack
+                direction="column"
+                justifyContent={"flex-start"}
+                alignItems={"flex-start"}
+                spacing={3}
+              >
+                {ServiceType.map((x, i) => {
+                  return switchCaseService(x, i);
+                })}
+              </Stack>
               <Stack direction="row" justifyContent={"space-between"}>
                 <Button
                   style={{ width: "max-content" }}
@@ -71,7 +95,7 @@ function NewParty() {
                     setMarkedCollaborators([]);
                     setTitle("");
                     setDes("");
-                    setServiceType("");
+                    setServiceType([]);
                   }}
                 >
                   Clear Fields
