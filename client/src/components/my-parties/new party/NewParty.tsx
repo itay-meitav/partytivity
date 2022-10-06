@@ -20,7 +20,7 @@ function NewParty() {
   const setDes = useSetRecoilState(desState);
   const setTitle = useSetRecoilState(titleState);
   const setMarkedCollaborators = useSetRecoilState(markedCollaboratorsState);
-  const [ServiceType, setServiceType] = useRecoilState(serviceState);
+  const [serviceType, setServiceType] = useRecoilState(serviceState);
 
   function switchCaseService(x: string, i: number) {
     switch (x) {
@@ -79,9 +79,7 @@ function NewParty() {
                 alignItems={"flex-start"}
                 spacing={3}
               >
-                {ServiceType.map((x, i) => {
-                  return switchCaseService(x, i);
-                })}
+                {serviceType.map((x, i) => switchCaseService(x, i))}
               </Stack>
               <Stack direction="row" justifyContent={"space-between"}>
                 <Button
@@ -89,7 +87,7 @@ function NewParty() {
                   color="warning"
                   variant="outlined"
                   size="small"
-                  type="submit"
+                  type="button"
                   onClick={() => {
                     localStorage.removeItem("details");
                     setMarkedCollaborators([]);

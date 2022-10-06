@@ -70,8 +70,8 @@ function AddServices() {
           show={msg}
           overlay={
             <Tooltip id="button-tooltip-2">
-              At this stage you can add up to 5 services only. <br />
-              You will be able to add more later.
+              At this stage you can add up to 5 services only, as well as <br />
+              one service of each type. You will be able to add more later.
             </Tooltip>
           }
         >
@@ -80,15 +80,21 @@ function AddServices() {
             variant="outlined"
             color="success"
             size="small"
+            type="button"
             onClick={() => {
-              if (serviceType.length < 5) {
-                setServiceType([...serviceType, markedService]);
-              } else {
-                setMsg(true);
-                setTimeout(() => {
-                  setMsg(false);
-                }, 4000);
+              if (markedService) {
+                if (serviceType.length < 5) {
+                  if (!serviceType.find((x) => x == markedService)) {
+                    setServiceType([...serviceType, markedService]);
+                  } else {
+                    setMsg(true);
+                    setTimeout(() => {
+                      setMsg(false);
+                    }, 4000);
+                  }
+                }
               }
+              return false;
             }}
           >
             Add New Service

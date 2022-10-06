@@ -76,7 +76,6 @@ function BasicInformation() {
               setTitle(val);
             }}
             value={title}
-            multiline
             required
           />
           <TextField
@@ -89,7 +88,6 @@ function BasicInformation() {
             }}
             value={des}
             placeholder="Description"
-            multiline
           />
           <FormControl sx={{ m: 1, width: 300 }}>
             <InputLabel id="demo-multiple-checkbox-label">

@@ -1,60 +1,82 @@
 import * as React from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { FormControl, TextField } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { serviceState } from "../AddServices";
+import { useRecoilState } from "recoil";
+import { Dropdown, Form } from "react-bootstrap";
 
 function EntertainmentService() {
-  const [openMenu, setOpenMenu] = React.useState(false);
   const [inputVal, setInputVal] = React.useState("");
-  const anchorRef = React.useRef<HTMLInputElement>(null);
-  return (
-    <div>
-      <FormControl variant="standard">
-        <TextField
-          aria-controls={openMenu ? "basic-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={openMenu ? "true" : undefined}
-          onClick={() => setOpenMenu(true)}
-          onBlur={() => setOpenMenu(false)}
-          ref={anchorRef}
-          id="filled-textarea"
-          label="Entertainment Service"
-          placeholder="Service"
-          value={inputVal}
-          onChange={(e) => {
-            const val = e.currentTarget.value;
-            setInputVal(val);
-          }}
-          multiline
-          required
-        />
+  const [serviceType, setServiceType] = useRecoilState(serviceState);
+  const filteredOptions = names.filter((option) =>
+    option.toLowerCase().includes(inputVal.toLowerCase())
+  );
 
-        <Menu
-          anchorEl={anchorRef.current}
-          id="basic-menu"
-          open={openMenu}
-          MenuListProps={{
-            "aria-labelledby": "filled-textarea",
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 10,
+      }}
+    >
+      <Dropdown drop={"down"}>
+        <Dropdown.Toggle variant="input" bsPrefix="p-0">
+          <Form.Control
+            type="search"
+            className="me-1 shadow-none"
+            placeholder="Entertainment Service"
+            value={inputVal}
+            onChange={(e) => {
+              const val = e.currentTarget.value;
+              setInputVal(val);
+            }}
+            required
+          />
+        </Dropdown.Toggle>
+        <Dropdown.Menu
+          style={{
+            width: "100%",
+            height: "fit-content",
+            maxHeight: 200,
+            overflowY: "auto",
+            overflowX: "hidden",
           }}
         >
-          {names
-            .filter((x) => x.includes(inputVal))
-            .map((x, i) => {
-              return (
-                <MenuItem
-                  key={i}
-                  onClick={(e) => {
-                    const val = e.currentTarget.value.toString();
-                    setInputVal(val);
-                    setOpenMenu(false);
+          {filteredOptions.length > 0
+            ? filteredOptions.map((x, i) => (
+                <Dropdown.Item
+                  as="button"
+                  onClick={() => {
+                    setInputVal(x);
                   }}
+                  style={{ whiteSpace: "initial" }}
+                  key={i}
                 >
                   {x}
-                </MenuItem>
-              );
-            })}
-        </Menu>
-      </FormControl>
+                </Dropdown.Item>
+              ))
+            : ""}
+        </Dropdown.Menu>
+      </Dropdown>
+      <IconButton
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onClick={() => {
+          setServiceType(
+            serviceType.filter((x) => x !== "Entertainment Service")
+          );
+        }}
+        aria-label="delete"
+        size="medium"
+      >
+        <DeleteIcon />
+      </IconButton>
     </div>
   );
 }

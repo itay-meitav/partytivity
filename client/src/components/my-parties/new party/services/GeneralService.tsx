@@ -1,58 +1,80 @@
 import * as React from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { FormControl, TextField } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { serviceState } from "../AddServices";
+import { useRecoilState } from "recoil";
+import { Dropdown, Form } from "react-bootstrap";
 
 function GeneralService() {
-  const [openMenu, setOpenMenu] = React.useState(false);
   const [inputVal, setInputVal] = React.useState("");
-  const anchorRef = React.useRef<HTMLInputElement>(null);
+  const [serviceType, setServiceType] = useRecoilState(serviceState);
+  const filteredOptions = names.filter((option) =>
+    option.toLowerCase().includes(inputVal.toLowerCase())
+  );
+
   return (
-    <div>
-      <FormControl variant="standard">
-        <TextField
-          aria-controls={openMenu ? "basic-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={openMenu ? "true" : undefined}
-          onClick={() => setOpenMenu(true)}
-          onBlur={() => setOpenMenu(false)}
-          id="filled-textarea"
-          label="General Service"
-          placeholder="Service"
-          value={inputVal}
-          onChange={(e) => {
-            const val = e.currentTarget.value;
-            setInputVal(val);
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 10,
+      }}
+    >
+      <Dropdown drop={"down"}>
+        <Dropdown.Toggle variant="input" bsPrefix="p-0">
+          <Form.Control
+            type="search"
+            className="me-1 shadow-none"
+            placeholder="General Service"
+            value={inputVal}
+            onChange={(e) => {
+              const val = e.currentTarget.value;
+              setInputVal(val);
+            }}
+            required
+          />
+        </Dropdown.Toggle>
+        <Dropdown.Menu
+          style={{
+            width: "100%",
+            height: "fit-content",
+            maxHeight: 200,
+            overflowY: "auto",
+            overflowX: "hidden",
           }}
-          multiline
-          required
-        />
-      </FormControl>
-      <Menu
-        id="basic-menu"
-        open={openMenu}
-        ref={anchorRef}
-        MenuListProps={{
-          "aria-labelledby": "filled-textarea",
+        >
+          {filteredOptions.length > 0
+            ? filteredOptions.map((x, i) => (
+                <Dropdown.Item
+                  as="button"
+                  onClick={() => {
+                    setInputVal(x);
+                  }}
+                  style={{ whiteSpace: "initial" }}
+                  key={i}
+                >
+                  {x}
+                </Dropdown.Item>
+              ))
+            : ""}
+        </Dropdown.Menu>
+      </Dropdown>
+      <IconButton
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
+        onClick={() => {
+          setServiceType(serviceType.filter((x) => x !== "General Service"));
+        }}
+        aria-label="delete"
+        size="medium"
       >
-        {names
-          .filter((x) => x.includes(inputVal))
-          .map((x, i) => {
-            return (
-              <MenuItem
-                key={i}
-                onClick={(e) => {
-                  const val = e.currentTarget.value.toString();
-                  setInputVal(val);
-                  setOpenMenu(false);
-                }}
-              >
-                {x}
-              </MenuItem>
-            );
-          })}
-      </Menu>
+        <DeleteIcon />
+      </IconButton>
     </div>
   );
 }
