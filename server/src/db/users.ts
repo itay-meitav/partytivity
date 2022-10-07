@@ -30,34 +30,34 @@ export async function addUser(details: {
   }
 }
 
-export async function checkIfUserExist(username: { username: string }) {
+export async function checkIfUserExist(username: string) {
   const query = {
     text: `SELECT * FROM users WHERE username = $1`,
-    values: [username.username],
+    values: [username],
   };
   return execQuery(query).then((data) => data.rows[0]);
 }
 
-export async function checkUserEmail(user: { email: string }) {
+export async function checkUserEmail(email: string) {
   const query = {
     text: `SELECT * FROM users WHERE email = $1`,
-    values: [user.email],
+    values: [email],
   };
   return execQuery(query).then((data) => data.rows[0]);
 }
 
-export async function checkUserId(user: { id: string }) {
+export async function checkUserId(id: number) {
   const query = {
     text: `SELECT * FROM users WHERE id = $1`,
-    values: [user.id],
+    values: [id],
   };
   return execQuery(query).then((data) => data.rows[0]);
 }
 
-export async function changeUserStatus(user: { username: string }) {
+export async function changeUserStatus(username: string) {
   const query = {
     text: `UPDATE users SET status = $1 WHERE username = $2`,
-    values: ["active", user.username],
+    values: ["active", username],
   };
   return execQuery(query).then((data) => data.rows[0]);
 }

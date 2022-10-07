@@ -3,6 +3,8 @@ require("dotenv").config({ path: path.resolve(__dirname + "/../../.env") });
 import { Pool } from "pg";
 import { addParty } from "./dashboard/my-parties";
 import { addUser } from "./users";
+import * as chrono from "chrono-node";
+import bcrypt from "bcrypt";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -19,7 +21,7 @@ async function initDB() {
   await createAllTables();
   await addUser({
     username: "admin",
-    password: "admin",
+    password: await bcrypt.hash("admin", 12),
     email: "admin",
     name: undefined,
     status: undefined,
@@ -28,6 +30,7 @@ async function initDB() {
   await addParty({
     title: "my first party",
     description: null,
+    date: chrono.parseDate("Tomorrow"),
     ownerId: 1,
     locationID: null,
     musicID: null,
@@ -53,6 +56,7 @@ async function dropAllTables() {
   await pool.query("DROP TYPE IF EXISTS PERMISSIONS");
   await pool.query("DROP TYPE IF EXISTS FOOD_TYPE");
   await pool.query("DROP TYPE IF EXISTS PARTY_STATUS");
+  await pool.query("DROP TYPE IF EXISTS COMING_STATUS");
 }
 
 async function createAllTables() {
@@ -65,6 +69,7 @@ async function createAllTables() {
     `CREATE TYPE FOOD_TYPE AS ENUM ('fast', 'chef', 'restaurant')`
   );
   await pool.query(`CREATE TYPE PARTY_STATUS AS ENUM ('pending', 'done')`);
+  await pool.query(`CREATE TYPE COMING_STATUS AS ENUM ('yes', 'no', 'maybe')`);
   await pool.query(
     `CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
@@ -134,6 +139,7 @@ async function createAllTables() {
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT,
+        date DATE NOT NULL,
         owner_id INTEGER,
         FOREIGN KEY(owner_id) REFERENCES users(id) ON DELETE CASCADE,
         location_id INTEGER,
@@ -147,26 +153,29 @@ async function createAllTables() {
         general_id INTEGER,
         FOREIGN KEY(general_id) REFERENCES general_service(id) ON DELETE CASCADE,
         guests TEXT[],
+        photos TEXT[],
         status PARTY_STATUS DEFAULT 'pending'
 		)`
   );
   await pool.query(
     `CREATE TABLE IF NOT EXISTS collaborators(
         id SERIAL PRIMARY KEY,
-        party_id INTEGER,
+        user_id INTEGER NOT NULL,
+        FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+        party_id INTEGER NOT NULL,
         FOREIGN KEY(party_id) REFERENCES parties(id) ON DELETE CASCADE,
-        permissions PERMISSIONS DEFAULT 'readonly'  
+        permission PERMISSIONS DEFAULT 'readonly'  
 		)`
   );
   await pool.query(
     `CREATE TABLE IF NOT EXISTS guests(
         id SERIAL PRIMARY KEY,
-        name TEXT,
-        phone_number TEXT,
-        is_coming TEXT,
+        name TEXT NOT NULL,
+        phone_number TEXT NOT NULL,
+        is_coming COMING_STATUS NOT NULL,
         comment TEXT,
-        party_id INTEGER,
-        FOREIGN KEY(party_id) REFERENCES parties(id) ON DELETE CASCADE,
+        party_id INTEGER NOT NULL,
+        FOREIGN KEY(party_id) REFERENCES parties(id) ON DELETE CASCADE
 		)`
   );
 }

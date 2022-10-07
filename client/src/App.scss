@@ -49,7 +49,8 @@
 }
 
 body {
-  background-image: linear-gradient(#a6b1e1, #f4eeff);
+  background: linear-gradient(#a6b1e1, #f4eeff) no-repeat center center fixed;
+  background-size: cover;
   // background-attachment: fixed;
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

@@ -58,14 +58,20 @@ function NewPartyPhotos() {
               </Carousel.Item>
             </Carousel>
             <Stack direction="row" justifyContent={"space-between"}>
-              <Button
-                style={{ width: "max-content" }}
-                variant="contained"
-                component="label"
+              <form
+                action="/api/photos"
+                encType="multipart/form-data"
+                method="post"
               >
-                Upload Photo
-                <input hidden accept="image/*" multiple type="file" />
-              </Button>
+                <Button
+                  style={{ width: "max-content" }}
+                  variant="contained"
+                  type="submit"
+                >
+                  Upload Photo
+                  <input hidden accept="image/*" multiple type="file" />
+                </Button>
+              </form>
               <Button
                 style={{ width: "max-content" }}
                 variant="contained"

@@ -12,7 +12,7 @@ import { sendResetEmail } from "./auth/nodemailer.config";
 const router = express.Router();
 
 interface JWTData {
-  id: any;
+  id: number;
 }
 
 router.post("/", async (req: Request, res: Response) => {
@@ -80,7 +80,7 @@ router.get("/reset/new/:token", async (req, res) => {
   const token = req.params.token;
   const decoded = jwt.verify(token, authConfig.secret);
   if (!decoded) return res.status(401).json({ message: "Unauthorized!" });
-  await checkUserId({ id: (decoded as JWTData).id }).then(async (user) => {
+  await checkUserId((decoded as JWTData).id).then(async (user) => {
     if (!user) {
       return res
         .status(401)
@@ -98,7 +98,7 @@ router.post("/reset/new/:token", async (req: Request, res: Response) => {
   const hashedPassword = await bcrypt.hash(password, 12);
   const decoded = jwt.verify(token, authConfig.secret);
   if (!decoded) return res.status(401).json({ message: "Unauthorized!" });
-  await checkUserId({ id: (decoded as JWTData).id }).then(async (user) => {
+  await checkUserId((decoded as JWTData).id).then(async (user) => {
     if (!user) {
       return res.status(401).json({ message: "User Not found" });
     }

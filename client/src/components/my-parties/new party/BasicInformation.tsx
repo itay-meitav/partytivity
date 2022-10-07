@@ -11,6 +11,10 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { atom, useRecoilState } from "recoil";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Dayjs } from "dayjs";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,6 +45,12 @@ export const titleState = atom({
     ? JSON.parse(localStorage.getItem("details")!).title
     : "",
 });
+export const dateState = atom({
+  key: "date",
+  default: localStorage.getItem("details")
+    ? JSON.parse(localStorage.getItem("details")!).date
+    : "",
+});
 
 function BasicInformation() {
   const [des, setDes] = useRecoilState(desState);
@@ -48,6 +58,10 @@ function BasicInformation() {
   const [markedCollaborators, setMarkedCollaborators] = useRecoilState(
     markedCollaboratorsState
   );
+  const [date, setDate] = useRecoilState<Dayjs | null>(dateState);
+  const handleChange = (newValue: Dayjs | null) => {
+    setDate(newValue);
+  };
 
   useEffect(() => {
     localStorage.setItem(
@@ -56,12 +70,13 @@ function BasicInformation() {
         title: title,
         description: des,
         collaborators: markedCollaborators,
+        date: date,
       })
     );
-  }, [markedCollaborators, title, des]);
+  }, [markedCollaborators, title, des, date]);
 
   return (
-    <Stack direction="column" spacing={0.1}>
+    <Stack direction="column" spacing={3}>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         Basic Information
       </Typography>
@@ -78,17 +93,14 @@ function BasicInformation() {
             value={title}
             required
           />
-          <TextField
-            sx={{ flex: 1 }}
-            id="filled-textarea"
-            label="Party Description"
-            onChange={(e) => {
-              const val = e.currentTarget.value;
-              setDes(val);
-            }}
-            value={des}
-            placeholder="Description"
-          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              label="Party Date"
+              value={date}
+              onChange={handleChange}
+              renderInput={(params: any) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
           <FormControl sx={{ m: 1, width: 300 }}>
             <InputLabel id="demo-multiple-checkbox-label">
               Collaborators
@@ -123,6 +135,21 @@ function BasicInformation() {
           </FormControl>
         </Stack>
       </FormControl>
+      <TextField
+        sx={{ flex: 1 }}
+        id="filled-textarea"
+        label="Party Description"
+        onChange={(e) => {
+          const val = e.currentTarget.value;
+          setDes(val);
+        }}
+        style={{ width: 400 }}
+        value={des}
+        placeholder="Description"
+        multiline
+        rows={3}
+        maxRows={5}
+      />
     </Stack>
   );
 }

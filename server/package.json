@@ -15,6 +15,7 @@
     "@types/multer": "^1.4.7",
     "@types/nodemailer": "^6.4.6",
     "bcrypt": "^5.0.1",
+    "chrono-node": "^2.4.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",

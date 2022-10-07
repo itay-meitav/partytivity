@@ -3,6 +3,7 @@ import { query as execQuery } from "../general";
 export async function addParty(details: {
   title: string;
   description?: string;
+  date: Date;
   ownerId: number;
   locationID?: number;
   musicID?: number;
@@ -11,10 +12,11 @@ export async function addParty(details: {
   generalID?: number;
 }) {
   const query = {
-    text: `INSERT INTO parties(title, description, owner_id, location_id, music_id, food_id, entertainment_id, general_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)`,
+    text: `INSERT INTO parties(title, description, date, owner_id, location_id, music_id, food_id, entertainment_id, general_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
     values: [
       details.title,
       details.description,
+      details.date,
       details.ownerId,
       details.locationID,
       details.musicID,
