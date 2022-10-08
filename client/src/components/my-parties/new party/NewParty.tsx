@@ -1,6 +1,7 @@
 import { Button, Grid, IconButton, Paper, Link, Stack } from "@mui/material";
 import DashboardTemplate from "../../dashboard/DashboardTemplate";
 import BasicInformation, {
+  dateState,
   desState,
   markedCollaboratorsState,
   titleState,
@@ -19,6 +20,7 @@ import LocationService from "./services/LocationService";
 function NewParty() {
   const setDes = useSetRecoilState(desState);
   const setTitle = useSetRecoilState(titleState);
+  const setDate = useSetRecoilState(dateState);
   const setMarkedCollaborators = useSetRecoilState(markedCollaboratorsState);
   const [serviceType, setServiceType] = useRecoilState(serviceState);
 
@@ -94,6 +96,7 @@ function NewParty() {
                     setTitle("");
                     setDes("");
                     setServiceType([]);
+                    setDate(null);
                   }}
                 >
                   Clear Fields

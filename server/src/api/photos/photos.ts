@@ -1,11 +1,35 @@
-import express, { NextFunction, Request, Response } from "express";
-import multer, { diskStorage, memoryStorage } from "multer";
-import sharp from "sharp";
 import path from "path";
+require("dotenv").config({ path: path.join(__dirname, "../../../.env") });
+import express from "express";
+import multer from "multer";
+import fs from "fs";
+import sharp from "sharp";
 import { isAuthenticated } from "../auth/authMiddle";
+import cloudinary from "cloudinary";
 
 const router = express.Router();
 router.use("/photos", express.static(__dirname + "/photos/"));
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
+
+const cloudinaryUploader = async (filePath) => {
+  return await cloudinary.v2.uploader.upload(
+    filePath,
+    { timestamp: new Date().getTime() },
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      fs.unlinkSync(filePath);
+      return result;
+    }
+  );
+};
 
 const storage = multer.diskStorage({
   destination: "./src/api/photos/photos/",
@@ -30,11 +54,6 @@ async function checkFileType(file, cb) {
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
   if (mimetype && extname) {
-    // const imageFile = await sharp(file.originalname)
-    //   .resize(800, 400)
-    //   .toFile(
-    //     `/api/photos/${Date.now()}-${file.originalname.split(" ").join("-")}`
-    //   );
     return cb(null, true);
   } else {
     const error: Error = new Error("Wrong file type!");
@@ -45,6 +64,7 @@ async function checkFileType(file, cb) {
 
 router.post("/", isAuthenticated, async (req, res) => {
   upload(req, res, async (err) => {
+    let uploadArr = [];
     if (err) {
       if (err.name == "LIMIT_FILE_TYPES") {
         return res
@@ -71,10 +91,16 @@ router.post("/", isAuthenticated, async (req, res) => {
       const element = req.files[i];
       let buffer = await sharp(element.path).resize(800, 400).toBuffer();
       await sharp(buffer).toFile(element.path);
+      await cloudinaryUploader(element.path).then((res) =>
+        uploadArr.push(res.url)
+      );
     }
-    res.json({
+    console.log(uploadArr);
+
+    return res.json({
       message: "Files Uploaded!",
-      files: req.files,
+      files: uploadArr,
+      // files: req.files,
       success: true,
     });
   });

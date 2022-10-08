@@ -13,7 +13,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import config from "../../../assets/config";
 import "holderjs/holder";
 import { useRef, useState } from "react";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
 function NewPartyPhotos() {
@@ -21,6 +21,7 @@ function NewPartyPhotos() {
   const [srcArr, setSrcArr] = useState<string[]>(
     JSON.parse(localStorage.getItem("src")!) || []
   );
+  const [count, setCount] = useState<number>(0);
   const msg = useRef<HTMLDivElement>(null);
 
   async function submitForm() {
@@ -31,13 +32,13 @@ function NewPartyPhotos() {
     });
     const data = await req.json();
     if (data.success) {
-      setSrcArr(
-        data.files.map((x: any) =>
-          x.path.replaceAll("src", `http:${config.apiHost}`)
-        )
-      );
-      localStorage.setItem("src", JSON.stringify(srcArr));
-      window.location.reload();
+      setSrcArr(data.files);
+      setCount(1);
+      // localStorage.setItem("src", JSON.stringify(data.files.map((x: any) =>
+      //     x.path.replaceAll("src", `http:${config.apiHost}`)
+      //     )
+      //   ));
+      // window.location.reload();
     } else {
       msg.current!.innerHTML = data.massage;
     }
@@ -70,26 +71,38 @@ function NewPartyPhotos() {
               </Stack>
               <Typography color="text.secondary" sx={{ flex: 1 }}>
                 Add life to your party! Try something that will get people in
-                without even blinking
+                without even blinking!
               </Typography>
             </Stack>
             {!srcArr.length ? (
-              <Carousel>
+              <Carousel width={950}>
                 <div>
                   <img
-                    className="d-block w-100"
+                    className="d-block w-100 h-100"
                     src="holder.js/800x400?text=Image1&bg=eee"
                     alt="Photo"
                   />
-                  <p className="legend">My First Image</p>
                 </div>
                 <div>
                   <img
-                    className="d-block w-100"
+                    className="d-block w-100 h-100"
                     src="holder.js/800x400?text=Image2&bg=eee"
                     alt="Photo"
                   />
-                  <p className="legend">My Second Image</p>
+                </div>
+                <div>
+                  <img
+                    className="d-block w-100 h-100"
+                    src="holder.js/800x400?text=Image3&bg=eee"
+                    alt="Photo"
+                  />
+                </div>
+                <div>
+                  <img
+                    className="d-block w-100 h-100"
+                    src="holder.js/800x400?text=Image4&bg=eee"
+                    alt="Photo"
+                  />
                 </div>
               </Carousel>
             ) : (
@@ -137,13 +150,14 @@ function NewPartyPhotos() {
                         }
                         setFiles(formData);
                       }}
-                      required
+                      disabled={count > 0 ? true : false}
                     />
                   </Button>
                   <Button
                     style={{ width: "max-content" }}
                     variant="contained"
                     type="submit"
+                    disabled={count > 0 ? true : false}
                   >
                     Upload
                   </Button>
@@ -153,8 +167,8 @@ function NewPartyPhotos() {
               <Button
                 style={{ width: "max-content" }}
                 variant="contained"
-                component="label"
                 color="success"
+                type="submit"
               >
                 Create Party
               </Button>
