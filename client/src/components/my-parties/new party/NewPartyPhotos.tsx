@@ -6,16 +6,43 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import Carousel from "react-bootstrap/Carousel";
 import { Link } from "react-router-dom";
 import DashboardTemplate from "../../dashboard/DashboardTemplate";
 import Title from "../../dashboard/Title";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import config from "../../../assets/config";
 import "holderjs/holder";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
 
 function NewPartyPhotos() {
+  const [files, setFiles] = useState<FormData>(new FormData());
+  const [srcArr, setSrcArr] = useState<string[]>(
+    JSON.parse(localStorage.getItem("src")!) || []
+  );
+  const msg = useRef<HTMLDivElement>(null);
+
+  async function submitForm() {
+    const req = await fetch(`${config.apiHost}/api/photos`, {
+      method: "post",
+      credentials: "include",
+      body: files,
+    });
+    const data = await req.json();
+    if (data.success) {
+      setSrcArr(
+        data.files.map((x: any) =>
+          x.path.replaceAll("src", `http:${config.apiHost}`)
+        )
+      );
+      localStorage.setItem("src", JSON.stringify(srcArr));
+      window.location.reload();
+    } else {
+      msg.current!.innerHTML = data.massage;
+    }
+  }
+
   return (
     <DashboardTemplate>
       <Grid item xs={12}>
@@ -46,23 +73,40 @@ function NewPartyPhotos() {
                 without even blinking
               </Typography>
             </Stack>
-            <Carousel style={{ flex: 2 }} variant="dark">
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
-                  src="holder.js/800x400?text=Image&bg=eee"
-                  alt="Photo"
-                />
-                <Carousel.Caption>
-                  <h5>My First Image</h5>
-                  <p>Description</p>
-                </Carousel.Caption>
-              </Carousel.Item>
-            </Carousel>
+            {!srcArr.length ? (
+              <Carousel>
+                <div>
+                  <img
+                    className="d-block w-100"
+                    src="holder.js/800x400?text=Image1&bg=eee"
+                    alt="Photo"
+                  />
+                  <p className="legend">My First Image</p>
+                </div>
+                <div>
+                  <img
+                    className="d-block w-100"
+                    src="holder.js/800x400?text=Image2&bg=eee"
+                    alt="Photo"
+                  />
+                  <p className="legend">My Second Image</p>
+                </div>
+              </Carousel>
+            ) : (
+              <Carousel width={950}>
+                {srcArr.map((x, i) => (
+                  <div key={i}>
+                    <img className="d-block w-100 h-100" src={x} alt="Photo" />
+                  </div>
+                ))}
+              </Carousel>
+            )}
             <Stack direction="row" justifyContent={"space-between"}>
               <form
-                action={`${config.apiHost}/api/photos`}
-                method="POST"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitForm();
+                }}
                 encType="multipart/form-data"
               >
                 <div
@@ -76,7 +120,7 @@ function NewPartyPhotos() {
                 >
                   <Button
                     style={{ width: "max-content" }}
-                    variant="contained"
+                    variant="outlined"
                     component="label"
                   >
                     Choose Photos
@@ -86,6 +130,13 @@ function NewPartyPhotos() {
                       multiple
                       type="file"
                       name="files"
+                      onChange={(e: any) => {
+                        const formData = new FormData();
+                        for (let i = 0; i < e.target.files.length; i++) {
+                          formData.append("files", e.target.files[i]);
+                        }
+                        setFiles(formData);
+                      }}
                       required
                     />
                   </Button>
@@ -98,6 +149,7 @@ function NewPartyPhotos() {
                   </Button>
                 </div>
               </form>
+              <div ref={msg}></div>
               <Button
                 style={{ width: "max-content" }}
                 variant="contained"

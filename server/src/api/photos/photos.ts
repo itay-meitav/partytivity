@@ -44,7 +44,7 @@ async function checkFileType(file, cb) {
 }
 
 router.post("/", isAuthenticated, async (req, res) => {
-  upload(req, res, (err) => {
+  upload(req, res, async (err) => {
     if (err) {
       if (err.name == "LIMIT_FILE_TYPES") {
         return res
@@ -66,6 +66,11 @@ router.post("/", isAuthenticated, async (req, res) => {
           success: false,
         });
       }
+    }
+    for (let i = 0; i < req.files.length; i++) {
+      const element = req.files[i];
+      let buffer = await sharp(element.path).resize(800, 400).toBuffer();
+      await sharp(buffer).toFile(element.path);
     }
     res.json({
       message: "Files Uploaded!",
