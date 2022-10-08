@@ -1,6 +1,6 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import CustomLink from "../Link";
@@ -8,6 +8,7 @@ import CustomLink from "../Link";
 async function loginReq(username: string, password: string) {
   return await fetch(`${config.apiHost}/api/login`, {
     method: "POST",
+    credentials: "include",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -25,6 +26,18 @@ function Login() {
   const message = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      await fetch(`${config.apiHost}/login`, {
+        credentials: "include",
+      }).then(async (res) => {
+        const data = await res.json();
+        if (data.success) navigate("/dashboard");
+      });
+    })();
+  }, []);
+
   return (
     <div id="login-container">
       <CustomLink to="/welcome" className="back-icon">

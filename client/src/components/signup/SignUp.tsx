@@ -30,6 +30,17 @@ function SignUp() {
   const email = useRef<HTMLInputElement>(null);
   const message = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    (async () => {
+      await fetch(`${config.apiHost}/register`, {
+        credentials: "include",
+      }).then(async (res) => {
+        const data = await res.json();
+        if (data.success) navigate("/dashboard");
+      });
+    })();
+  }, []);
+
   return (
     <div id="register-container">
       <CustomLink to="/welcome" className="back-icon">

@@ -98,7 +98,7 @@ function BasicInformation() {
               label="Party Date"
               value={date}
               onChange={handleChange}
-              renderInput={(params: any) => <TextField {...params} />}
+              renderInput={(params: any) => <TextField required {...params} />}
             />
           </LocalizationProvider>
           <FormControl sx={{ m: 1, width: 300 }}>

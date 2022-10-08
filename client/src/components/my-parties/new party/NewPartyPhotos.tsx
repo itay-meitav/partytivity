@@ -11,7 +11,9 @@ import { Link } from "react-router-dom";
 import DashboardTemplate from "../../dashboard/DashboardTemplate";
 import Title from "../../dashboard/Title";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import config from "../../../assets/config";
 import "holderjs/holder";
+import { useState } from "react";
 
 function NewPartyPhotos() {
   return (
@@ -59,18 +61,42 @@ function NewPartyPhotos() {
             </Carousel>
             <Stack direction="row" justifyContent={"space-between"}>
               <form
-                action="/api/photos"
+                action={`${config.apiHost}/api/photos`}
+                method="POST"
                 encType="multipart/form-data"
-                method="post"
               >
-                <Button
-                  style={{ width: "max-content" }}
-                  variant="contained"
-                  type="submit"
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    gap: 15,
+                  }}
                 >
-                  Upload Photo
-                  <input hidden accept="image/*" multiple type="file" />
-                </Button>
+                  <Button
+                    style={{ width: "max-content" }}
+                    variant="contained"
+                    component="label"
+                  >
+                    Choose Photos
+                    <input
+                      hidden
+                      accept="image/*"
+                      multiple
+                      type="file"
+                      name="files"
+                      required
+                    />
+                  </Button>
+                  <Button
+                    style={{ width: "max-content" }}
+                    variant="contained"
+                    type="submit"
+                  >
+                    Upload
+                  </Button>
+                </div>
               </form>
               <Button
                 style={{ width: "max-content" }}

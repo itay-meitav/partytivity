@@ -13,7 +13,7 @@ router.get("/confirm/:token", async (req: Request, res: Response) => {
   const decoded = jwt.verify(token, authConfig.secret);
   if (!decoded)
     return res.status(401).json({ message: "Unauthorized!", success: false });
-  await checkUserEmail({ email: (decoded as JWTData).email }).then(
+  await checkUserEmail((decoded as JWTData).email).then(
     async (user) => {
       if (!user) {
         return res
