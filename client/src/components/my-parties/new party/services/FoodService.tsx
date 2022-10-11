@@ -2,15 +2,28 @@ import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { serviceState } from "../AddServices";
-import { useRecoilState } from "recoil";
+import { atom, useRecoilState, useSetRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
 
+export const foodServiceState = atom({
+  key: "foodService",
+  default: "",
+});
+
 function FoodService() {
-  const [inputVal, setInputVal] = React.useState("");
   const [serviceType, setServiceType] = useRecoilState(serviceState);
+  const [foodService, setFoodService] = useRecoilState(foodServiceState);
   const filteredOptions = names.filter((option) =>
-    option.toLowerCase().includes(inputVal.toLowerCase())
+    option.toLowerCase().includes(foodService.toLowerCase())
   );
+  const [show, setShow] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!filteredOptions.length) {
+      setShow(false);
+    }
+    return;
+  }, [filteredOptions]);
 
   return (
     <div
@@ -21,17 +34,28 @@ function FoodService() {
         alignItems: "center",
         gap: 10,
       }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setShow(false);
+      }}
     >
-      <Dropdown drop={"down"}>
+      <Dropdown show={show} drop={"up"}>
         <Dropdown.Toggle variant="input" bsPrefix="p-0">
           <Form.Control
             type="search"
             className="me-1 shadow-none"
             placeholder="Food Service"
-            value={inputVal}
+            value={foodService}
+            onFocus={() => setShow(true)}
             onChange={(e) => {
               const val = e.currentTarget.value;
-              setInputVal(val);
+              setFoodService(val);
+            }}
+            onBlur={(e) => {
+              const val = e.currentTarget.value;
+              if (names.filter((x) => x == val).length) {
+                return false;
+              }
+              setFoodService("");
             }}
             required
           />
@@ -48,9 +72,11 @@ function FoodService() {
           {filteredOptions.length > 0
             ? filteredOptions.map((x, i) => (
                 <Dropdown.Item
+                  type="button"
                   as="button"
                   onClick={() => {
-                    setInputVal(x);
+                    setFoodService(x);
+                    setShow(false);
                   }}
                   style={{ whiteSpace: "initial" }}
                   key={i}
@@ -68,7 +94,9 @@ function FoodService() {
           alignItems: "center",
         }}
         onClick={() => {
-          setServiceType(serviceType.filter((x) => x !== "Food Service"));
+          setServiceType(
+            serviceType.filter((x) => x !== "Entertainment Service")
+          );
         }}
         aria-label="delete"
         size="medium"

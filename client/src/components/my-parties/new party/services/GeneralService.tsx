@@ -2,15 +2,29 @@ import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { serviceState } from "../AddServices";
-import { useRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
 
+export const generalServiceState = atom({
+  key: "generalService",
+  default: "",
+});
+
 function GeneralService() {
-  const [inputVal, setInputVal] = React.useState("");
   const [serviceType, setServiceType] = useRecoilState(serviceState);
+  const [generalService, setGeneralService] =
+    useRecoilState(generalServiceState);
   const filteredOptions = names.filter((option) =>
-    option.toLowerCase().includes(inputVal.toLowerCase())
+    option.toLowerCase().includes(generalService.toLowerCase())
   );
+  const [show, setShow] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!filteredOptions.length) {
+      setShow(false);
+    }
+    return;
+  }, [filteredOptions]);
 
   return (
     <div
@@ -21,17 +35,28 @@ function GeneralService() {
         alignItems: "center",
         gap: 10,
       }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setShow(false);
+      }}
     >
-      <Dropdown drop={"down"}>
+      <Dropdown show={show} drop={"up"}>
         <Dropdown.Toggle variant="input" bsPrefix="p-0">
           <Form.Control
             type="search"
             className="me-1 shadow-none"
             placeholder="General Service"
-            value={inputVal}
+            value={generalService}
+            onFocus={() => setShow(true)}
             onChange={(e) => {
               const val = e.currentTarget.value;
-              setInputVal(val);
+              setGeneralService(val);
+            }}
+            onBlur={(e) => {
+              const val = e.currentTarget.value;
+              if (names.filter((x) => x == val).length) {
+                return false;
+              }
+              setGeneralService("");
             }}
             required
           />
@@ -48,9 +73,11 @@ function GeneralService() {
           {filteredOptions.length > 0
             ? filteredOptions.map((x, i) => (
                 <Dropdown.Item
+                  type="button"
                   as="button"
                   onClick={() => {
-                    setInputVal(x);
+                    setGeneralService(x);
+                    setShow(false);
                   }}
                   style={{ whiteSpace: "initial" }}
                   key={i}
@@ -68,7 +95,9 @@ function GeneralService() {
           alignItems: "center",
         }}
         onClick={() => {
-          setServiceType(serviceType.filter((x) => x !== "General Service"));
+          setServiceType(
+            serviceType.filter((x) => x !== "Entertainment Service")
+          );
         }}
         aria-label="delete"
         size="medium"

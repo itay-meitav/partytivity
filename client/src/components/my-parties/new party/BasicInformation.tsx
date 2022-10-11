@@ -147,7 +147,6 @@ function BasicInformation() {
         value={des}
         placeholder="Description"
         multiline
-        rows={3}
         maxRows={5}
       />
     </Stack>

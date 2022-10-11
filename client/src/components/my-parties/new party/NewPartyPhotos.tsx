@@ -15,16 +15,46 @@ import "holderjs/holder";
 import { useRef, useState } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
+import { useRecoilValue } from "recoil";
+import {
+  dateState,
+  desState,
+  markedCollaboratorsState,
+  titleState,
+} from "./BasicInformation";
 
 function NewPartyPhotos() {
   const [files, setFiles] = useState<FormData>(new FormData());
   const [srcArr, setSrcArr] = useState<string[]>(
-    JSON.parse(localStorage.getItem("src")!) || []
+    localStorage.getItem("src") ? JSON.parse(localStorage.getItem("src")!) : []
   );
-  const [count, setCount] = useState<number>(0);
+  const [count, setCount] = useState<number>(
+    localStorage.getItem("src") ? 1 : 0
+  );
   const msg = useRef<HTMLDivElement>(null);
+  const des = useRecoilValue(desState);
+  const title = useRecoilValue(titleState);
+  const date = useRecoilValue(dateState);
+  const collaborators = useRecoilValue(markedCollaboratorsState);
 
-  async function submitForm() {
+  async function submitParty() {
+    const req = await fetch(`${config.apiHost}/api/my-parties/new/`, {
+      method: "post",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: title,
+        date: date,
+        collaborators: collaborators,
+        description: des,
+      }),
+    });
+  }
+
+  async function submitFiles() {
     const req = await fetch(`${config.apiHost}/api/photos`, {
       method: "post",
       credentials: "include",
@@ -33,6 +63,7 @@ function NewPartyPhotos() {
     const data = await req.json();
     if (data.success) {
       setSrcArr(data.files);
+      localStorage.setItem("src", JSON.stringify(data.files));
       setCount(1);
       // localStorage.setItem("src", JSON.stringify(data.files.map((x: any) =>
       //     x.path.replaceAll("src", `http:${config.apiHost}`)
@@ -69,9 +100,13 @@ function NewPartyPhotos() {
                   </IconButton>
                 </Link>
               </Stack>
-              <Typography color="text.secondary" sx={{ flex: 1 }}>
+              <Typography color="text.secondary">
                 Add life to your party! Try something that will get people in
-                without even blinking!
+                without even blinking! <br />{" "}
+                <small>
+                  This step is optional, however you will be able to add images
+                  later.
+                </small>
               </Typography>
             </Stack>
             {!srcArr.length ? (
@@ -118,7 +153,7 @@ function NewPartyPhotos() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  submitForm();
+                  submitFiles();
                 }}
                 encType="multipart/form-data"
               >
