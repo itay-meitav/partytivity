@@ -22,6 +22,11 @@ import {
   markedCollaboratorsState,
   titleState,
 } from "./BasicInformation";
+import { entertainmentServiceState } from "./services/EntertainmentService";
+import { foodServiceState } from "./services/FoodService";
+import { locationServiceState } from "./services/LocationService";
+import { generalServiceState } from "./services/GeneralService";
+import { musicServiceState } from "./services/MusicService";
 
 function NewPartyPhotos() {
   const [files, setFiles] = useState<FormData>(new FormData());
@@ -36,9 +41,14 @@ function NewPartyPhotos() {
   const title = useRecoilValue(titleState);
   const date = useRecoilValue(dateState);
   const collaborators = useRecoilValue(markedCollaboratorsState);
+  const entertainmentService = useRecoilValue(entertainmentServiceState);
+  const foodService = useRecoilValue(foodServiceState);
+  const locationService = useRecoilValue(locationServiceState);
+  const generalService = useRecoilValue(generalServiceState);
+  const musicService = useRecoilValue(musicServiceState);
 
   async function submitParty() {
-    const req = await fetch(`${config.apiHost}/api/my-parties/new/`, {
+    await fetch(`${config.apiHost}/api/my-parties/new/`, {
       method: "post",
       credentials: "include",
       headers: {
@@ -50,6 +60,12 @@ function NewPartyPhotos() {
         date: date,
         collaborators: collaborators,
         description: des,
+        entertainmentService: entertainmentService,
+        foodService: foodService,
+        locationService: locationService,
+        generalService: generalService,
+        musicService: musicService,
+        photos: srcArr,
       }),
     });
   }
@@ -203,7 +219,7 @@ function NewPartyPhotos() {
                 style={{ width: "max-content" }}
                 variant="contained"
                 color="success"
-                type="submit"
+                onClick={submitParty}
               >
                 Create Party
               </Button>

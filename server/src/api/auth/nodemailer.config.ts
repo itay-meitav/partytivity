@@ -1,5 +1,4 @@
-import path from "path";
-require("dotenv").config({ path: path.resolve(__dirname + "/../../../.env") });
+require("dotenv").config({ path: __dirname + "/../../../.env" });
 import fs from "fs/promises";
 const nodemailer = require("nodemailer");
 

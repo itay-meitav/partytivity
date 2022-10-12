@@ -2,7 +2,7 @@ import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { serviceState } from "../AddServices";
-import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
 
 export const foodServiceState = atom({

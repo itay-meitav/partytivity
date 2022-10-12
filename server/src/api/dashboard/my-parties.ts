@@ -1,6 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { addParty, getUserParties } from "../../db/dashboard/my-parties";
+import {
+  addParty,
+  getServiceIDByName,
+  getUserParties,
+} from "../../db/dashboard/my-parties";
 import authConfig from "../auth/auth.config";
 import { isAuthenticated } from "../auth/authMiddle";
 const router = express.Router();
@@ -24,6 +28,46 @@ router.get("/", isAuthenticated, async (req: Request, res: Response) => {
     parties: parties,
     success: true,
   });
+});
+
+router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
+  const entertainmentServiceID = req.body.entertainmentService
+    ? await getServiceIDByName(
+        req.body.entertainmentService,
+        "entertainment_service"
+      )
+    : null;
+  const locationServiceID = req.body.locationService
+    ? await getServiceIDByName(req.body.locationService, "location_service")
+    : null;
+  const musicServiceID = req.body.musicService
+    ? await getServiceIDByName(req.body.musicService, "music_service")
+    : null;
+  const generalServiceID = req.body.generalService
+    ? await getServiceIDByName(req.body.generalService, "general_service")
+    : null;
+  const foodServiceID = req.body.foodService
+    ? await getServiceIDByName(req.body.foodService, "food_service")
+    : null;
+  const token = req.cookies.token;
+  const decoded = jwt.verify(token, authConfig.secret);
+  try {
+    await addParty({
+      title: req.body.title,
+      description: req.body.description,
+      date: req.body.date,
+      ownerId: (decoded as JWTData).id,
+      locationID: locationServiceID,
+      musicID: musicServiceID,
+      foodID: foodServiceID,
+      entertainmentID: entertainmentServiceID,
+      generalID: generalServiceID,
+    }).then(() => {
+      return res.json({ success: true });
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error, success: false });
+  }
 });
 
 export default router;
