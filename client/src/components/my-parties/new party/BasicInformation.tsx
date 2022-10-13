@@ -27,53 +27,49 @@ const MenuProps = {
   },
 };
 
-export const desState = atom({
-  key: "des",
-  default: localStorage.getItem("details")
-    ? JSON.parse(localStorage.getItem("details")!).description
-    : "",
-});
-export const markedCollaboratorsState = atom({
-  key: "markedCollaborators",
-  default: localStorage.getItem("details")
-    ? JSON.parse(localStorage.getItem("details")!).collaborators
-    : [],
-});
-export const titleState = atom({
-  key: "title",
-  default: localStorage.getItem("details")
-    ? JSON.parse(localStorage.getItem("details")!).title
-    : "",
-});
-export const dateState = atom({
-  key: "date",
-  default: localStorage.getItem("details")
-    ? JSON.parse(localStorage.getItem("details")!).date
-    : "",
+export const partyDetailsState = atom({
+  key: "partyDetails",
+  default: {
+    title: localStorage.getItem("details")
+      ? JSON.parse(localStorage.getItem("details")!).title
+      : "",
+    des: localStorage.getItem("details")
+      ? JSON.parse(localStorage.getItem("details")!).description
+      : "",
+    date: localStorage.getItem("details")
+      ? JSON.parse(localStorage.getItem("details")!).date
+      : null,
+    collaborators: localStorage.getItem("details")
+      ? JSON.parse(localStorage.getItem("details")!).collaborators
+      : [],
+    entertainmentService: "",
+    foodService: "",
+    musicService: "",
+    generalService: "",
+    locationService: "",
+    photos: localStorage.getItem("details")
+      ? JSON.parse(localStorage.getItem("details")!).photos
+      : [],
+  },
 });
 
 function BasicInformation() {
-  const [des, setDes] = useRecoilState(desState);
-  const [title, setTitle] = useRecoilState(titleState);
-  const [markedCollaborators, setMarkedCollaborators] = useRecoilState(
-    markedCollaboratorsState
-  );
-  const [date, setDate] = useRecoilState<Dayjs | null>(dateState);
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const handleChange = (newValue: Dayjs | null) => {
-    setDate(newValue);
+    setPartyDetails({ ...partyDetails, date: newValue });
   };
 
   useEffect(() => {
     localStorage.setItem(
       "details",
       JSON.stringify({
-        title: title,
-        description: des,
-        collaborators: markedCollaborators,
-        date: date,
+        title: partyDetails.title,
+        description: partyDetails.des,
+        collaborators: partyDetails.collaborators,
+        date: partyDetails.date,
       })
     );
-  }, [markedCollaborators, title, des, date]);
+  }, [partyDetails]);
 
   return (
     <Stack direction="column" spacing={3}>
@@ -88,15 +84,15 @@ function BasicInformation() {
             placeholder="Title"
             onChange={(e) => {
               const val = e.currentTarget.value;
-              setTitle(val);
+              setPartyDetails({ ...partyDetails, title: val });
             }}
-            value={title}
+            value={partyDetails.title}
             required
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
               label="Party Date"
-              value={date}
+              value={partyDetails.date}
               onChange={handleChange}
               renderInput={(params: any) => <TextField required {...params} />}
             />
@@ -109,7 +105,7 @@ function BasicInformation() {
               labelId="demo-multiple-checkbox-label"
               id="demo-multiple-checkbox"
               multiple
-              value={markedCollaborators}
+              value={partyDetails.collaborators}
               input={<OutlinedInput label="Collaborators" />}
               renderValue={(selected) => selected.join(", ")}
               MenuProps={MenuProps}
@@ -119,12 +115,18 @@ function BasicInformation() {
                   key={i}
                   value={name}
                   onClick={() => {
-                    if (markedCollaborators.includes(name)) {
-                      setMarkedCollaborators(
-                        markedCollaborators.filter((x: any) => x !== name)
-                      );
+                    if (partyDetails.collaborators.includes(name)) {
+                      setPartyDetails({
+                        ...partyDetails,
+                        collaborators: partyDetails.collaborators.filter(
+                          (x: any) => x !== name
+                        ),
+                      });
                     } else {
-                      setMarkedCollaborators([...markedCollaborators, name]);
+                      setPartyDetails({
+                        ...partyDetails,
+                        collaborators: [...partyDetails.collaborators, name],
+                      });
                     }
                   }}
                 >
@@ -141,10 +143,10 @@ function BasicInformation() {
         label="Party Description"
         onChange={(e) => {
           const val = e.currentTarget.value;
-          setDes(val);
+          setPartyDetails({ ...partyDetails, des: val });
         }}
         style={{ width: 400 }}
-        value={des}
+        value={partyDetails.des}
         placeholder="Description"
         multiline
         maxRows={5}

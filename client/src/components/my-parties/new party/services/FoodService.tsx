@@ -4,17 +4,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { serviceState } from "../AddServices";
 import { atom, useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
-
-export const foodServiceState = atom({
-  key: "foodService",
-  default: "",
-});
+import { partyDetailsState } from "../BasicInformation";
 
 function FoodService() {
   const [serviceType, setServiceType] = useRecoilState(serviceState);
-  const [foodService, setFoodService] = useRecoilState(foodServiceState);
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const filteredOptions = names.filter((option) =>
-    option.toLowerCase().includes(foodService.toLowerCase())
+    option.toLowerCase().includes(partyDetails.foodService.toLowerCase())
   );
   const [show, setShow] = React.useState(false);
 
@@ -44,18 +40,18 @@ function FoodService() {
             type="search"
             className="me-1 shadow-none"
             placeholder="Food Service"
-            value={foodService}
+            value={partyDetails.foodService}
             onFocus={() => setShow(true)}
             onChange={(e) => {
               const val = e.currentTarget.value;
-              setFoodService(val);
+              setPartyDetails({ ...partyDetails, foodService: val });
             }}
             onBlur={(e) => {
               const val = e.currentTarget.value;
               if (names.filter((x) => x == val).length) {
                 return false;
               }
-              setFoodService("");
+              setPartyDetails({ ...partyDetails, foodService: "" });
             }}
             required
           />
@@ -75,7 +71,7 @@ function FoodService() {
                   type="button"
                   as="button"
                   onClick={() => {
-                    setFoodService(x);
+                    setPartyDetails({ ...partyDetails, foodService: x });
                     setShow(false);
                   }}
                   style={{ whiteSpace: "initial" }}

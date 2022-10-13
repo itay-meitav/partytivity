@@ -4,19 +4,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { serviceState } from "../AddServices";
 import { atom, useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
-
-export const entertainmentServiceState = atom({
-  key: "entertainmentService",
-  default: "",
-});
+import { partyDetailsState } from "../BasicInformation";
 
 function EntertainmentService() {
   const [serviceType, setServiceType] = useRecoilState(serviceState);
-  const [entertainmentService, setEntertainmentService] = useRecoilState(
-    entertainmentServiceState
-  );
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const filteredOptions = names.filter((option) =>
-    option.toLowerCase().includes(entertainmentService.toLowerCase())
+    option
+      .toLowerCase()
+      .includes(partyDetails.entertainmentService.toLowerCase())
   );
   const [show, setShow] = React.useState(false);
 
@@ -46,18 +42,18 @@ function EntertainmentService() {
             type="search"
             className="me-1 shadow-none"
             placeholder="Entertainment Service"
-            value={entertainmentService}
+            value={partyDetails.entertainmentService}
             onFocus={() => setShow(true)}
             onChange={(e) => {
               const val = e.currentTarget.value;
-              setEntertainmentService(val);
+              setPartyDetails({ ...partyDetails, entertainmentService: val });
             }}
             onBlur={(e) => {
               const val = e.currentTarget.value;
               if (names.filter((x) => x == val).length) {
                 return false;
               }
-              setEntertainmentService("");
+              setPartyDetails({ ...partyDetails, entertainmentService: "" });
             }}
             required
           />
@@ -77,7 +73,10 @@ function EntertainmentService() {
                   type="button"
                   as="button"
                   onClick={() => {
-                    setEntertainmentService(x);
+                    setPartyDetails({
+                      ...partyDetails,
+                      entertainmentService: x,
+                    });
                     setShow(false);
                   }}
                   style={{ whiteSpace: "initial" }}

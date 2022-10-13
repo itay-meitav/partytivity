@@ -153,6 +153,7 @@ async function createAllTables() {
         FOREIGN KEY(general_id) REFERENCES general_service(id) ON DELETE CASCADE,
         guests TEXT[],
         photos TEXT[],
+        invite_token TEXT,
         status PARTY_STATUS DEFAULT 'pending'
 		)`
   );

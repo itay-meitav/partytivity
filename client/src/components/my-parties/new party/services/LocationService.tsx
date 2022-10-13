@@ -4,18 +4,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { serviceState } from "../AddServices";
 import { atom, useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
-
-export const locationServiceState = atom({
-  key: "locationService",
-  default: "",
-});
+import { partyDetailsState } from "../BasicInformation";
 
 function LocationService() {
   const [serviceType, setServiceType] = useRecoilState(serviceState);
-  const [locationService, setLocationService] =
-    useRecoilState(locationServiceState);
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const filteredOptions = names.filter((option) =>
-    option.toLowerCase().includes(locationService.toLowerCase())
+    option.toLowerCase().includes(partyDetails.locationService.toLowerCase())
   );
   const [show, setShow] = React.useState(false);
 
@@ -45,18 +40,18 @@ function LocationService() {
             type="search"
             className="me-1 shadow-none"
             placeholder="Location Service"
-            value={locationService}
+            value={partyDetails.locationService}
             onFocus={() => setShow(true)}
             onChange={(e) => {
               const val = e.currentTarget.value;
-              setLocationService(val);
+              setPartyDetails({ ...partyDetails, locationService: val });
             }}
             onBlur={(e) => {
               const val = e.currentTarget.value;
               if (names.filter((x) => x == val).length) {
                 return false;
               }
-              setLocationService("");
+              setPartyDetails({ ...partyDetails, locationService: "" });
             }}
             required
           />
@@ -76,7 +71,7 @@ function LocationService() {
                   type="button"
                   as="button"
                   onClick={() => {
-                    setLocationService(x);
+                    setPartyDetails({ ...partyDetails, locationService: x });
                     setShow(false);
                   }}
                   style={{ whiteSpace: "initial" }}

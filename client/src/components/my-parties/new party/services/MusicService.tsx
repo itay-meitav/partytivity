@@ -4,17 +4,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { serviceState } from "../AddServices";
 import { atom, useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
-
-export const musicServiceState = atom({
-  key: "musicService",
-  default: "",
-});
+import { partyDetailsState } from "../BasicInformation";
 
 function MusicService() {
   const [serviceType, setServiceType] = useRecoilState(serviceState);
-  const [musicService, setMusicService] = useRecoilState(musicServiceState);
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const filteredOptions = names.filter((option) =>
-    option.toLowerCase().includes(musicService.toLowerCase())
+    option.toLowerCase().includes(partyDetails.musicService.toLowerCase())
   );
   const [show, setShow] = React.useState(false);
 
@@ -44,18 +40,18 @@ function MusicService() {
             type="search"
             className="me-1 shadow-none"
             placeholder="Music Service"
-            value={musicService}
+            value={partyDetails.musicService}
             onFocus={() => setShow(true)}
             onChange={(e) => {
               const val = e.currentTarget.value;
-              setMusicService(val);
+              setPartyDetails({ ...partyDetails, musicService: val });
             }}
             onBlur={(e) => {
               const val = e.currentTarget.value;
               if (names.filter((x) => x == val).length) {
                 return false;
               }
-              setMusicService("");
+              setPartyDetails({ ...partyDetails, musicService: "" });
             }}
             required
           />
@@ -75,7 +71,7 @@ function MusicService() {
                   type="button"
                   as="button"
                   onClick={() => {
-                    setMusicService(x);
+                    setPartyDetails({ ...partyDetails, musicService: x });
                     setShow(false);
                   }}
                   style={{ whiteSpace: "initial" }}

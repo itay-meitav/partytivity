@@ -4,18 +4,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { serviceState } from "../AddServices";
 import { atom, useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
-
-export const generalServiceState = atom({
-  key: "generalService",
-  default: "",
-});
+import { partyDetailsState } from "../BasicInformation";
 
 function GeneralService() {
   const [serviceType, setServiceType] = useRecoilState(serviceState);
-  const [generalService, setGeneralService] =
-    useRecoilState(generalServiceState);
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const filteredOptions = names.filter((option) =>
-    option.toLowerCase().includes(generalService.toLowerCase())
+    option.toLowerCase().includes(partyDetails.generalService.toLowerCase())
   );
   const [show, setShow] = React.useState(false);
 
@@ -45,18 +40,18 @@ function GeneralService() {
             type="search"
             className="me-1 shadow-none"
             placeholder="General Service"
-            value={generalService}
+            value={partyDetails.generalService}
             onFocus={() => setShow(true)}
             onChange={(e) => {
               const val = e.currentTarget.value;
-              setGeneralService(val);
+              setPartyDetails({ ...partyDetails, generalService: val });
             }}
             onBlur={(e) => {
               const val = e.currentTarget.value;
               if (names.filter((x) => x == val).length) {
                 return false;
               }
-              setGeneralService("");
+              setPartyDetails({ ...partyDetails, generalService: "" });
             }}
             required
           />
@@ -76,7 +71,7 @@ function GeneralService() {
                   type="button"
                   as="button"
                   onClick={() => {
-                    setGeneralService(x);
+                    setPartyDetails({ ...partyDetails, generalService: x });
                     setShow(false);
                   }}
                   style={{ whiteSpace: "initial" }}

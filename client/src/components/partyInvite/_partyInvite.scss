@@ -1,0 +1,74 @@
+.partyInvite {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  gap: 100px;
+  background: linear-gradient(
+    darken($color: #a6b1e1, $amount: 6),
+    darken($color: #f4eeff, $amount: 7)
+  );
+  .paper1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    color: white;
+    margin-top: 3%;
+    border-radius: 25px;
+    width: 90%;
+    height: 300px;
+    padding: 35px;
+    background-color: rgba(0, 0, 0, 0.194);
+    .invite-animation {
+      margin: 0;
+      padding: 0;
+      width: 300px;
+      pointer-events: none;
+      z-index: 999;
+    }
+  }
+  .paper2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    width: 90%;
+    height: 300px;
+    border-radius: 25px;
+    gap: 30px;
+    padding: 35px;
+    background-color: rgba(0, 0, 0, 0.194);
+  }
+  .paper3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    width: 90%;
+    height: 300px;
+    border-radius: 25px;
+    gap: 30px;
+    padding: 35px;
+    background-color: rgba(0, 0, 0, 0.194);
+  }
+  .paper4 {
+    padding: 25px;
+    width: 75%;
+    border-radius: 25px;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    .form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 25px;
+    }
+  }
+}

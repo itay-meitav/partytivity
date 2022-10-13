@@ -9,6 +9,7 @@ import Unknown from "../unknown/Unknown";
 import ConfirmEmail from "../confirm/ConfirmEmail";
 import NewPassForm from "../loginResetPage/NewPassForm";
 import DashboardRoutes from "./DashboardRoutes";
+import PartyInvite from "../partyInvite/PartyInvite";
 
 const AppRoutes = () => {
   let NavigateWelcome = () => {
@@ -42,6 +43,7 @@ const AppRoutes = () => {
         </Route>
       </Route>
       <Route path="/dashboard">{DashboardRoutes()}</Route>
+      <Route path="/invite/:token" element={<PartyInvite />} />
     </Routes>
   );
 };

@@ -1,16 +1,11 @@
 import { Button, Grid, IconButton, Paper, Link, Stack } from "@mui/material";
 import DashboardTemplate from "../../dashboard/DashboardTemplate";
-import BasicInformation, {
-  dateState,
-  desState,
-  markedCollaboratorsState,
-  titleState,
-} from "./BasicInformation";
+import BasicInformation, { partyDetailsState } from "./BasicInformation";
 import AddServices, { serviceState } from "./AddServices";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../dashboard/Title";
 import { Link as Rlink } from "react-router-dom";
-import { useSetRecoilState, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import EntertainmentService from "./services/EntertainmentService";
 import FoodService from "./services/FoodService";
 import MusicService from "./services/MusicService";
@@ -18,10 +13,7 @@ import GeneralService from "./services/GeneralService";
 import LocationService from "./services/LocationService";
 
 function NewParty() {
-  const setDes = useSetRecoilState(desState);
-  const setTitle = useSetRecoilState(titleState);
-  const setDate = useSetRecoilState(dateState);
-  const setMarkedCollaborators = useSetRecoilState(markedCollaboratorsState);
+  const [PartyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const [serviceType, setServiceType] = useRecoilState(serviceState);
 
   function switchCaseService(x: string, i: number) {
@@ -92,11 +84,14 @@ function NewParty() {
                   type="button"
                   onClick={() => {
                     localStorage.removeItem("details");
-                    setMarkedCollaborators([]);
-                    setTitle("");
-                    setDes("");
+                    setPartyDetails({
+                      ...PartyDetails,
+                      title: "",
+                      date: null,
+                      des: "",
+                      collaborators: [],
+                    });
                     setServiceType([]);
-                    setDate(null);
                   }}
                 >
                   Clear Fields

@@ -15,37 +15,16 @@ import "holderjs/holder";
 import { useRef, useState } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import { useRecoilValue } from "recoil";
-import {
-  dateState,
-  desState,
-  markedCollaboratorsState,
-  titleState,
-} from "./BasicInformation";
-import { entertainmentServiceState } from "./services/EntertainmentService";
-import { foodServiceState } from "./services/FoodService";
-import { locationServiceState } from "./services/LocationService";
-import { generalServiceState } from "./services/GeneralService";
-import { musicServiceState } from "./services/MusicService";
+import { useRecoilState } from "recoil";
+import { partyDetailsState } from "./BasicInformation";
 
 function NewPartyPhotos() {
   const [files, setFiles] = useState<FormData>(new FormData());
-  const [srcArr, setSrcArr] = useState<string[]>(
-    localStorage.getItem("src") ? JSON.parse(localStorage.getItem("src")!) : []
-  );
   const [count, setCount] = useState<number>(
     localStorage.getItem("src") ? 1 : 0
   );
   const msg = useRef<HTMLDivElement>(null);
-  const des = useRecoilValue(desState);
-  const title = useRecoilValue(titleState);
-  const date = useRecoilValue(dateState);
-  const collaborators = useRecoilValue(markedCollaboratorsState);
-  const entertainmentService = useRecoilValue(entertainmentServiceState);
-  const foodService = useRecoilValue(foodServiceState);
-  const locationService = useRecoilValue(locationServiceState);
-  const generalService = useRecoilValue(generalServiceState);
-  const musicService = useRecoilValue(musicServiceState);
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
 
   async function submitParty() {
     await fetch(`${config.apiHost}/api/my-parties/new/`, {
@@ -56,16 +35,16 @@ function NewPartyPhotos() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: title,
-        date: date,
-        collaborators: collaborators,
-        description: des,
-        entertainmentService: entertainmentService,
-        foodService: foodService,
-        locationService: locationService,
-        generalService: generalService,
-        musicService: musicService,
-        photos: srcArr,
+        title: partyDetails.title,
+        date: partyDetails.date,
+        collaborators: partyDetails.collaborators,
+        description: partyDetails.des,
+        entertainmentService: partyDetails.entertainmentService,
+        foodService: partyDetails.foodService,
+        locationService: partyDetails.locationService,
+        generalService: partyDetails.generalService,
+        musicService: partyDetails.musicService,
+        photos: partyDetails.photos,
       }),
     });
   }
@@ -78,8 +57,17 @@ function NewPartyPhotos() {
     });
     const data = await req.json();
     if (data.success) {
-      setSrcArr(data.files);
-      localStorage.setItem("src", JSON.stringify(data.files));
+      setPartyDetails({ ...partyDetails, photos: data.files });
+      localStorage.setItem(
+        "details",
+        JSON.stringify({
+          title: partyDetails.title,
+          description: partyDetails.des,
+          collaborators: partyDetails.collaborators,
+          date: partyDetails.date,
+          photos: data.files,
+        })
+      );
       setCount(1);
       // localStorage.setItem("src", JSON.stringify(data.files.map((x: any) =>
       //     x.path.replaceAll("src", `http:${config.apiHost}`)
@@ -125,7 +113,7 @@ function NewPartyPhotos() {
                 </small>
               </Typography>
             </Stack>
-            {!srcArr.length ? (
+            {!partyDetails.photos.length ? (
               <Carousel width={950}>
                 <div>
                   <img
@@ -158,7 +146,7 @@ function NewPartyPhotos() {
               </Carousel>
             ) : (
               <Carousel width={950}>
-                {srcArr.map((x, i) => (
+                {partyDetails.photos.map((x: string, i: number) => (
                   <div key={i}>
                     <img className="d-block w-100 h-100" src={x} alt="Photo" />
                   </div>
@@ -219,6 +207,7 @@ function NewPartyPhotos() {
                 style={{ width: "max-content" }}
                 variant="contained"
                 color="success"
+                type="submit"
                 onClick={submitParty}
               >
                 Create Party
