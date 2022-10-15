@@ -84,9 +84,8 @@ async function createAllTables() {
     `CREATE TABLE IF NOT EXISTS location_service(
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,  
-        city TEXT NOT NULL,
-        address TEXT NOT NULL UNIQUE,
-        capacity TEXT NOT NULL,
+        address TEXT NOT NULL,
+        capacity INTEGER NOT NULL,
         type TEXT,
         description TEXT,
         provider_id INTEGER,
@@ -97,7 +96,7 @@ async function createAllTables() {
     `CREATE TABLE IF NOT EXISTS music_service(
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,  
-        type TEXT NOT NULL,
+        type TEXT,
         description TEXT,
         provider_id INTEGER,
         FOREIGN KEY(provider_id) REFERENCES users(id) ON DELETE CASCADE

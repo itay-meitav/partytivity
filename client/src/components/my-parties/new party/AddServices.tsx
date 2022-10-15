@@ -8,7 +8,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { atom, RecoilState, useRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const services = [
@@ -19,15 +19,17 @@ const services = [
   "General Service",
 ];
 
-export const serviceState = atom({
-  key: "service" as string,
+export const addServicesInputsState = atom({
+  key: "service",
   default: [] as string[],
 });
 
 function AddServices() {
   const [msg, setMsg] = useState<boolean>(false);
   const [markedService, setMarkedService] = useState<string>("");
-  const [serviceType, setServiceType] = useRecoilState<string[]>(serviceState);
+  const [serviceType, setServiceType] = useRecoilState<string[]>(
+    addServicesInputsState
+  );
   return (
     <>
       <Typography color="text.secondary" sx={{ flex: 1 }}>

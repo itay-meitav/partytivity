@@ -27,6 +27,19 @@ const MenuProps = {
   },
 };
 
+export type partyDetails = {
+  title: string;
+  des: string;
+  date: Dayjs | null;
+  collaborators: string[];
+  entertainmentService: string;
+  foodService: string;
+  musicService: string;
+  generalService: string;
+  locationService: string;
+  photos: string[];
+};
+
 export const partyDetailsState = atom({
   key: "partyDetails",
   default: {
@@ -50,7 +63,7 @@ export const partyDetailsState = atom({
     photos: localStorage.getItem("details")
       ? JSON.parse(localStorage.getItem("details")!).photos
       : [],
-  },
+  } as partyDetails,
 });
 
 function BasicInformation() {

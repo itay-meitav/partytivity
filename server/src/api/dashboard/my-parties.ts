@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import {
   addParty,
   getServiceIDByName,
+  getServicesList,
   getUserParties,
 } from "../../db/dashboard/my-parties";
 import authConfig from "../auth/auth.config";
@@ -65,6 +66,16 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
     }).then(() => {
       return res.json({ success: true });
     });
+  } catch (error) {
+    return res.status(500).json({ message: error, success: false });
+  }
+});
+
+router.post("/new/services", async (req, res) => {
+  try {
+    const serviceType = req.body.serviceType.toLowerCase().replace(" ", "_");
+    const data = await getServicesList(serviceType);
+    return res.json({ services: data, success: true });
   } catch (error) {
     return res.status(500).json({ message: error, success: false });
   }

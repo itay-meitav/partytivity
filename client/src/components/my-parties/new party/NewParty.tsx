@@ -1,33 +1,31 @@
 import { Button, Grid, IconButton, Paper, Link, Stack } from "@mui/material";
 import DashboardTemplate from "../../dashboard/DashboardTemplate";
 import BasicInformation, { partyDetailsState } from "./BasicInformation";
-import AddServices, { serviceState } from "./AddServices";
+import AddServices, { addServicesInputsState } from "./AddServices";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../dashboard/Title";
 import { Link as Rlink } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import EntertainmentService from "./services/EntertainmentService";
-import FoodService from "./services/FoodService";
-import MusicService from "./services/MusicService";
-import GeneralService from "./services/GeneralService";
-import LocationService from "./services/LocationService";
+import ServiceInput from "./ServiceInput";
 
 function NewParty() {
   const [PartyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
-  const [serviceType, setServiceType] = useRecoilState(serviceState);
+  const [serviceTypes, setServiceTypes] = useRecoilState<string[]>(
+    addServicesInputsState
+  );
 
-  function switchCaseService(x: string, i: number) {
-    switch (x) {
+  function switchCaseService(serviceType: string, i: number) {
+    switch (serviceType) {
       case "Entertainment Service":
-        return <EntertainmentService key={i} />;
+        return <ServiceInput serviceType={"Entertainment Service"} key={i} />;
       case "Food Service":
-        return <FoodService key={i} />;
+        return <ServiceInput serviceType={"Food Service"} key={i} />;
       case "Music Service":
-        return <MusicService key={i} />;
+        return <ServiceInput serviceType={"Music Service"} key={i} />;
       case "General Service":
-        return <GeneralService key={i} />;
+        return <ServiceInput serviceType={"General Service"} key={i} />;
       case "Location Service":
-        return <LocationService key={i} />;
+        return <ServiceInput serviceType={"Location Service"} key={i} />;
     }
   }
 
@@ -73,7 +71,9 @@ function NewParty() {
                 alignItems={"flex-start"}
                 spacing={3}
               >
-                {serviceType.map((x, i) => switchCaseService(x, i))}
+                {serviceTypes.map((serviceType: string, i: number) =>
+                  switchCaseService(serviceType, i)
+                )}
               </Stack>
               <Stack direction="row" justifyContent={"space-between"}>
                 <Button
@@ -91,7 +91,7 @@ function NewParty() {
                       des: "",
                       collaborators: [],
                     });
-                    setServiceType([]);
+                    setServiceTypes([]);
                   }}
                 >
                   Clear Fields

@@ -53,3 +53,10 @@ export async function getServiceIDByName(name: string, serviceType: string) {
   };
   return execQuery(query).then((data) => data.rows[0].id);
 }
+
+export async function getServicesList(serviceType: string) {
+  const query = {
+    text: `SELECT title FROM ${serviceType}`,
+  };
+  return execQuery(query).then((data) => data.rows);
+}
