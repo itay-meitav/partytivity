@@ -6,7 +6,8 @@
     "deploy": "gulp deploy",
     "lint": "eslint ./src --ext .ts",
     "lint-fix": "eslint ./src --ext .ts --fix",
-    "jest": "jest"
+    "jest": "jest",
+    "test": "jest --watchAll --coverage --verbose"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",

@@ -106,8 +106,8 @@ gulp.task(
     "build",
     "clean-deploy",
     "copy-dist-to-deploy",
-    "copy-node-to-deploy",
+    "copy-node-to-deploy"
     // "react",
-    "deploy-heruku"
+    // "deploy-heruku"
   )
 );

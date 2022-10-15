@@ -1,0 +1,30 @@
+{
+  "name": "partytivity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "i-server": "cd ./server && npm ci",
+    "i-client": "cd ./client && npm ci",
+    "init-p": "npm run i-server && npm run i-client",
+    "server": "cd ./server && npm run start",
+    "client": "cd ./client && npm run start",
+    "start": "npm run server && npm run client",
+    "test-server": "cd ./server/ && npm run test",
+    "test-client": " cd ./client/ && npm run test",
+    "build-server": "cd ./server && npm run deploy",
+    "build-client": "cd ./client && npm run build",
+    "build": "npm run build-server && npm run build-client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itay-meitav/partytivity.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itay-meitav/partytivity/issues"
+  },
+  "homepage": "https://github.com/itay-meitav/partytivity#readme"
+}
