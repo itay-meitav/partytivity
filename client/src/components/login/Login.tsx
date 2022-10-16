@@ -28,14 +28,12 @@ function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      await fetch(`${config.apiHost}/login`, {
-        credentials: "include",
-      }).then(async (res) => {
-        const data = await res.json();
-        if (data.success) navigate("/dashboard");
-      });
-    })();
+    fetch(`${config.apiHost}/login`, {
+      credentials: "include",
+    }).then(async (res) => {
+      const data = await res.json();
+      if (data.success) navigate("/dashboard");
+    });
   }, []);
 
   return (

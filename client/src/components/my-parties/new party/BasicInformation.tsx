@@ -9,12 +9,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
+import { partyDetailsState } from "./NewParty";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -27,62 +27,11 @@ const MenuProps = {
   },
 };
 
-export type partyDetails = {
-  title: string;
-  des: string;
-  date: Dayjs | null;
-  collaborators: string[];
-  entertainmentService: string;
-  foodService: string;
-  musicService: string;
-  generalService: string;
-  locationService: string;
-  photos: string[];
-};
-
-export const partyDetailsState = atom({
-  key: "partyDetails",
-  default: {
-    title: localStorage.getItem("details")
-      ? JSON.parse(localStorage.getItem("details")!).title
-      : "",
-    des: localStorage.getItem("details")
-      ? JSON.parse(localStorage.getItem("details")!).description
-      : "",
-    date: localStorage.getItem("details")
-      ? JSON.parse(localStorage.getItem("details")!).date
-      : null,
-    collaborators: localStorage.getItem("details")
-      ? JSON.parse(localStorage.getItem("details")!).collaborators
-      : [],
-    entertainmentService: "",
-    foodService: "",
-    musicService: "",
-    generalService: "",
-    locationService: "",
-    photos: localStorage.getItem("details")
-      ? JSON.parse(localStorage.getItem("details")!).photos
-      : [],
-  } as partyDetails,
-});
-
 function BasicInformation() {
   const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const handleChange = (newValue: Dayjs | null) => {
     setPartyDetails({ ...partyDetails, date: newValue });
   };
-
-  useEffect(() => {
-    localStorage.setItem(
-      "details",
-      JSON.stringify({
-        title: partyDetails.title,
-        description: partyDetails.des,
-        collaborators: partyDetails.collaborators,
-        date: partyDetails.date,
-      })
-    );
-  }, [partyDetails]);
 
   return (
     <Stack direction="column" spacing={3}>

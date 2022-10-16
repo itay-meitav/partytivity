@@ -4,9 +4,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { addServicesInputsState } from "./AddServices";
 import { useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
-import { partyDetails, partyDetailsState } from "./BasicInformation";
 import config from "../../../assets/config";
 import { Typography } from "@mui/material";
+import { partyDetailsState } from "./NewParty";
 
 type Tprops = {
   serviceType: string;
@@ -21,29 +21,27 @@ function ServiceInput(props: Tprops) {
   const [show, setShow] = useState(false);
   const [serviceType, setServiceType] = useRecoilState(addServicesInputsState);
   const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
-  const [inputVal, setInputVal] = useState("");
+  const [inputVal, setInputVal] = useState(
+    JSON.parse(localStorage.getItem("details")!)[key] || ""
+  );
   const filteredOptions = servicesList.filter((service) =>
     service.toLowerCase().includes(inputVal.toLowerCase())
   );
 
-  console.log(partyDetails);
-
   useEffect(() => {
-    (async () => {
-      await fetch(`${config.apiHost}/api/dashboard/my-parties/new/services`, {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ serviceType: props.serviceType }),
+    fetch(`${config.apiHost}/api/dashboard/my-parties/new/services`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ serviceType: props.serviceType }),
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        setServicesList(data.services.map((x: any) => x.title));
       })
-        .then(async (res) => {
-          const data = await res.json();
-          setServicesList(data.services.map((x: any) => x.title));
-        })
-        .catch((err) => console.log(err));
-    })();
+      .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -97,7 +95,6 @@ function ServiceInput(props: Tprops) {
               required
             />
           </Dropdown.Toggle>
-
           <Dropdown.Menu
             style={{
               width: "100%",

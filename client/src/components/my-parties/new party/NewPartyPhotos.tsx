@@ -16,15 +16,16 @@ import { useRef, useState } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { useRecoilState } from "recoil";
-import { partyDetailsState } from "./BasicInformation";
+import { partyDetailsState } from "./NewParty";
 
 function NewPartyPhotos() {
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const [files, setFiles] = useState<FormData>(new FormData());
   const [count, setCount] = useState<number>(
     localStorage.getItem("src") ? 1 : 0
   );
   const msg = useRef<HTMLDivElement>(null);
-  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
+
 
   async function submitParty() {
     await fetch(`${config.apiHost}/api/my-parties/new/`, {
@@ -35,16 +36,7 @@ function NewPartyPhotos() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: partyDetails.title,
-        date: partyDetails.date,
-        collaborators: partyDetails.collaborators,
-        description: partyDetails.des,
-        entertainmentService: partyDetails.entertainmentService,
-        foodService: partyDetails.foodService,
-        locationService: partyDetails.locationService,
-        generalService: partyDetails.generalService,
-        musicService: partyDetails.musicService,
-        photos: partyDetails.photos,
+        partyDetails,
       }),
     });
   }
@@ -58,16 +50,6 @@ function NewPartyPhotos() {
     const data = await req.json();
     if (data.success) {
       setPartyDetails({ ...partyDetails, photos: data.files });
-      localStorage.setItem(
-        "details",
-        JSON.stringify({
-          title: partyDetails.title,
-          description: partyDetails.des,
-          collaborators: partyDetails.collaborators,
-          date: partyDetails.date,
-          photos: data.files,
-        })
-      );
       setCount(1);
       // localStorage.setItem("src", JSON.stringify(data.files.map((x: any) =>
       //     x.path.replaceAll("src", `http:${config.apiHost}`)

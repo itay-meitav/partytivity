@@ -1,18 +1,46 @@
 import { Button, Grid, IconButton, Paper, Link, Stack } from "@mui/material";
 import DashboardTemplate from "../../dashboard/DashboardTemplate";
-import BasicInformation, { partyDetailsState } from "./BasicInformation";
+import BasicInformation from "./BasicInformation";
 import AddServices, { addServicesInputsState } from "./AddServices";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../dashboard/Title";
 import { Link as Rlink } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import {
+  atom,
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+} from "recoil";
 import ServiceInput from "./ServiceInput";
+import { Dayjs } from "dayjs";
+import { useEffect } from "react";
+
+export const partyDetailsState = atom({
+  key: "partyDetails",
+  default: {
+    title: "" as string,
+    des: "" as string,
+    date: null as Dayjs | null,
+    collaborators: [] as string[],
+    entertainmentService: "" as string,
+    foodService: "" as string,
+    musicService: "" as string,
+    generalService: "" as string,
+    locationService: "" as string,
+    photos: [] as string[],
+  },
+});
 
 function NewParty() {
-  const [PartyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
+  const partyDetails = useRecoilValue(partyDetailsState);
+  const resetPartyDetails = useResetRecoilState(partyDetailsState);
   const [serviceTypes, setServiceTypes] = useRecoilState<string[]>(
     addServicesInputsState
   );
+
+  useEffect(() => {
+    localStorage.setItem("details", JSON.stringify(partyDetails));
+  }, [partyDetails]);
 
   function switchCaseService(serviceType: string, i: number) {
     switch (serviceType) {
@@ -83,14 +111,7 @@ function NewParty() {
                   size="small"
                   type="button"
                   onClick={() => {
-                    localStorage.removeItem("details");
-                    setPartyDetails({
-                      ...PartyDetails,
-                      title: "",
-                      date: null,
-                      des: "",
-                      collaborators: [],
-                    });
+                    resetPartyDetails();
                     setServiceTypes([]);
                   }}
                 >
