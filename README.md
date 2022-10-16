@@ -26,21 +26,21 @@ I see this project as something that could absolutely work in the real world.
 
   - **[Recoil](https://www.npmjs.com/package/recoil)** - For states management.
   - **[React Router](https://www.npmjs.com/package/react-router-dom)** - For routes management.
-  - **[Workbox](https://www.npmjs.com/package/workbox-sw) - For making the app progressive.
+  - **[Workbox](https://www.npmjs.com/package/workbox-sw)** - For making the app progressive.
   - **[React-Bootstrap](https://www.npmjs.com/package/react-bootstrap)** - For design purposes.
   - **[React-Lottie](https://www.npmjs.com/package/react-lottie-player)** - For displaying animations.
   - **[Material-ui](https://www.npmjs.com/package/@mui/material)** - For design purposes.
 
 - **Back-end**:
-  - [Node-postgres](https://www.npmjs.com/package/pg) - For DB management.
-  - [Nodemailer](https://www.npmjs.com/package/nodemailer) - For email sending.
-  - [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken) - For authentication.
-  - [Multer](https://www.npmjs.com/package/multer) - For easily manage the images uploaded to the server.
-  - [Cloudinary](https://www.npmjs.com/package/cloudinary) - For uploading photos to the cloud.
-  - [Bcrypt](https://www.npmjs.com/package/bcrypt) - For encryption purposes.
-  - [Cookie-Parser](https://www.npmjs.com/package/cookie-parser) - For the ability to read cookies and use them.
-  - [Webpack](https://www.npmjs.com/package/webpack) - For modules bundling and build the server side.
-  - [Dotenv](https://www.npmjs.com/package/dotenv) - For environment variables.
+  - **[Node-postgres](https://www.npmjs.com/package/pg)** - For DB management.
+  - **[Nodemailer](https://www.npmjs.com/package/nodemailer)** - For email sending.
+  - **[JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)** - For authentication.
+  - **[Multer](https://www.npmjs.com/package/multer)** - For easily manage the images uploaded to the server.
+  - **[Cloudinary](https://www.npmjs.com/package/cloudinary)** - For uploading photos to the cloud.
+  - **[Bcrypt](https://www.npmjs.com/package/bcrypt)** - For encryption purposes.
+  - **[Cookie-Parser](https://www.npmjs.com/package/cookie-parser)** - For the ability to read cookies and use them.
+  - **[Webpack](https://www.npmjs.com/package/webpack)** - For modules bundling and build the server side.
+  - **[Dotenv](https://www.npmjs.com/package/dotenv)** - For environment variables.
 
 ## Installation
 
