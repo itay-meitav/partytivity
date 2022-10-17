@@ -20,13 +20,15 @@ export async function addUser(details: {
         "admin",
       ],
     };
-    return execQuery(query).then((data) => data.rows);
+    const res = await execQuery(query);
+    return res.rows;
   } else {
     const query = {
       text: `INSERT INTO users(username, password, email, name) VALUES($1, $2, $3, $4)`,
       values: [details.username, details.password, details.email, details.name],
     };
-    return execQuery(query).then((data) => data.rows);
+    const res = await execQuery(query);
+    return res.rows;
   }
 }
 
@@ -35,7 +37,8 @@ export async function checkIfUserExist(username: string) {
     text: `SELECT * FROM users WHERE username = $1`,
     values: [username],
   };
-  return execQuery(query).then((data) => data.rows[0]);
+  const res = await execQuery(query);
+  return res.rows[0];
 }
 
 export async function checkUserEmail(email: string) {
@@ -43,7 +46,8 @@ export async function checkUserEmail(email: string) {
     text: `SELECT * FROM users WHERE email = $1`,
     values: [email],
   };
-  return execQuery(query).then((data) => data.rows[0]);
+  const res = await execQuery(query);
+  return res.rows[0];
 }
 
 export async function checkUserId(id: number) {
@@ -51,7 +55,8 @@ export async function checkUserId(id: number) {
     text: `SELECT * FROM users WHERE id = $1`,
     values: [id],
   };
-  return execQuery(query).then((data) => data.rows[0]);
+  const res = await execQuery(query);
+  return res.rows[0];
 }
 
 export async function changeUserStatus(username: string) {
@@ -59,7 +64,8 @@ export async function changeUserStatus(username: string) {
     text: `UPDATE users SET status = $1 WHERE username = $2`,
     values: ["active", username],
   };
-  return execQuery(query).then((data) => data.rows[0]);
+  const res = await execQuery(query);
+  return res.rows[0];
 }
 
 export async function changeUserPass(details: { id: any; password: string }) {
@@ -67,5 +73,6 @@ export async function changeUserPass(details: { id: any; password: string }) {
     text: `UPDATE users SET password = $1 WHERE id = $2`,
     values: [details.password, details.id],
   };
-  return execQuery(query).then((data) => data.rows[0]);
+  const res = await execQuery(query);
+  return res.rows[0];
 }

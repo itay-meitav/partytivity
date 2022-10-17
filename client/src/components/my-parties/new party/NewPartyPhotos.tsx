@@ -26,9 +26,8 @@ function NewPartyPhotos() {
   );
   const msg = useRef<HTMLDivElement>(null);
 
-
   async function submitParty() {
-    await fetch(`${config.apiHost}/api/my-parties/new/`, {
+    await fetch(`${config.apiHost}/api/dashboard/my-parties/new/`, {
       method: "post",
       credentials: "include",
       headers: {

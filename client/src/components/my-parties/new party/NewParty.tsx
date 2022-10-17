@@ -22,11 +22,13 @@ export const partyDetailsState = atom({
     des: "" as string,
     date: null as Dayjs | null,
     collaborators: [] as string[],
-    entertainmentService: "" as string,
-    foodService: "" as string,
-    musicService: "" as string,
-    generalService: "" as string,
-    locationService: "" as string,
+    services: {
+      entertainmentService: "" as string,
+      foodService: "" as string,
+      musicService: "" as string,
+      generalService: "" as string,
+      locationService: "" as string,
+    },
     photos: [] as string[],
   },
 });

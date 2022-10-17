@@ -1,4 +1,6 @@
+import authConfig from "../../api/auth/auth.config";
 import { query as execQuery } from "../general";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export async function addParty(details: {
   title: string;
@@ -13,21 +15,28 @@ export async function addParty(details: {
   photos?: string[];
 }) {
   const query = {
-    text: `INSERT INTO parties(title, description, date, owner_id, location_id, music_id, food_id, entertainment_id, general_id, photos) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+    text: `INSERT INTO parties(title, description, date, owner_id, location_id, music_id, food_id, entertainment_id, general_id, photos) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
     values: [
       details.title,
-      details.description,
+      details.description || "",
       details.date,
       details.ownerId,
-      details.locationID,
-      details.musicID,
-      details.foodID,
-      details.entertainmentID,
-      details.generalID,
-      details.photos,
+      details.locationID || null,
+      details.musicID || null,
+      details.foodID || null,
+      details.entertainmentID || null,
+      details.generalID || null,
+      details.photos || [],
     ],
   };
-  return execQuery(query).then((data) => data.rows[0]);
+  const res = await execQuery(query);
+  const token = jwt.sign(res.rows[0].id, authConfig.secret);
+  const tokenQuery = {
+    text: `UPDATE parties SET invite_token = $1 WHERE id = $2 RETURNING *`,
+    values: [token, res.rows[0].id],
+  };
+  const tokenRes = await execQuery(tokenQuery);
+  return tokenRes.rows[0].invite_token;
 }
 
 export async function getUserParties(
@@ -43,7 +52,8 @@ export async function getUserParties(
     limit $2 offset $3`,
     values: [usernameId, limit, offset],
   };
-  return execQuery(query).then((data) => data.rows);
+  const res = await execQuery(query);
+  return res.rows;
 }
 
 export async function getServiceIDByName(name: string, serviceType: string) {
@@ -51,12 +61,23 @@ export async function getServiceIDByName(name: string, serviceType: string) {
     text: `SELECT id FROM ${serviceType} WHERE title = $1`,
     values: [name],
   };
-  return execQuery(query).then((data) => data.rows[0].id);
+  const res = await execQuery(query);
+  return { [serviceType]: res.rows[0].id };
 }
 
-export async function getServicesList(serviceType: string) {
+export async function getServicesByType(serviceType: string) {
   const query = {
     text: `SELECT title FROM ${serviceType}`,
   };
-  return execQuery(query).then((data) => data.rows);
+  const res = await execQuery(query);
+  return res.rows;
+}
+
+export async function getPartyDetailsByID(partyID: string | JwtPayload) {
+  const query = {
+    text: `SELECT * FROM parties WHERE id = $1`,
+    values: [partyID],
+  };
+  const res = await execQuery(query);
+  return res.rows[0];
 }

@@ -1,6 +1,7 @@
 import express from "express";
 import register from "./register";
 import login from "./login";
+import invite from "./invite";
 import auth from "./auth/auth";
 import dashboard from "./dashboard/index";
 import photos from "./photos/photos";
@@ -11,5 +12,6 @@ router.use("/login", login);
 router.use("/auth", auth);
 router.use("/dashboard", dashboard);
 router.use("/photos", photos);
+router.use("/invite", invite);
 
 export default router;

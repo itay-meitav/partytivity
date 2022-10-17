@@ -20,11 +20,10 @@ async function connect() {
 
 export async function query(query: { text: string; values?: any[] }) {
   try {
-    return await pool.query(query.text, query.values || []).then((res) => {
-      return res;
-    });
+    const res = await pool.query(query.text, query.values || []);
+    return res;
   } catch (e) {
-    console.error(e);
-    return { error: e, rows: [] };
+    console.error(e.stack);
+    return e.stack;
   }
 }

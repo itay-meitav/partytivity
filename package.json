@@ -9,7 +9,6 @@
     "init-p": "npm run i-server && npm run i-client",
     "server": "cd ./server && npm run start",
     "client": "cd ./client && npm run start",
-    "start": "npm run server && npm run client",
     "test-server": "cd ./server/ && npm run test",
     "test-client": " cd ./client/ && npm run test",
     "build-server": "cd ./server && npm run deploy",

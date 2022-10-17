@@ -18,32 +18,22 @@ import hat from "../../assets/icons/hat.png";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
-type partyDetails = {
-  title: string;
-  date: string;
-  description: string;
-  owners: string[];
-  photos: string[];
-  locationService: string;
-  musicService: string;
-  foodService: string;
-  entertainmentService: string;
+const initialPartyDetails = {
+  title: "" as string,
+  date: "" as any,
+  description: "" as string,
+  owners: [] as string[],
+  photos: [] as string[],
+  locationService: "" as string,
+  musicService: "" as string,
+  foodService: "" as string,
+  entertainmentService: "" as string,
 };
 
 function PartyInvite() {
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
-  const [partyDetails, setPartyDetails] = useState<partyDetails>({
-    title: "",
-    date: "",
-    description: "",
-    owners: [],
-    photos: [],
-    locationService: "",
-    musicService: "",
-    foodService: "",
-    entertainmentService: "",
-  });
+  const [partyDetails, setPartyDetails] = useState(initialPartyDetails);
   const [checkboxes, setCheckboxes] = useState({
     sure: false,
     maybe: false,
@@ -52,24 +42,12 @@ function PartyInvite() {
   const error =
     Object.values(checkboxes).filter((v) => v === true).length !== 1;
 
-  async function getPartyDetails() {
-    const req = await fetch(`${config.apiHost}/invite`);
-    const data = await req.json();
-    setPartyDetails({
-      title: data.title,
-      date: data.date.toString(),
-      description: data.description,
-      owners: data.owners,
-      locationService: data.locationService,
-      musicService: data.musicService,
-      foodService: data.foodService,
-      entertainmentService: data.entertainmentService,
-      photos: data.photos,
-    });
-  }
-
   useEffect(() => {
-    getPartyDetails();
+    (async () => {
+      const req = await fetch(`${config.apiHost}/invite`);
+      const data = await req.json();
+      setPartyDetails(data);
+    })();
     import("./invite.json").then(setAnimationData);
   }, []);
 

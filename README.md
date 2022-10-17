@@ -11,7 +11,6 @@ The truth is that there is no specific reason that concerns my personal world,
 I thought about a problem, a solution and a need and tried to find a way to bridge all of these.
 I see this project as something that could absolutely work in the real world.
 
-
 ## Technologies:
 
 - **[React](https://reactjs.org/)**
@@ -59,7 +58,7 @@ I see this project as something that could absolutely work in the real world.
 4. **Run Client**
 
    ```
-   npm run start
+   npm run client
    ```
 
 5. **Go to http://localhost:3000 and have fun**!

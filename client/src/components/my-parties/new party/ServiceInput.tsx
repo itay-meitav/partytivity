@@ -90,7 +90,10 @@ function ServiceInput(props: Tprops) {
                   return false;
                 }
                 setInputVal("");
-                setPartyDetails({ ...partyDetails, [key]: "" });
+                setPartyDetails({
+                  ...partyDetails,
+                  services: { ...partyDetails.services, [key]: "" },
+                });
               }}
               required
             />
@@ -111,7 +114,10 @@ function ServiceInput(props: Tprops) {
                     as="button"
                     onClick={() => {
                       setInputVal(x);
-                      setPartyDetails({ ...partyDetails, [key]: x });
+                      setPartyDetails({
+                        ...partyDetails,
+                        services: { ...partyDetails.services, [key]: x },
+                      });
                       setShow(false);
                     }}
                     style={{ whiteSpace: "initial" }}

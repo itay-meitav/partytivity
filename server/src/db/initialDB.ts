@@ -4,6 +4,7 @@ import { addParty } from "./dashboard/my-parties";
 import { addUser } from "./users";
 import * as chrono from "chrono-node";
 import bcrypt from "bcrypt";
+import { insertExampleServices } from "./servicesExample";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -28,16 +29,10 @@ async function initDB() {
   });
   await addParty({
     title: "my first party",
-    description: null,
     date: chrono.parseDate("Tomorrow"),
     ownerId: 1,
-    locationID: null,
-    musicID: null,
-    foodID: null,
-    entertainmentID: null,
-    generalID: null,
   });
-  console.log("done!");
+  insertExampleServices();
 }
 
 async function dropAllTables() {
