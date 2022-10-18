@@ -21,12 +21,13 @@ app.use("/api", RestApi);
 
 app.get(["/login", "/register"], (req: Request, res: Response) => {
   if (req.cookies.token) {
-    const decoded = jwt.verify(req.cookies.token, authConfig.secret);
-    if (decoded) {
+    jwt.verify(req.cookies.token, authConfig.secret, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ success: false });
+      }
       return res.json({ success: true });
-    }
+    });
   }
-  res.json({ success: false });
 });
 
 const port = process.env.PORT || 5000;

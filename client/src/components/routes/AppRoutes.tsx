@@ -43,7 +43,9 @@ const AppRoutes = () => {
         </Route>
       </Route>
       <Route path="/dashboard">{DashboardRoutes()}</Route>
-      <Route path="/invite/:token" element={<PartyInvite />} />
+      <Route path="/invite">
+        <Route path=":token" element={<PartyInvite />} />
+      </Route>
     </Routes>
   );
 };

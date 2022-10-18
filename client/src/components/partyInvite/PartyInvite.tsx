@@ -17,12 +17,13 @@ import CustomLink from "../Link";
 import hat from "../../assets/icons/hat.png";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
+import { useNavigate, useParams } from "react-router-dom";
 
 const initialPartyDetails = {
   title: "" as string,
   date: "" as any,
   description: "" as string,
-  owners: [] as string[],
+  owner: [] as string[],
   photos: [] as string[],
   locationService: "" as string,
   musicService: "" as string,
@@ -39,12 +40,24 @@ function PartyInvite() {
     maybe: false,
   });
   const [msg, setMsg] = useState(false);
+  const { token } = useParams();
+  const navigate = useNavigate();
   const error =
     Object.values(checkboxes).filter((v) => v === true).length !== 1;
 
   useEffect(() => {
     (async () => {
-      const req = await fetch(`${config.apiHost}/invite`);
+      const req = await fetch(`${config.apiHost}/api/invite`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ partyToken: token }),
+      });
+      if (!req.ok) {
+        navigate("/welcome");
+      }
       const data = await req.json();
       setPartyDetails(data);
     })();
@@ -68,7 +81,7 @@ function PartyInvite() {
         <br />
         And this time... <br />
         <big>{partyDetails.title}</big> <br />
-        By <big>{partyDetails.owners} </big>
+        By <big>{partyDetails.owner} </big>
         <br />
         {partyDetails.description} <br />
         On <big>{partyDetails.date}</big> <br />

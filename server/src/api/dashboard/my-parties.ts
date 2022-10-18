@@ -2,16 +2,13 @@ import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import {
   addParty,
-  getServiceIDByName,
+  getServiceIDByTitle,
   getServicesByType,
   getUserParties,
 } from "../../db/dashboard/my-parties";
 import authConfig from "../auth/auth.config";
 import { isAuthenticated } from "../auth/authMiddle";
 const router = express.Router();
-interface JWTData {
-  id: any;
-}
 
 router.get("/", isAuthenticated, async (req: Request, res: Response) => {
   const token = req.cookies.token;
@@ -20,7 +17,7 @@ router.get("/", isAuthenticated, async (req: Request, res: Response) => {
   const offset = Number(req.query.offset) || 0;
   const orderBy = req.query.orderBy ? req.query.orderBy.toString() : undefined;
   const parties = await getUserParties(
-    (decoded as JWTData).id,
+    decoded as string,
     limit,
     offset,
     orderBy
@@ -35,7 +32,7 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
   const serviceFunctions = Object.entries(req.body.services).map(
     async ([serviceKey, serviceValue]: any) => {
       const tableName = serviceKey.toLowerCase().replace("service", "_service");
-      return await getServiceIDByName(serviceValue, tableName);
+      return await getServiceIDByTitle(serviceValue, tableName);
     }
   );
   const servicesIDReq = await Promise.all(serviceFunctions);
@@ -47,7 +44,7 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
       title: req.body.title,
       description: req.body.description,
       date: req.body.date,
-      ownerId: (decoded as JWTData).id,
+      ownerId: Number(decoded as string),
       locationID: servicesID.location_service,
       musicID: servicesID.music_service,
       foodID: servicesID.food_service,

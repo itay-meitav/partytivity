@@ -20,7 +20,7 @@ export async function addParty(details: {
       details.title,
       details.description || "",
       details.date,
-      details.ownerId,
+      Number(details.ownerId),
       details.locationID || null,
       details.musicID || null,
       details.foodID || null,
@@ -40,7 +40,7 @@ export async function addParty(details: {
 }
 
 export async function getUserParties(
-  usernameId: number,
+  usernameId: string,
   limit: number,
   offset: number,
   orderBy?: string
@@ -56,13 +56,25 @@ export async function getUserParties(
   return res.rows;
 }
 
-export async function getServiceIDByName(name: string, serviceType: string) {
+export async function getServiceIDByTitle(title: string, serviceType: string) {
   const query = {
     text: `SELECT id FROM ${serviceType} WHERE title = $1`,
-    values: [name],
+    values: [title],
   };
   const res = await execQuery(query);
   return { [serviceType]: res.rows[0].id };
+}
+
+export async function getServiceTitleByID(
+  serviceID: number,
+  serviceType: string
+) {
+  const query = {
+    text: `SELECT title FROM ${serviceType} WHERE id = $1`,
+    values: [serviceID],
+  };
+  const res = await execQuery(query);
+  return { [serviceType]: res.rows[0].title };
 }
 
 export async function getServicesByType(serviceType: string) {
@@ -73,11 +85,49 @@ export async function getServicesByType(serviceType: string) {
   return res.rows;
 }
 
+export async function getOwnerNameByID(ownerID: number) {
+  const query = {
+    text: `SELECT name FROM users WHERE id = $1`,
+    values: [ownerID],
+  };
+  const res = await execQuery(query);
+  return res.rows[0].name;
+}
+
 export async function getPartyDetailsByID(partyID: string | JwtPayload) {
   const query = {
     text: `SELECT * FROM parties WHERE id = $1`,
     values: [partyID],
   };
   const res = await execQuery(query);
-  return res.rows[0];
+  const { entertainment_id, music_id, food_id, general_id, location_id } =
+    res.rows[0];
+  const partyServices = {
+    entertainment: entertainment_id,
+    music: music_id,
+    food: food_id,
+    general: general_id,
+    location: location_id,
+  };
+  const serviceFunctions = Object.entries(partyServices).map(
+    async ([serviceKey, serviceValue]: any) => {
+      const tableName = serviceKey + "_service";
+      return await getServiceTitleByID(serviceValue, tableName);
+    }
+  );
+  const servicesIDReq = await Promise.all(serviceFunctions);
+  const servicesTitles = Object.assign({}, ...servicesIDReq);
+  const partyOwner = await getOwnerNameByID(res.rows[0].owner_id);
+  return {
+    title: res.rows[0].title,
+    description: res.rows[0].description,
+    date: res.rows[0].date,
+    partyOwner: partyOwner,
+    entertainmentService: servicesTitles.entertainment_service,
+    musicService: servicesTitles.music_service,
+    foodService: servicesTitles.food_service,
+    generalService: servicesTitles.general_service,
+    locationService: servicesTitles.location_service,
+    photos: res.rows[0].photos,
+  };
 }

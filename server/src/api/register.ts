@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post("/", async (res: Response, req: Request) => {
   const { username, password, email, name } = req.body;
-  const token = jwt.sign({ email: email }, authConfig.secret, {
+  const token = jwt.sign(email, authConfig.secret, {
     expiresIn: "10m",
   });
   const check = await checkIfUserExist(username);
