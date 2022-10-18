@@ -145,7 +145,7 @@ async function createAllTables() {
         FOREIGN KEY(entertainment_id) REFERENCES entertainment_service(id) ON DELETE CASCADE,
         general_id INTEGER,
         FOREIGN KEY(general_id) REFERENCES general_service(id) ON DELETE CASCADE,
-        guests TEXT[],
+        guests jsonb default '[]'::jsonb,
         photos TEXT[],
         invite_token TEXT,
         status PARTY_STATUS DEFAULT 'pending'

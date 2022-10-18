@@ -54,7 +54,7 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
       return res.json({ success: true, partyToken: partyToken });
     });
   } catch (error) {
-    return res.status(500).json({ message: error, success: false });
+    return res.status(500).json({ message: error.message, success: false });
   }
 });
 
@@ -64,7 +64,7 @@ router.post("/new/services", async (req, res) => {
     const data = await getServicesByType(serviceType);
     return res.json({ services: data, success: true });
   } catch (error) {
-    return res.status(500).json({ message: error, success: false });
+    return res.status(500).json({ message: error.message, success: false });
   }
 });
 
