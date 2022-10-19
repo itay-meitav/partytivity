@@ -1,54 +1,57 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { createBrowserRouter, Navigate, redirect } from "react-router-dom";
 import Login from "../login/Login";
 import LoginReset from "../loginResetPage/LoginReset";
 import SignUp from "../signup/SignUp";
-import WelcomeRoutes from "./WelcomeRoutes";
-import { useEffect } from "react";
 import SubmitSignup from "../signup/SubmitSignup";
 import Unknown from "../unknown/Unknown";
 import ConfirmEmail from "../confirm/ConfirmEmail";
 import NewPassForm from "../loginResetPage/NewPassForm";
-import DashboardRoutes from "./DashboardRoutes";
 import PartyInvite from "../partyInvite/PartyInvite";
+import config from "../../assets/config";
+import { WelcomeRoutes } from "./WelcomeRoutes";
+import { DashboardRoutes } from "./DashboardRoutes";
 
-const AppRoutes = () => {
-  let NavigateWelcome = () => {
-    let navigate = useNavigate();
-    useEffect(() => {
-      navigate("/welcome");
-    }, []);
-    return <></>;
-  };
-  return (
-    <Routes>
-      <Route path="/" element={<NavigateWelcome />} />
-      <Route path="*" element={<Unknown />} />
-      <Route path="/welcome">{WelcomeRoutes()}</Route>
-      <Route path="/login">
-        <Route index element={<Login />} />
-        <Route path="reset">
-          <Route index element={<LoginReset />} />
-          <Route path="new">
-            <Route path=":token" element={<NewPassForm />} />
-          </Route>
-        </Route>
-      </Route>
-      <Route path="/register">
-        <Route index element={<SignUp />} />
-        <Route path="success" element={<SubmitSignup />} />
-      </Route>
-      <Route path="/auth">
-        <Route path="confirm">
-          <Route path=":token" element={<ConfirmEmail />} />
-        </Route>
-      </Route>
-      <Route path="/dashboard">{DashboardRoutes()}</Route>
-      <Route path="/invite">
-        <Route path=":token" element={<PartyInvite />} />
-      </Route>
-    </Routes>
-  );
-};
-
-export default AppRoutes;
-// auth/reset
+export const router = createBrowserRouter([
+  { path: "/", element: <Navigate to="/welcome" /> },
+  { path: "*", element: <Unknown /> },
+  { path: "/welcome", children: [...WelcomeRoutes] },
+  { path: "/login", children: [] },
+  {
+    path: "/login",
+    children: [
+      { element: <Login />, index: true },
+      {
+        path: "reset",
+        children: [
+          { element: <LoginReset />, index: true },
+          { path: "new/:token", element: <NewPassForm /> },
+        ],
+      },
+    ],
+  },
+  {
+    path: "register",
+    children: [
+      { element: <SignUp />, index: true },
+      { path: "success", element: <SubmitSignup /> },
+    ],
+  },
+  { path: "/auth/:token", element: <ConfirmEmail /> },
+  {
+    path: "/dashboard",
+    loader: async () => {
+      const req = await fetch(`${config.apiHost}/login`, {
+        credentials: "include",
+      });
+      if (!req.ok) redirect("/login");
+    },
+    children: [...DashboardRoutes],
+  },
+  {
+    path: "/invite",
+    children: [
+      { element: <Unknown />, index: true },
+      { path: ":token", element: <PartyInvite /> },
+    ],
+  },
+]);

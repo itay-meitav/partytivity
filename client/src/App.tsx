@@ -1,14 +1,12 @@
 import "./App.scss";
-import { BrowserRouter as Router } from "react-router-dom";
-import AppRoutes from "./components/routes/AppRoutes";
+import { BrowserRouter as Router, RouterProvider } from "react-router-dom";
+import { router } from "./components/routes/AppRoutes";
 import Template from "./components/template/Template";
 function App() {
   return (
-    <Router>
-      <Template>
-        <AppRoutes />
-      </Template>
-    </Router>
+    <Template>
+      <RouterProvider router={router} />
+    </Template>
   );
 }
 

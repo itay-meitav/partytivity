@@ -11,25 +11,25 @@ import UserSettings from "../userSettings/UserSettings";
 import NewParty from "../my-parties/new party/NewParty";
 import NewPartyPhotos from "../my-parties/new party/NewPartyPhotos";
 
-const DashboardRoutes = () => {
-  return (
-    <>
-      <Route index element={<Dashboard />} />
-      <Route path="photos" element={<Photos />} />
-      <Route path="my-parties">
-        <Route index element={<MyParties />} />
-        <Route path="new">
-          <Route index element={<NewParty />} />
-          <Route path="photos" element={<NewPartyPhotos />} />
-        </Route>
-      </Route>
-      <Route path="discover" element={<Discover />} />
-      <Route path="recommendations" element={<Recommendations />} />
-      <Route path="statistics" element={<Statistics />} />
-      <Route path="providers" element={<Providers />} />
-      <Route path="settings" element={<UserSettings />} />
-    </>
-  );
-};
-
-export default DashboardRoutes;
+export const DashboardRoutes = [
+  { element: <Dashboard />, index: true },
+  { path: "photos", element: <Photos /> },
+  {
+    path: "my-parties",
+    children: [
+      { element: <MyParties />, index: true },
+      {
+        path: "new",
+        children: [
+          { element: <NewParty />, index: true },
+          { path: "photos", element: <NewPartyPhotos /> },
+        ],
+      },
+    ],
+  },
+  { path: "discover", element: <Discover /> },
+  { path: "recommendations", element: <Recommendations /> },
+  { path: "statistics", element: <Statistics /> },
+  { path: "providers", element: <Providers /> },
+  { path: "settings", element: <UserSettings /> },
+];

@@ -4,6 +4,7 @@ import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
 import DashboardTemplate from "./DashboardTemplate";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   return (

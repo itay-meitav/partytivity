@@ -20,14 +20,17 @@ app.use(cookieParser());
 app.use("/api", RestApi);
 
 app.get(["/login", "/register"], (req: Request, res: Response) => {
+  console.log("hi");
+
   if (req.cookies.token) {
-    jwt.verify(req.cookies.token, authConfig.secret, (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ success: false });
-      }
+    try {
+      jwt.verify(req.cookies.token, authConfig.secret);
       return res.json({ success: true });
-    });
+    } catch (error) {
+      return res.status(401).json({ success: false });
+    }
   }
+  return res.status(401).json({ success: false });
 });
 
 const port = process.env.PORT || 5000;

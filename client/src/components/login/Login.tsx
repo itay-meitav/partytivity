@@ -1,24 +1,9 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import CustomLink from "../Link";
-
-async function loginReq(username: string, password: string) {
-  return await fetch(`${config.apiHost}/api/login`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: username,
-      password: password,
-    }),
-  });
-}
 
 function Login() {
   const username = useRef<HTMLInputElement>(null);
@@ -27,14 +12,20 @@ function Login() {
   const content = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch(`${config.apiHost}/login`, {
+  async function loginReq(username: string, password: string) {
+    return await fetch(`${config.apiHost}/api/login`, {
+      method: "POST",
       credentials: "include",
-    }).then(async (res) => {
-      const data = await res.json();
-      if (data.success) navigate("/dashboard");
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
     });
-  }, []);
+  }
 
   return (
     <div id="login-container">
