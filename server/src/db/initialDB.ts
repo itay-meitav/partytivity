@@ -23,9 +23,7 @@ async function initDB() {
     username: "admin",
     password: await bcrypt.hash("admin", 12),
     email: "admin",
-    name: undefined,
-    status: undefined,
-    role: "admin",
+    name: "admin",
   });
   await addParty({
     title: "my first party",

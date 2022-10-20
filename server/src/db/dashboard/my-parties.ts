@@ -30,7 +30,7 @@ export async function addParty(details: {
     ],
   };
   const res = await execQuery(query);
-  const token = jwt.sign(res.rows[0].id, authConfig.secret);
+  const token = jwt.sign({id: res.rows[0].id}, authConfig.secret);
   const tokenQuery = {
     text: `UPDATE parties SET invite_token = $1 WHERE id = $2 RETURNING *`,
     values: [token, res.rows[0].id],

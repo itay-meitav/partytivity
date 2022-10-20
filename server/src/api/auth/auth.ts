@@ -1,14 +1,14 @@
 import express, { Request, Response } from "express";
 import { changeUserStatus } from "../../db/users";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import authConfig from "./auth.config";
 const router = express.Router();
 
 router.get("/confirm/:token", async (req: Request, res: Response) => {
   const token = req.params.token;
   try {
-    const decoded = jwt.verify(token, authConfig.secret);
-    await changeUserStatus(decoded as string).then(() => {
+    const { email } = jwt.verify(token, authConfig.secret) as JwtPayload;
+    await changeUserStatus(email).then(() => {
       return res.json({ message: "User is now active", success: true });
     });
   } catch (error) {

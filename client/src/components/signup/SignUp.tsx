@@ -1,11 +1,16 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { redirect, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import CustomLink from "../Link";
 
-async function sighUpReq(username: string, password: string, email: string) {
+async function sighUpReq(
+  name: string,
+  username: string,
+  password: string,
+  email: string
+) {
   return await fetch(`${config.apiHost}/api/register`, {
     method: "POST",
     headers: {
@@ -16,29 +21,22 @@ async function sighUpReq(username: string, password: string, email: string) {
       username: username,
       password: password,
       email: email,
+      name: name,
     }),
   });
 }
 
 function SignUp() {
   const navigate = useNavigate();
-  const [firstPass, setFirstPass] = useState("");
-  const [secondPass, setSecondPass] = useState("");
+  const [message, setMessage] = useState("");
   const content = useRef<HTMLDivElement>(null);
-  const username = useRef<HTMLInputElement>(null);
-  const password = useRef<HTMLInputElement>(null);
-  const email = useRef<HTMLInputElement>(null);
-  const message = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetch(`${config.apiHost}/register`, {
-      credentials: "include",
-    }).then(async (res) => {
-      const data = await res.json();
-      if (data.success) navigate("/dashboard");
-    });
-  }, []);
-
+  const [details, setDetails] = useState({
+    username: "",
+    name: "",
+    email: "",
+    firstPass: "",
+    secondPass: "",
+  });
   return (
     <div id="register-container">
       <CustomLink to="/welcome" className="back-icon">
@@ -51,21 +49,22 @@ function SignUp() {
           className="register-form right"
           onSubmit={async (e) => {
             e.preventDefault();
-            if (firstPass == secondPass) {
-              await sighUpReq(
-                username.current!.value,
-                password.current!.value,
-                email.current!.value
+            if (details.firstPass == details.secondPass) {
+              sighUpReq(
+                details.name,
+                details.username,
+                details.firstPass,
+                details.email
               ).then(async (res) => {
                 if (res.ok) {
                   navigate("/register/success");
                 } else {
                   const data = await res.json();
-                  message.current!.innerHTML = data.message;
+                  setMessage(data.message);
                 }
               });
             } else {
-              message.current!.innerHTML = "The passwords do not match";
+              setMessage("The passwords do not match");
             }
           }}
         >
@@ -73,42 +72,54 @@ function SignUp() {
           <input
             className="form-input"
             type="text"
-            placeholder="Username"
-            onInput={() => {
-              message.current!.innerHTML = "";
+            placeholder="Full Name"
+            onChange={(e) => {
+              setMessage("");
+              const val = e.currentTarget.value;
+              setDetails({ ...details, name: val });
             }}
-            ref={username}
+            required
+          />
+          <input
+            className="form-input"
+            type="text"
+            placeholder="Username"
+            onChange={(e) => {
+              setMessage("");
+              const val = e.currentTarget.value;
+              setDetails({ ...details, username: val });
+            }}
             required
           />
           <input
             className="form-input"
             type="email"
             placeholder="Email"
-            onInput={() => {
-              message.current!.innerHTML = "";
+            onChange={(e) => {
+              setMessage("");
+              const val = e.currentTarget.value;
+              setDetails({ ...details, email: val });
             }}
-            ref={email}
             required
           />
           <input
             className="form-input"
             type="password"
-            onInput={(e) => {
-              message.current!.innerHTML = "";
+            onChange={(e) => {
+              setMessage("");
               const val = e.currentTarget.value;
-              setFirstPass(val);
+              setDetails({ ...details, firstPass: val });
             }}
-            ref={password}
             placeholder="Password"
             required
           />
           <input
             className="form-input"
             type="password"
-            onInput={(e) => {
-              message.current!.innerHTML = "";
+            onChange={(e) => {
+              setMessage("");
               const val = e.currentTarget.value;
-              setSecondPass(val);
+              setDetails({ ...details, secondPass: val });
             }}
             placeholder="Confirm password"
             required
@@ -116,7 +127,7 @@ function SignUp() {
           <button type="submit" className="submit-btn">
             SIGN UP
           </button>
-          <div className="msg" ref={message}></div>
+          <div className="msg">{message}</div>
         </form>
         <div className="register-form overlay-panel left">
           <p style={{ fontSize: "40px" }}>PARTYTIVITY</p>
@@ -125,7 +136,7 @@ function SignUp() {
           <p>already have an account?</p>
           <button
             className="submit-btn"
-            onClick={(e) => {
+            onClick={() => {
               content.current?.classList.add("switch");
               setTimeout(() => {
                 navigate("/login");

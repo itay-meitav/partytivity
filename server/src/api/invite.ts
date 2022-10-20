@@ -1,5 +1,5 @@
 import express from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import {
   addGuestToParty,
   getPartyDetailsByID,
@@ -9,8 +9,11 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
-    const partyID = jwt.verify(req.body.partyToken, authConfig.secret);
-    const partyDetails = await getPartyDetailsByID(partyID);
+    const { id } = jwt.verify(
+      req.body.partyToken,
+      authConfig.secret
+    ) as JwtPayload;
+    const partyDetails = await getPartyDetailsByID(id);
     return res.json({
       partyDetails: partyDetails,
       success: true,
@@ -24,9 +27,12 @@ router.post("/", async (req, res) => {
 
 router.post("/guest", async (req, res) => {
   try {
-    const partyID = jwt.verify(req.body.partyToken, authConfig.secret);
+    const { id } = jwt.verify(
+      req.body.partyToken,
+      authConfig.secret
+    ) as JwtPayload;
     await addGuestToParty({
-      partyID: partyID.toString(),
+      partyID: id.toString(),
       name: req.body.name,
       phone: req.body.phone,
       isComing: req.body.isComing,

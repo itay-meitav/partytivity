@@ -28,7 +28,7 @@ export async function isAuthenticated(
       .redirect("/login");
   }
   try {
-    const decoded = jwt.verify(token, authConfig.secret);
+    jwt.verify(token, authConfig.secret);
     next();
   } catch (error) {
     res

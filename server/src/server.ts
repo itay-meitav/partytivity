@@ -19,9 +19,7 @@ app.use(
 app.use(cookieParser());
 app.use("/api", RestApi);
 
-app.get(["/login", "/register"], (req: Request, res: Response) => {
-  console.log("hi");
-
+app.get("/login", (req: Request, res: Response) => {
   if (req.cookies.token) {
     try {
       jwt.verify(req.cookies.token, authConfig.secret);

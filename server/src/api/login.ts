@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { changeUserPass, checkIfUserExist, checkUserEmail } from "../db/users";
 import authConfig from "./auth/auth.config";
 import { sendResetEmail } from "./auth/nodemailer.config";
@@ -11,7 +11,7 @@ router.post("/", async (req: Request, res: Response) => {
   const check = await checkIfUserExist(username);
 
   if (check) {
-    const token = jwt.sign(check.id, authConfig.secret, {
+    const token = jwt.sign({ id: check.id }, authConfig.secret, {
       expiresIn: "24h",
     });
     if (check.status == "active") {
@@ -51,7 +51,7 @@ router.post("/", async (req: Request, res: Response) => {
 router.post("/reset", async (res: Response, req: Request) => {
   const { email } = req.body;
   const check = await checkUserEmail(email);
-  const token = jwt.sign(check.id, authConfig.secret, {
+  const token = jwt.sign({ id: check.id }, authConfig.secret, {
     expiresIn: "10m",
   });
   if (!check) {
@@ -70,7 +70,7 @@ router.post("/reset", async (res: Response, req: Request) => {
 router.get("/reset/new/:token", async (req, res) => {
   const token = req.params.token;
   try {
-    const decoded = jwt.verify(token, authConfig.secret);
+    jwt.verify(token, authConfig.secret);
     res.json({
       success: true,
     });
@@ -84,10 +84,10 @@ router.post("/reset/new/:token", async (req: Request, res: Response) => {
   const password = req.body.password;
   const hashedPassword = await bcrypt.hash(password, 12);
   try {
-    const decoded = jwt.verify(token, authConfig.secret);
+    const { id } = jwt.verify(token, authConfig.secret) as JwtPayload;
     if (password) {
       changeUserPass({
-        id: decoded as string,
+        id: id,
         password: hashedPassword,
       }).then(() => {
         return res.json({ message: "Password changed" }).redirect("/login");

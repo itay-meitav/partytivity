@@ -36,14 +36,17 @@ export const router = createBrowserRouter([
       { path: "success", element: <SubmitSignup /> },
     ],
   },
-  { path: "/auth/:token", element: <ConfirmEmail /> },
+  {
+    path: "/auth/confirm/:token",
+    element: <ConfirmEmail />,
+  },
   {
     path: "/dashboard",
     loader: async () => {
       const req = await fetch(`${config.apiHost}/login`, {
         credentials: "include",
       });
-      if (!req.ok) redirect("/login");
+      if (!req.ok) return redirect("/login");
     },
     children: [...DashboardRoutes],
   },

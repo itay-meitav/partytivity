@@ -1,20 +1,21 @@
-import express, { Request, Response } from "express";
-import { addUser, checkIfUserExist } from "../db/users";
+import express from "express";
+import { addUser, checkIfUserExist, checkUserEmail } from "../db/users";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import authConfig from "./auth/auth.config";
 import { sendConfirmationEmail } from "./auth/nodemailer.config";
 const router = express.Router();
 
-router.post("/", async (res: Response, req: Request) => {
+router.post("/", async (req, res) => {
   const { username, password, email, name } = req.body;
-  const token = jwt.sign(email, authConfig.secret, {
-    expiresIn: "10m",
-  });
-  const check = await checkIfUserExist(username);
-  if (!check) {
+  const checkUsername = await checkIfUserExist(username);
+  const checkEmail = await checkUserEmail(email);
+  if (!checkUsername && !checkEmail) {
     if (username && password && email) {
       try {
+        const token = jwt.sign({ email: email }, authConfig.secret, {
+          expiresIn: "10m",
+        });
         const hashedPassword = await bcrypt.hash(password, 12);
         await addUser({
           username: username,
@@ -29,22 +30,35 @@ router.post("/", async (res: Response, req: Request) => {
         });
       } catch (err) {
         console.log(err);
+
         return res.status(500).json({
           message: "Internal Server Error",
           success: false,
         });
       }
     } else {
-      return res.status(401).json({
+      return res.status(400).json({
         message: "make sure to send all the necessary fields",
         success: false,
       });
     }
   } else {
-    return res.status(401).json({
-      message: "This username already exists",
-      success: false,
-    });
+    if (checkEmail && !checkUsername) {
+      return res.status(400).json({
+        message: "This email already exists",
+        success: false,
+      });
+    } else if (checkUsername && !checkEmail) {
+      return res.status(400).json({
+        message: "This username already exists",
+        success: false,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Both username and email already exist",
+        success: false,
+      });
+    }
   }
 });
 

@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import {
   addParty,
   getServiceIDByTitle,
@@ -12,16 +12,11 @@ const router = express.Router();
 
 router.get("/", isAuthenticated, async (req: Request, res: Response) => {
   const token = req.cookies.token;
-  const decoded = jwt.verify(token, authConfig.secret);
+  const { id } = jwt.verify(token, authConfig.secret) as JwtPayload;
   const limit = Number(req.query.limit) || 20;
   const offset = Number(req.query.offset) || 0;
   const orderBy = req.query.orderBy ? req.query.orderBy.toString() : undefined;
-  const parties = await getUserParties(
-    decoded as string,
-    limit,
-    offset,
-    orderBy
-  );
+  const parties = await getUserParties(id, limit, offset, orderBy);
   res.json({
     parties: parties,
     success: true,
@@ -38,13 +33,13 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
   const servicesIDReq = await Promise.all(serviceFunctions);
   const servicesID = Object.assign({}, ...servicesIDReq);
   const token = req.cookies.token;
-  const decoded = jwt.verify(token, authConfig.secret);
+  const { id } = jwt.verify(token, authConfig.secret) as JwtPayload;
   try {
     addParty({
       title: req.body.title,
       description: req.body.description,
       date: req.body.date,
-      ownerId: Number(decoded as string),
+      ownerId: Number(id),
       locationID: servicesID.location_service,
       musicID: servicesID.music_service,
       foodID: servicesID.food_service,

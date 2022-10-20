@@ -5,31 +5,13 @@ export async function addUser(details: {
   password: string;
   email: string;
   name: string;
-  status?: string;
-  role?: string;
 }) {
-  if (details.role == "admin") {
-    const query = {
-      text: `INSERT INTO users(username, password, email, name, status, role) VALUES($1, $2, $3, $4, $5, $6)`,
-      values: [
-        details.username,
-        details.password,
-        details.email,
-        "admin",
-        "active",
-        "admin",
-      ],
-    };
-    const res = await execQuery(query);
-    return res.rows;
-  } else {
-    const query = {
-      text: `INSERT INTO users(username, password, email, name) VALUES($1, $2, $3, $4)`,
-      values: [details.username, details.password, details.email, details.name],
-    };
-    const res = await execQuery(query);
-    return res.rows;
-  }
+  const query = {
+    text: `INSERT INTO users(username, password, email, name) VALUES($1, $2, $3, $4) RETURNING *`,
+    values: [details.username, details.password, details.email, details.name],
+  };
+  const res = await execQuery(query);
+  return res.rows[0];
 }
 
 export async function checkIfUserExist(username: string) {
