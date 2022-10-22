@@ -1,7 +1,7 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import React, { useRef, useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import CustomLink from "../Link";
 
@@ -77,9 +77,13 @@ function SignUp() {
             placeholder="Full Name"
             onChange={(e) => {
               setMessage("");
-              const val = e.currentTarget.value;
+              const val = e.currentTarget.value.replace(/[^\w\s]|[0-9]/gi, "");
               setDetails({ ...details, name: val });
             }}
+            value={details.name}
+            minLength={2}
+            maxLength={20}
+            title="There can be minimum of 2 and maximum of 20 characters. No special characters nor numbers."
             required
           />
           <input
@@ -88,9 +92,13 @@ function SignUp() {
             placeholder="Username"
             onChange={(e) => {
               setMessage("");
-              const val = e.currentTarget.value;
+              const val = e.currentTarget.value.replace(/[^\w]/gi, "");
               setDetails({ ...details, username: val });
             }}
+            value={details.username}
+            minLength={3}
+            maxLength={15}
+            title="There can be minimum of 3 and maximum of 15 characters. No special characters."
             required
           />
           <input
@@ -102,6 +110,9 @@ function SignUp() {
               const val = e.currentTarget.value;
               setDetails({ ...details, email: val });
             }}
+            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            value={details.email}
+            title="Standard email only."
             required
           />
           <input
@@ -112,7 +123,18 @@ function SignUp() {
               const val = e.currentTarget.value;
               setDetails({ ...details, firstPass: val });
             }}
+            onCopy={(e) => {
+              e.preventDefault();
+            }}
+            onCut={(e) => {
+              e.preventDefault();
+            }}
+            onPaste={(e) => {
+              e.preventDefault();
+            }}
             placeholder="Password"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters total."
             required
           />
           <input
@@ -122,6 +144,15 @@ function SignUp() {
               setMessage("");
               const val = e.currentTarget.value;
               setDetails({ ...details, secondPass: val });
+            }}
+            onCopy={(e) => {
+              e.preventDefault();
+            }}
+            onCut={(e) => {
+              e.preventDefault();
+            }}
+            onPaste={(e) => {
+              e.preventDefault();
             }}
             placeholder="Confirm password"
             required

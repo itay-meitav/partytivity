@@ -3,19 +3,23 @@ import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { changeUserPass, checkIfUserExist, checkUserEmail } from "../db/users";
 import authConfig from "./auth/auth.config";
-import { sendResetEmail } from "./auth/nodemailer.config";
+import {
+  sendConfirmationEmail,
+  sendResetEmail,
+} from "./auth/nodemailer.config";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
   const { username, password } = req.body;
+  const cookie = req.cookies.verify;
   const check = await checkIfUserExist(username);
   if (check) {
-    const token = jwt.sign({ id: check.id }, authConfig.secret, {
-      expiresIn: "24h",
-    });
     if (check.status == "active") {
       return bcrypt.compare(password, check.password, async (err, result) => {
         if (result) {
+          const token = jwt.sign({ id: check.id }, authConfig.secret, {
+            expiresIn: "24h",
+          });
           return res
             .cookie("token", token, {
               expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
@@ -33,16 +37,39 @@ router.post("/", async (req, res) => {
           });
         }
       });
-    } else {
-      return res.status(401).json({
-        message: "Pending Account. Please Verify Your Email!",
-        accessToken: token,
+    } else if (!cookie) {
+      const token = jwt.sign({ email: check.email }, authConfig.secret, {
+        expiresIn: "24h",
+      });
+      await sendConfirmationEmail(check.email, token);
+      return res
+        .cookie(
+          "verify",
+          jwt.sign({ name: check.name }, authConfig.secret, {
+            expiresIn: "10m",
+          }),
+          {
+            expires: new Date(Date.now() + 1000 * 60 * 10),
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+          }
+        )
+        .status(401)
+        .json({
+          message: "A verification email has been sent to you",
+          success: false,
+        });
+    }
+    return res
+      .status(401)
+      .json({
+        message: "Please complete the email verification process",
         success: false,
       });
-    }
   } else {
     return res.status(401).json({
-      message: "This user does not exist",
+      message: "The username entered is incorrect",
       success: false,
     });
   }
@@ -111,7 +138,9 @@ router.post("/reset/new/:token", async (req, res) => {
           email: email,
           password: hashedPassword,
         });
-        return res.json({ message: "Password changed", success: true });
+        return res
+          .clearCookie("reset")
+          .json({ message: "Password changed", success: true });
       } else {
         return res.status(401).json({
           message: "make sure to send all the necessary fields",

@@ -1,19 +1,21 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import CustomLink from "../Link";
 
 function Login() {
-  const username = useRef<HTMLInputElement>(null);
-  const password = useRef<HTMLInputElement>(null);
-  const message = useRef<HTMLDivElement>(null);
+  const [userDetails, setUserDetails] = useState({
+    username: "",
+    password: "",
+  });
+  const [errorMsg, setErrorMsg] = useState("");
   const content = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   async function loginReq(username: string, password: string) {
-    return await fetch(`${config.apiHost}/api/login`, {
+    fetch(`${config.apiHost}/api/login`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -24,6 +26,13 @@ function Login() {
         username: username,
         password: password,
       }),
+    }).then(async (res) => {
+      if (res.ok) {
+        navigate("/dashboard");
+      } else {
+        const data = await res.json();
+        setErrorMsg(data.message);
+      }
     });
   }
 
@@ -37,40 +46,32 @@ function Login() {
       <div id="login-content" ref={content}>
         <form
           className="login-form left"
-          onSubmit={async (e) => {
+          onSubmit={(e) => {
             e.preventDefault();
-            await loginReq(
-              username.current!.value,
-              password.current!.value
-            ).then(async (res) => {
-              if (res.ok) {
-                navigate("/dashboard");
-              } else {
-                const data = await res.json();
-                message.current!.innerHTML = data.message;
-              }
-            });
+            loginReq(userDetails.username, userDetails.password);
           }}
         >
           <h1>Log in</h1>
           <input
-            ref={username}
             className="form-input"
             type="text"
             placeholder="Username"
             required
-            onInput={() => {
-              message.current!.innerHTML = "";
+            onChange={(e) => {
+              const val = e.currentTarget.value;
+              setUserDetails({ ...userDetails, username: val });
+              setErrorMsg("");
             }}
           />
           <input
-            ref={password}
             className="form-input"
             type="password"
             placeholder="Password"
             required
-            onInput={() => {
-              message.current!.innerHTML = "";
+            onChange={(e) => {
+              const val = e.currentTarget.value;
+              setUserDetails({ ...userDetails, password: val });
+              setErrorMsg("");
             }}
           />
           <Link to={"/login/reset"} className="link">
@@ -79,7 +80,7 @@ function Login() {
           <button className="submit-btn" type="submit">
             LOG IN
           </button>
-          <div className="msg" ref={message}></div>
+          <div className="msg">{errorMsg}</div>
         </form>
         <div className="login-form overlay-panel right">
           <p style={{ fontSize: "40px" }}>PARTYTIVITY</p>

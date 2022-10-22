@@ -13,35 +13,30 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import config from "../../assets/config";
 
-const initialRegistrationDetails = {
-  partyToken: "" as string,
-  name: "" as string,
-  phone: "" as string,
-  isComing: "" as string,
-  comment: "" as string,
-};
-
 function PartyInviteForm() {
-  const [registrationDetails, setRegistrationDetails] = useState(
-    initialRegistrationDetails
-  );
+  const { partyToken } = useParams();
+  const [registrationDetails, setRegistrationDetails] = useState({
+    partyToken: partyToken as string,
+    name: "" as string,
+    phone: "" as string,
+    isComing: "" as string,
+    comment: "" as string,
+  });
   const [checkboxes, setCheckboxes] = useState({
     sure: false,
     maybe: false,
   });
-  const { token } = useParams();
   const [msg, setMsg] = useState(false);
   const error = !Object.values(checkboxes).filter((v) => v === true).length;
 
   async function submitRegistrationToParty() {
-    setRegistrationDetails({ ...registrationDetails, partyToken: token! });
     const req = await fetch(`${config.apiHost}/api/invite/guest`, {
       method: "post",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(initialRegistrationDetails),
+      body: JSON.stringify(registrationDetails),
     });
   }
 
