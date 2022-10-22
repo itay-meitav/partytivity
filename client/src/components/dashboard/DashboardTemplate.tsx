@@ -19,7 +19,8 @@ import hat from "../../assets/icons/hatSvg.svg";
 import { Icon, Stack } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import config from "../../assets/config";
 
 function Copyright(props: any) {
   return (
@@ -99,7 +100,7 @@ function DashboardTemplate({ children }: React.PropsWithChildren<{}>) {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
+  const navigate = useNavigate();
   return (
     <div className="dashboard">
       <ThemeProvider theme={mdTheme}>
@@ -164,14 +165,17 @@ function DashboardTemplate({ children }: React.PropsWithChildren<{}>) {
                     <ManageAccountsIcon />
                   </IconButton>
                 </Link>
-                <Link
-                  to="/logout"
-                  style={{ color: "inherit", textDecoration: "inherit" }}
+                <IconButton
+                  color="inherit"
+                  onClick={() => {
+                    fetch(`${config.apiHost}/api/login/logout`, {
+                      credentials: "include",
+                    }).then(() => navigate("/welcome"));
+                  }}
+                  title="Logout"
                 >
-                  <IconButton color="inherit" title="Logout">
-                    <LogoutIcon />
-                  </IconButton>
-                </Link>
+                  <LogoutIcon />
+                </IconButton>
               </Stack>
             </Toolbar>
           </AppBar>

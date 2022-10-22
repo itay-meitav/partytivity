@@ -90,6 +90,39 @@
       animation-fill-mode: forwards;
     }
   }
+
+  .afterSubmit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    height: 525px;
+    background-color: #937dc2;
+    color: white;
+    text-align: center;
+    width: 900px;
+    max-width: 100%;
+    min-width: 650px;
+    border-radius: 10px;
+    box-shadow: -1px 1px 10px 1px rgba(0, 0, 0, 0.229);
+    position: relative;
+    margin: auto;
+    font-size: 1.1rem;
+    h1 {
+      font-weight: bold;
+      font-size: 48px;
+    }
+    p:nth-of-type(1) {
+      margin-bottom: 55px;
+    }
+    .confirm-animation {
+      margin: 0;
+      padding: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+  }
 }
 
 @keyframes float-up {

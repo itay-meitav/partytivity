@@ -13,14 +13,16 @@ function ConfirmEmail() {
 
   useEffect(() => {
     import("./V.json").then(setAnimationData);
-    fetch(config.apiHost + `/api/auth/confirm/${token}`).then((res) => {
+    fetch(config.apiHost + `/api/auth/confirm/${token}`, {
+      credentials: "include",
+    }).then((res) => {
       if (res.ok) {
         setAuthenticated(true);
         setTimeout(() => {
           navigate("/login");
         }, 3000);
       } else {
-        navigate("/register");
+        navigate("/login");
       }
     });
   }, []);

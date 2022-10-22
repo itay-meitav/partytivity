@@ -24,13 +24,25 @@ router.post("/", async (req, res) => {
           name: name,
         });
         await sendConfirmationEmail(email, token);
-        return res.status(200).json({
-          message: "User was registered successfully! Please check your email",
-          success: true,
-        });
+        return res
+          .cookie(
+            "verify",
+            jwt.sign({ name: name }, authConfig.secret, {
+              expiresIn: "10m",
+            }),
+            {
+              expires: new Date(Date.now() + 1000 * 60 * 10),
+              httpOnly: true,
+              sameSite: "none",
+              secure: true,
+            }
+          )
+          .json({
+            message:
+              "User was registered successfully! Please check your email",
+            success: true,
+          });
       } catch (err) {
-        console.log(err);
-
         return res.status(500).json({
           message: "Internal Server Error",
           success: false,

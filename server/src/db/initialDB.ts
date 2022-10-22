@@ -19,12 +19,12 @@ initDB();
 async function initDB() {
   await dropAllTables();
   await createAllTables();
-  await addUser({
-    username: "admin",
-    password: await bcrypt.hash("admin", 12),
-    email: "admin",
-    name: "admin",
-  });
+  // await addUser({
+  //   username: "admin",
+  //   password: await bcrypt.hash("admin", 12),
+  //   email: "admin",
+  //   name: "admin",
+  // });
   await addParty({
     title: "my first party",
     date: chrono.parseDate("Tomorrow"),

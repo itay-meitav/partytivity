@@ -18,6 +18,12 @@ export const router = createBrowserRouter([
   { path: "/login", children: [] },
   {
     path: "/login",
+    loader: async () => {
+      const req = await fetch(`${config.apiHost}/login`, {
+        credentials: "include",
+      });
+      if (req.ok) return redirect("/dashboard");
+    },
     children: [
       { element: <Login />, index: true },
       {
@@ -31,6 +37,12 @@ export const router = createBrowserRouter([
   },
   {
     path: "register",
+    loader: async () => {
+      const req = await fetch(`${config.apiHost}/login`, {
+        credentials: "include",
+      });
+      if (req.ok) return redirect("/dashboard");
+    },
     children: [
       { element: <SignUp />, index: true },
       { path: "success", element: <SubmitSignup /> },

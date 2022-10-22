@@ -151,6 +151,32 @@ $darkBlue: #554994;
     margin-left: 10px;
     margin-bottom: 20px;
   }
+
+  .afterSubmit {
+    background-color: $darkBlue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+    font-size: 1.1rem;
+    color: white;
+    border-radius: 10px;
+    h1 {
+      font-weight: bold;
+      font-size: 48px;
+    }
+    p:nth-of-type(1) {
+      margin-bottom: 55px;
+    }
+    .confirm-animation {
+      margin: 0;
+      padding: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+  }
 }
 
 @keyframes middleToRight {

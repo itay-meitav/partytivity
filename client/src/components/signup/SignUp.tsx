@@ -5,27 +5,6 @@ import { redirect, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import CustomLink from "../Link";
 
-async function sighUpReq(
-  name: string,
-  username: string,
-  password: string,
-  email: string
-) {
-  return await fetch(`${config.apiHost}/api/register`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: username,
-      password: password,
-      email: email,
-      name: name,
-    }),
-  });
-}
-
 function SignUp() {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
@@ -37,6 +16,29 @@ function SignUp() {
     firstPass: "",
     secondPass: "",
   });
+
+  async function sighUpReq(
+    name: string,
+    username: string,
+    password: string,
+    email: string
+  ) {
+    return await fetch(`${config.apiHost}/api/register`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        email: email,
+        name: name,
+      }),
+    });
+  }
+
   return (
     <div id="register-container">
       <CustomLink to="/welcome" className="back-icon">

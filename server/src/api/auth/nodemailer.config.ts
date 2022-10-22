@@ -19,7 +19,7 @@ export async function sendConfirmationEmail(email: string, token: string) {
   );
 
   const html = content.replaceAll(
-    "{{TOKEN_LINK}}",
+    "$$TOKEN_LINK$$",
     `http://localhost:3000/auth/confirm/${token}`
   );
 
@@ -40,8 +40,8 @@ export async function sendResetEmail(email: string, token: string) {
   );
 
   const html = content.replaceAll(
-    "{{TOKEN_LINK}}",
-    `http://localhost:3000/login/reset/new/${token}}`
+    "$$TOKEN_LINK$$",
+    `http://localhost:3000/login/reset/new/${token}`
   );
 
   let info = await transporter.sendMail({

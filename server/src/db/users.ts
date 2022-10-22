@@ -42,12 +42,12 @@ export async function changeUserStatus(email: string) {
 }
 
 export async function changeUserPass(details: {
-  id: string;
+  email: string;
   password: string;
 }) {
   const query = {
-    text: `UPDATE users SET password = $1 WHERE id = $2`,
-    values: [details.password, details.id],
+    text: `UPDATE users SET password = $1 WHERE email = $2 RETURNING *`,
+    values: [details.password, details.email],
   };
   const res = await execQuery(query);
   return res.rows[0];

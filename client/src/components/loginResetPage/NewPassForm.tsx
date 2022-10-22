@@ -6,31 +6,54 @@ import config from "../../assets/config";
 function NewPassForm() {
   const content = useRef<HTMLDivElement>(null);
   const [submit, setSubmit] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const [input, setInput] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
-  const firstPassword = useRef<HTMLInputElement | null>(null);
-  const secondPassword = useRef<HTMLInputElement | null>(null);
-  const [animationData, setAnimationData] =
+  const [passwordAnimation, setPasswordAnimation] =
     useState<Record<string | number, any>>();
-  const [authenticated, setAuthenticated] = useState(false);
+  const [successAnimation, setSuccessAnimation] =
+    useState<Record<string | number, any>>();
+  const [newPassword, setNewPassword] = useState({
+    firstPassword: "",
+    secondPassword: "",
+  });
   const { token } = useParams();
 
   useEffect(() => {
-    import("./password.json").then(setAnimationData);
-    fetch(config.apiHost + `login/reset/new/${token}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setAuthenticated(true);
-        } else {
-          navigate("/login");
-        }
-      });
+    fetch(config.apiHost + `/api/login/reset/new/${token}`, {
+      credentials: "include",
+    }).then((res) => {
+      if (!res.ok) {
+        navigate("/login");
+      }
+      import("./password.json").then(setPasswordAnimation);
+    });
   }, []);
 
-  if (!animationData || !authenticated)
+  function resetPasswordReq() {
+    fetch(config.apiHost + `/api/login/reset/new/${token}`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password: newPassword.firstPassword }),
+    }).then(async (res) => {
+      if (res.ok) {
+        import("../confirm/V.json").then(setSuccessAnimation);
+        setSubmit(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      } else {
+        const data = await res.json();
+        setErrorMsg(data.message);
+      }
+    });
+  }
+
+  if (!passwordAnimation)
     return (
       <ul className="loader">
         <li className="loader-item"></li>
@@ -41,28 +64,46 @@ function NewPassForm() {
 
   return (
     <div id="newpass-container">
-      <div id="newpass-content" ref={content}>
+      <div
+        style={submit ? { display: "none" } : {}}
+        id="newpass-content"
+        ref={content}
+      >
         <Lottie
           className="confirm-animation"
-          animationData={animationData}
+          animationData={passwordAnimation}
           play={true}
           loop={true}
         />
         <h1 id="title">New Password</h1>
         <form
-          // autoComplete={"on"}
           role="form"
           className="login-form"
           onSubmit={(e) => {
             e.preventDefault();
+            if (newPassword.firstPassword !== newPassword.secondPassword) {
+              setErrorMsg("The passwords do not match each other");
+            } else {
+              resetPasswordReq();
+            }
           }}
         >
           <div className="inputs">
             <input
               onChange={(e) => {
-                setInput(e.currentTarget.value);
+                setErrorMsg("");
+                const val = e.currentTarget.value;
+                setNewPassword({ ...newPassword, firstPassword: val });
               }}
-              ref={firstPassword}
+              onCopy={(e) => {
+                e.preventDefault();
+              }}
+              onCut={(e) => {
+                e.preventDefault();
+              }}
+              onPaste={(e) => {
+                e.preventDefault();
+              }}
               className="form-input"
               type={showPassword ? "text" : "password"}
               placeholder="New password"
@@ -72,9 +113,22 @@ function NewPassForm() {
             />
             <input
               className="form-input"
+              onChange={(e) => {
+                setErrorMsg("");
+                const val = e.currentTarget.value;
+                setNewPassword({ ...newPassword, secondPassword: val });
+              }}
+              onCopy={(e) => {
+                e.preventDefault();
+              }}
+              onCut={(e) => {
+                e.preventDefault();
+              }}
+              onPaste={(e) => {
+                e.preventDefault();
+              }}
               type={showPassword ? "text" : "password"}
               placeholder="Repeat password"
-              ref={secondPassword}
               required
             />
             <div
@@ -85,24 +139,7 @@ function NewPassForm() {
               Show Password
             </div>
           </div>
-          <button
-            className="submit-btn"
-            type="submit"
-            onClick={() => {
-              if (
-                firstPassword.current?.value !== secondPassword.current?.value
-              ) {
-                setError(true);
-                setSubmit(false);
-              } else {
-                setError(false);
-                setSubmit(true);
-                // setTimeout(() => {
-                //   navigate("/login");
-                // }, 2000);
-              }
-            }}
-          >
+          <button className="submit-btn" type="submit">
             Change Password
           </button>
         </form>
@@ -113,12 +150,18 @@ function NewPassForm() {
           <p>Your password has been successfully changed.</p>
           <p>Redirect to the login page...</p>
         </div>
-        <div
-          className="confirm"
-          style={error ? { display: "unset" } : { display: "none" }}
-        >
-          <p>The passwords do not match each other.</p>
-        </div>
+        <p>{errorMsg}</p>
+      </div>
+      <div style={submit ? {} : { display: "none" }} className="afterSubmit">
+        <Lottie
+          className="confirm-animation"
+          style={{ width: 200 }}
+          animationData={successAnimation}
+          play
+        />
+        <h1>Success!</h1>
+        <p>Now you can log in with the new password you just set.</p>
+        <p>Redirect to the login page...</p>
       </div>
     </div>
   );
