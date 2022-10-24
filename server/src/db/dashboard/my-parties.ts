@@ -30,7 +30,7 @@ export async function addParty(details: {
     ],
   };
   const res = await execQuery(query);
-  const token = jwt.sign({id: res.rows[0].id}, authConfig.secret);
+  const token = jwt.sign({ id: res.rows[0].id }, authConfig.secret);
   const tokenQuery = {
     text: `UPDATE parties SET invite_token = $1 WHERE id = $2 RETURNING *`,
     values: [token, res.rows[0].id],
@@ -100,6 +100,7 @@ export async function getPartyDetailsByID(partyID: string | JwtPayload) {
     values: [partyID],
   };
   const res = await execQuery(query);
+  const partyOwner = await getOwnerNameByID(res.rows[0].owner_id);
   const { entertainment_id, music_id, food_id, general_id, location_id } =
     res.rows[0];
   const partyServices = {
@@ -109,25 +110,29 @@ export async function getPartyDetailsByID(partyID: string | JwtPayload) {
     general: general_id,
     location: location_id,
   };
-  const serviceFunctions = Object.entries(partyServices).map(
-    async ([serviceKey, serviceValue]: any) => {
+  const filteredPartyServices = Object.entries(partyServices).filter(
+    ([serviceKey, serviceValue]) => {
+      serviceValue !== null;
+    }
+  );
+  const serviceFunctions = filteredPartyServices.map(
+    async ([serviceKey, serviceValue]) => {
       const tableName = serviceKey + "_service";
       return await getServiceTitleByID(serviceValue, tableName);
     }
   );
   const servicesIDReq = await Promise.all(serviceFunctions);
   const servicesTitles = Object.assign({}, ...servicesIDReq);
-  const partyOwner = await getOwnerNameByID(res.rows[0].owner_id);
   return {
     title: res.rows[0].title,
     description: res.rows[0].description,
     date: res.rows[0].date,
     partyOwner: partyOwner,
-    entertainmentService: servicesTitles.entertainment_service,
-    musicService: servicesTitles.music_service,
-    foodService: servicesTitles.food_service,
-    generalService: servicesTitles.general_service,
-    locationService: servicesTitles.location_service,
+    entertainmentService: servicesTitles.entertainment_service || "",
+    musicService: servicesTitles.music_service || "",
+    foodService: servicesTitles.food_service || "",
+    generalService: servicesTitles.general_service || "",
+    locationService: servicesTitles.location_service || "",
     photos: res.rows[0].photos,
   };
 }

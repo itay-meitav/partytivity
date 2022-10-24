@@ -7,22 +7,53 @@
   width: 100%;
   gap: 100px;
   background: linear-gradient(
-    darken($color: #a6b1e1, $amount: 6),
-    darken($color: #f4eeff, $amount: 7)
-  );
-  .paper1 {
+      darken($color: #a6b1e1, $amount: 6),
+      darken($color: #f4eeff, $amount: 7)
+    )
+    no-repeat center center fixed;
+  .upperSection {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
-    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 70px 100px 70px 100px;
+    font-weight: lighter;
+    font-size: larger;
     color: white;
-    margin-top: 3%;
-    border-radius: 25px;
-    width: 90%;
-    height: 300px;
-    padding: 35px;
-    background-color: rgba(0, 0, 0, 0.194);
+    .discoBall {
+      position: absolute;
+      right: 10%;
+      top: 0;
+      width: 150px;
+      height: 150px;
+    }
+    .upperLeftSection {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      width: 100%;
+      height: 100%;
+
+      .upperText {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        #begin {
+          font-size: 19pt;
+          font-weight: 500;
+        }
+        #title {
+          font-size: 56pt;
+          font-weight: bold;
+        }
+      }
+    }
+    // background-color: rgba(0, 0, 0, 0.194);
     .invite-animation {
       margin: 0;
       padding: 0;
@@ -31,44 +62,22 @@
       z-index: 999;
     }
   }
-  .paper2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    width: 90%;
-    height: 300px;
-    border-radius: 25px;
-    gap: 30px;
+  .formPaper {
     padding: 35px;
-    background-color: rgba(0, 0, 0, 0.194);
-  }
-  .paper3 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    width: 90%;
-    height: 300px;
-    border-radius: 25px;
-    gap: 30px;
-    padding: 35px;
-    background-color: rgba(0, 0, 0, 0.194);
-  }
-  .paper4 {
-    padding: 25px;
-    width: 75%;
+    width: 70%;
+    height: max-content;
     border-radius: 25px;
     background-color: rgb(255, 255, 255);
     text-align: center;
+    p {
+      margin-bottom: 30px;
+    }
     .form {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      gap: 25px;
+      gap: 15px;
     }
   }
 }

@@ -5,7 +5,7 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import { atom, useRecoilState } from "recoil";
+import { atom, useSetRecoilState } from "recoil";
 
 type TProps = {
   to: string;
@@ -20,8 +20,7 @@ export const linkTransitionState = atom({
 });
 
 const CustomLink = (props: React.PropsWithChildren<TProps>) => {
-  const [linkTransition, setLinkTransition] =
-    useRecoilState(linkTransitionState);
+  const setLinkTransition = useSetRecoilState(linkTransitionState);
   const navigate = useNavigate();
 
   return (

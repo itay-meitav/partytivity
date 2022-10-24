@@ -70,7 +70,7 @@ function SignUp() {
             }
           }}
         >
-          <h1>Sign Up</h1>
+          <h1 style={{ marginBottom: 18 }}>Sign Up</h1>
           <input
             className="form-input"
             type="text"
