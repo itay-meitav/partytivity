@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
   min-height: 100vh;
   width: 100%;
   gap: 100px;
@@ -21,12 +22,25 @@
     font-weight: lighter;
     font-size: larger;
     color: white;
-    .discoBall {
-      position: absolute;
-      right: 10%;
-      top: 0;
-      width: 150px;
-      height: 150px;
+
+    .upperRightSection {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      width: 50%;
+      .discoBall {
+        position: absolute;
+        right: 15%;
+        top: 0;
+      }
+      .partyAnimation {
+        width: 90%;
+        margin: 0;
+        padding: 0;
+        pointer-events: none;
+      }
     }
     .upperLeftSection {
       display: flex;
@@ -34,7 +48,7 @@
       justify-content: center;
       align-items: flex-start;
       gap: 20px;
-      width: 100%;
+      width: 50%;
       height: 100%;
 
       .upperText {
@@ -53,21 +67,13 @@
         }
       }
     }
-    // background-color: rgba(0, 0, 0, 0.194);
-    .invite-animation {
-      margin: 0;
-      padding: 0;
-      width: 300px;
-      pointer-events: none;
-      z-index: 999;
-    }
   }
   .formPaper {
     padding: 35px;
     width: 70%;
     height: max-content;
     border-radius: 25px;
-    background-color: rgb(255, 255, 255);
+    background-color: #eef1ffce;
     text-align: center;
     p {
       margin-bottom: 30px;

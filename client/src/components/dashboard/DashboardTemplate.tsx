@@ -157,14 +157,13 @@ function DashboardTemplate({ children }: React.PropsWithChildren<{}>) {
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-                <Link
-                  to="/dashboard/settings"
-                  style={{ color: "inherit", textDecoration: "inherit" }}
+                <IconButton
+                  color="inherit"
+                  title="User Settings"
+                  onClick={() => navigate("/dashboard/settings")}
                 >
-                  <IconButton color="inherit" title="User Settings">
-                    <ManageAccountsIcon />
-                  </IconButton>
-                </Link>
+                  <ManageAccountsIcon />
+                </IconButton>
                 <IconButton
                   color="inherit"
                   onClick={() => {

@@ -26,32 +26,35 @@ const initialPartyDetails = {
 
 function PartyInvite() {
   const setLinkTransition = useSetRecoilState(linkTransitionState);
-  const [animationData, setAnimationData] =
+  const [sparklesAnimation, setSparklesAnimation] =
+    useState<Record<string | number, any>>();
+  const [partyAnimation, setPartyAnimation] =
     useState<Record<string | number, any>>();
   const [partyDetails, setPartyDetails] = useState(initialPartyDetails);
   const { token } = useParams();
 
   useEffect(() => {
-    (async () => {
-      const req = await fetch(`${config.apiHost}/api/invite`, {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ partyToken: token }),
+    fetch(`${config.apiHost}/api/invite`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ partyToken: token }),
+    })
+      .then(async (res) => await res.json())
+      .then((data) => {
+        data.partyDetails.date = dayjs(data.partyDetails.date).format(
+          "dddd MMMM DD, LT \nDD/MM/YYYY"
+        );
+        setPartyDetails(data.partyDetails);
       });
-      const data = await req.json();
-      data.partyDetails.date = dayjs(data.partyDetails.date).format(
-        "dddd MMMM DD, LT \nDD/MM/YYYY"
-      );
-      setPartyDetails(data.partyDetails);
-      import("./sparkles.json").then(setAnimationData);
-      setLinkTransition("fade-in");
-    })();
+    import("./sparkles.json").then(setSparklesAnimation);
+    import("../welcome/dance-party.json").then(setPartyAnimation);
+    setLinkTransition("fade-in");
   }, []);
 
-  if (!animationData)
+  if (!sparklesAnimation || !partyAnimation)
     return (
       <ul className="loader">
         <li className="loader-item"></li>
@@ -62,24 +65,6 @@ function PartyInvite() {
   return (
     <div className="partyInvite">
       <div className="upperSection">
-        <div className="upperRightSection">
-          <Carousel width={950}>
-            {partyDetails.photos.map((x) => (
-              <div>
-                <img className="d-block w-100 h-100" src={x} alt="Photo" />
-              </div>
-            ))}
-          </Carousel>
-          <div className="discoBall">
-            <img id="discoBallIcon" src={discoBallSvg} />
-            <Lottie
-              style={{ width: 100 }}
-              animationData={animationData}
-              play={true}
-              loop={true}
-            />
-          </div>
-        </div>
         <div className="upperLeftSection">
           <p>If you came here, this is a sign that</p>
           <div className="upperText">
@@ -93,8 +78,33 @@ function PartyInvite() {
           <big style={{ whiteSpace: "pre" }}>{partyDetails.date}</big>
         </div>
         <div className="upperRightSection">
-          {partyDetails.description} <br />
-          <br />
+          <div style={{ height: 150 }} />
+          <div className="discoBall">
+            <img style={{ width: 150, height: 150 }} src={discoBallSvg} />
+            <Lottie
+              style={{ width: 100 }}
+              animationData={sparklesAnimation}
+              play
+              loop
+            />
+          </div>
+          {partyDetails.photos.length ? (
+            <Carousel width={950}>
+              {partyDetails.photos.map((x) => (
+                <div>
+                  <img className="d-block w-100 h-100" src={x} alt="Photo" />
+                </div>
+              ))}
+            </Carousel>
+          ) : (
+            <Lottie
+              className="partyAnimation"
+              animationData={partyAnimation}
+              play={true}
+              loop={true}
+            />
+          )}
+          {/* <p>{partyDetails.description}</p>
           Place: {partyDetails.locationService || "currently none"}
           <br />
           Music by: {partyDetails.musicService || "currently none"}
@@ -102,10 +112,9 @@ function PartyInvite() {
           Food by: {partyDetails.foodService || "currently none"}
           <br />
           On the artistic part:{" "}
-          {partyDetails.entertainmentService || "currently none"}
+          {partyDetails.entertainmentService || "currently none"} */}
         </div>
       </div>
-
       <PartyInviteForm />
       <PartyInviteFooter />
     </div>

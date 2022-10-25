@@ -1,17 +1,19 @@
 import { Button, Grid, IconButton, Paper, Link, Stack } from "@mui/material";
 import DashboardTemplate from "../../dashboard/DashboardTemplate";
 import BasicInformation from "./BasicInformation";
-import AddServices, { addServicesInputsState } from "./AddServices";
+import ServicesMain, {
+  addServicesInputsState,
+} from "./addServices/ServicesMain";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../dashboard/Title";
-import { Link as Rlink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   atom,
   useRecoilState,
   useRecoilValue,
   useResetRecoilState,
 } from "recoil";
-import ServiceInput from "./ServiceInput";
+import ServiceInputs from "./addServices/ServiceInputs";
 import { Dayjs } from "dayjs";
 import { useEffect } from "react";
 
@@ -39,6 +41,7 @@ function NewParty() {
   const [serviceTypes, setServiceTypes] = useRecoilState<string[]>(
     addServicesInputsState
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem("details", JSON.stringify(partyDetails));
@@ -47,15 +50,15 @@ function NewParty() {
   function switchCaseService(serviceType: string, i: number) {
     switch (serviceType) {
       case "Entertainment Service":
-        return <ServiceInput serviceType={"Entertainment Service"} key={i} />;
+        return <ServiceInputs serviceType={"Entertainment Service"} key={i} />;
       case "Food Service":
-        return <ServiceInput serviceType={"Food Service"} key={i} />;
+        return <ServiceInputs serviceType={"Food Service"} key={i} />;
       case "Music Service":
-        return <ServiceInput serviceType={"Music Service"} key={i} />;
+        return <ServiceInputs serviceType={"Music Service"} key={i} />;
       case "General Service":
-        return <ServiceInput serviceType={"General Service"} key={i} />;
+        return <ServiceInputs serviceType={"General Service"} key={i} />;
       case "Location Service":
-        return <ServiceInput serviceType={"Location Service"} key={i} />;
+        return <ServiceInputs serviceType={"Location Service"} key={i} />;
     }
   }
 
@@ -73,28 +76,24 @@ function NewParty() {
             alignItems={"center"}
           >
             <Title style={{ marginBottom: 20 }}>New Party</Title>
-            <Rlink
-              style={{ color: "inherit", textDecoration: "inherit" }}
-              to="/dashboard/my-parties/"
+            <IconButton
+              size="small"
+              style={{ marginBottom: 15 }}
+              aria-label="back"
+              onClick={() => navigate("/dashboard/my-parties/")}
             >
-              <IconButton
-                size="small"
-                style={{ marginBottom: 15 }}
-                aria-label="back"
-              >
-                <ArrowForwardIcon />
-              </IconButton>
-            </Rlink>
+              <ArrowForwardIcon />
+            </IconButton>
           </Stack>
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              window.location.pathname = "/dashboard/my-parties/new/photos";
+              navigate("/dashboard/my-parties/new/photos");
             }}
           >
             <Stack direction="column" spacing={5}>
               <BasicInformation />
-              <AddServices />
+              <ServicesMain />
               <Stack
                 direction="column"
                 justifyContent={"flex-start"}

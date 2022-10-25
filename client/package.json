@@ -19,7 +19,6 @@
     "@types/react-router-dom": "^5.3.3",
     "bootstrap": "^5.2.0",
     "dayjs": "^1.11.5",
-    "holderjs": "^2.9.9",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
@@ -68,8 +67,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/holderjs": "^2.9.2"
   }
 }

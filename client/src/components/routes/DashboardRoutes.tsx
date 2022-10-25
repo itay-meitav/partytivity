@@ -9,7 +9,7 @@ import Photos from "../photos/Photos";
 import MyParties from "../my-parties/MyParties";
 import UserSettings from "../userSettings/UserSettings";
 import NewParty from "../my-parties/new party/NewParty";
-import NewPartyPhotos from "../my-parties/new party/NewPartyPhotos";
+import PhotosMain from "../my-parties/new party/addPhotos/PhotosMain";
 
 export const DashboardRoutes = [
   { element: <Dashboard />, index: true },
@@ -22,7 +22,7 @@ export const DashboardRoutes = [
         path: "new",
         children: [
           { element: <NewParty />, index: true },
-          { path: "photos", element: <NewPartyPhotos /> },
+          { path: "photos", element: <PhotosMain /> },
         ],
       },
     ],

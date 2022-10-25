@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { addServicesInputsState } from "./AddServices";
+import { addServicesInputsState } from "./ServicesMain";
 import { useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
-import config from "../../../assets/config";
+import config from "../../../../assets/config";
 import { Typography } from "@mui/material";
-import { partyDetailsState } from "./NewParty";
+import { partyDetailsState } from "../NewParty";
 
 type Tprops = {
   serviceType: string;
 };
 
-function ServiceInput(props: Tprops) {
+function ServiceInputs(props: Tprops) {
   const key = props.serviceType
     .replace(" ", "")
     .toLowerCase()
@@ -148,4 +148,4 @@ function ServiceInput(props: Tprops) {
   );
 }
 
-export default ServiceInput;
+export default ServiceInputs;

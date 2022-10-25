@@ -24,7 +24,7 @@ export const addServicesInputsState = atom({
   default: [] as string[],
 });
 
-function AddServices() {
+function ServicesMain() {
   const [msg, setMsg] = useState<boolean>(false);
   const [markedService, setMarkedService] = useState<string>("");
   const [serviceType, setServiceType] = useRecoilState<string[]>(
@@ -107,4 +107,4 @@ function AddServices() {
   );
 }
 
-export default AddServices;
+export default ServicesMain;
