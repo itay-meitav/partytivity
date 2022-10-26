@@ -8,8 +8,8 @@ import Providers from "../providers/Providers";
 import Photos from "../photos/Photos";
 import MyParties from "../my-parties/MyParties";
 import UserSettings from "../userSettings/UserSettings";
-import NewParty from "../my-parties/new party/NewParty";
-import PhotosMain from "../my-parties/new party/addPhotos/PhotosMain";
+import NewParty from "../my-parties/new-party/NewParty";
+import PhotosMain from "../my-parties/new-party/addPhotos/PhotosMain";
 
 export const DashboardRoutes = [
   { element: <Dashboard />, index: true },

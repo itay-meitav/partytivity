@@ -14,34 +14,13 @@ import Container from "@mui/material/Container";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems, secondaryListItems } from "./listItems";
-import CustomLink from "../Link";
 import hat from "../../assets/icons/hatSvg.svg";
 import { Icon, Stack } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import config from "../../assets/config";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <CustomLink
-        style={{ color: "inherit", textDecoration: "inherit" }}
-        to="/"
-      >
-        Partytivity
-      </CustomLink>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import PartyInviteFooter from "../partyInvite/PartyInviteFooter";
 
 const drawerWidth: number = 240;
 
@@ -224,7 +203,7 @@ function DashboardTemplate({ children }: React.PropsWithChildren<{}>) {
             <Toolbar />
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               {children}
-              <Copyright sx={{ pt: 4 }} />
+              <PartyInviteFooter style={{ marginTop: 30 }} />
             </Container>
           </Box>
         </Box>

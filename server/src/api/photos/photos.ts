@@ -95,8 +95,6 @@ router.post("/", isAuthenticated, async (req, res) => {
         uploadArr.push(res.url)
       );
     }
-    console.log(uploadArr);
-
     return res.json({
       message: "Files Uploaded!",
       files: uploadArr,

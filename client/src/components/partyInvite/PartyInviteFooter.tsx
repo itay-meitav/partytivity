@@ -3,11 +3,14 @@ import hat from "../../assets/icons/hat.png";
 import React from "react";
 import CustomLink from "../Link";
 
-function PartyInviteFooter() {
+type Tprops = {
+  style?: React.CSSProperties;
+};
+function PartyInviteFooter(props: Tprops) {
   return (
     <>
       <Typography
-        style={{ marginBottom: 50 }}
+        style={{ ...props.style, marginBottom: 30 } || { marginBottom: 30 }}
         variant="body2"
         color="text.secondary"
         align="center"
