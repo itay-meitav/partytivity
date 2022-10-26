@@ -15,6 +15,25 @@ function PhotosButtons() {
   });
 
   async function submitFiles() {
+    if (partyDetails.photos.length) {
+      const names = JSON.parse(localStorage.getItem("names")!);
+      fetch(`${config.apiHost}/api/photos/remove`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ photos: names }),
+      }).then((res) => {
+        if (!res.ok) {
+          setSettings({
+            ...settings,
+            errorMessage: "There is a problem with changing the images.",
+          });
+        }
+      });
+    }
     const req = await fetch(`${config.apiHost}/api/photos`, {
       method: "post",
       credentials: "include",
@@ -22,6 +41,7 @@ function PhotosButtons() {
     });
     const data = await req.json();
     if (data.success) {
+      localStorage.setItem("names", JSON.stringify(data.names));
       setPartyDetails({ ...partyDetails, photos: data.files });
       // localStorage.setItem("src", JSON.stringify(data.files.map((x: any) =>
       //     x.path.replaceAll("src", `http:${config.apiHost}`)
@@ -70,19 +90,23 @@ function PhotosButtons() {
               onChange={(e: any) => {
                 if (e.target.files.length > 4) {
                   setSettings({
-                    ...settings,
+                    errorMessage: "",
                     disable: true,
                     tooltipMessage: true,
                   });
                   setTimeout(() => {
                     setSettings({
-                      ...settings,
+                      errorMessage: "",
                       disable: true,
                       tooltipMessage: false,
                     });
                   }, 3000);
                 } else {
-                  setSettings({ ...settings, disable: false });
+                  setSettings({
+                    ...settings,
+                    errorMessage: "",
+                    disable: false,
+                  });
                   const formData = new FormData();
                   for (let i = 0; i < e.target.files.length; i++) {
                     formData.append("files", e.target.files[i]);

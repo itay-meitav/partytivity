@@ -11,9 +11,9 @@ export async function isAuthenticated(
   if (cookie) {
     try {
       jwt.verify(cookie, authConfig.secret);
-      next();
+      return next();
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: "Internal Server Error",
       });

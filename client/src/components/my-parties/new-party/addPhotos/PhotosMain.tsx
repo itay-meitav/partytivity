@@ -1,8 +1,8 @@
 import { Button, Grid, Paper, Stack } from "@mui/material";
 import DashboardTemplate from "../../../dashboard/DashboardTemplate";
 import config from "../../../../assets/config";
-import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { partyDetailsState } from "../NewParty";
 import PhotosCarousel from "./PhotosCarousel";
 import PhotosHeader from "./PhotosHeader";
@@ -11,6 +11,7 @@ import Lottie from "react-lottie-player";
 
 function PhotosMain() {
   const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
+  const resetPartyDetails = useResetRecoilState(partyDetailsState);
   const [submit, setSubmit] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [animationData, setAnimationData] =
@@ -29,6 +30,8 @@ function PhotosMain() {
       }),
     }).then(async (res) => {
       if (res.ok) {
+        resetPartyDetails();
+        localStorage.removeItem("names");
         setSubmit(true);
         import("../V.json").then(setAnimationData);
       } else {
@@ -43,28 +46,29 @@ function PhotosMain() {
       <Grid item xs={12}>
         <Paper
           style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
             backgroundColor: submit ? "#e7e8fd" : "",
             minWidth: "max-content",
+            minHeight: "400px",
+            padding: 20,
             paddingBottom: submit ? 50 : 20,
           }}
-          sx={{ p: 2, display: "flex", flexDirection: "column" }}
           elevation={2}
         >
           <Stack
-            style={submit ? {} : { display: "none" }}
-            alignItems={"center"}
-            justifyContent={"center"}
-            spacing={3}
+            justifyContent="center"
+            alignItems="center"
+            style={{ textAlign: "center", display: submit ? "" : "none" }}
+            spacing={2}
           >
             {!animationData ? (
-              <div className="main">
-                <div className="center-section">
-                  <ul className="loader">
-                    <li className="loader-item"></li>
-                    <li className="loader-item"></li>
-                    <li className="loader-item"></li>
-                  </ul>
-                </div>
+              <div className="loader">
+                <div className="loader-item" />
+                <div className="loader-item" />
+                <div className="loader-item" />
               </div>
             ) : (
               <>
@@ -77,9 +81,7 @@ function PhotosMain() {
                 <h1 style={{ fontWeight: "bolder", fontSize: "56px" }}>
                   Success!
                 </h1>
-                <p style={{}}>
-                  The new party has been added to your event list.
-                </p>
+                <p>The new party has been added to your event list.</p>
                 <p>Redirect to dashboard...</p>
               </>
             )}
@@ -88,14 +90,17 @@ function PhotosMain() {
             style={submit ? { display: "none" } : {}}
             alignItems={"space-between"}
             justifyContent={"center"}
+            width={"100%"}
             spacing={5}
           >
             <PhotosHeader />
-            {!partyDetails.photos.length ? (
-              <PhotosCarousel />
-            ) : (
-              <PhotosCarousel sources={partyDetails.photos} />
-            )}
+            <div style={{ alignSelf: "center" }}>
+              {!partyDetails.photos.length ? (
+                <PhotosCarousel />
+              ) : (
+                <PhotosCarousel sources={partyDetails.photos} />
+              )}
+            </div>
             <div
               style={{
                 display: "flex",

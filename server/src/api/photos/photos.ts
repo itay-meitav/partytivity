@@ -64,7 +64,8 @@ async function checkFileType(file, cb) {
 
 router.post("/", isAuthenticated, async (req, res) => {
   upload(req, res, async (err) => {
-    let uploadArr = [];
+    let uploadsLinksArr = [];
+    let uploadsNamesArr = [];
     if (err) {
       if (err.name == "LIMIT_FILE_TYPES") {
         return res
@@ -91,16 +92,44 @@ router.post("/", isAuthenticated, async (req, res) => {
       const element = req.files[i];
       let buffer = await sharp(element.path).resize(800, 400).toBuffer();
       await sharp(buffer).toFile(element.path);
-      await cloudinaryUploader(element.path).then((res) =>
-        uploadArr.push(res.url)
-      );
     }
+    const cloudUpload = (req.files as any[]).map(async (file) => {
+      await cloudinaryUploader(file.path).then((res) => {
+        uploadsNamesArr.push(res.public_id);
+        uploadsLinksArr.push(res.url);
+      });
+    });
+    await Promise.all(cloudUpload);
     return res.json({
       message: "Files Uploaded!",
-      files: uploadArr,
+      files: uploadsLinksArr,
+      names: uploadsNamesArr,
       // files: req.files,
       success: true,
     });
+  });
+});
+
+router.post("/remove", isAuthenticated, async (req, res) => {
+  if (req.body.photos) {
+    const deleteFromCloud = req.body.photos.map(async (fileName) => {
+      return await cloudinary.v2.uploader.destroy(fileName, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            message: err,
+            success: false,
+          });
+        }
+      });
+    });
+    await Promise.all(deleteFromCloud);
+    return res.json({
+      success: true,
+    });
+  }
+  return res.status(500).json({
+    success: false,
   });
 });
 
