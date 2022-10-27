@@ -56,11 +56,11 @@ function PartyInvite() {
 
   if (!sparklesAnimation || !partyAnimation)
     return (
-      <ul className="loader">
-        <li className="loader-item"></li>
-        <li className="loader-item"></li>
-        <li className="loader-item"></li>
-      </ul>
+      <div className="loader loaderCenter">
+        <div className="loader-item"></div>
+        <div className="loader-item"></div>
+        <div className="loader-item"></div>
+      </div>
     );
   return (
     <div className="partyInvite">

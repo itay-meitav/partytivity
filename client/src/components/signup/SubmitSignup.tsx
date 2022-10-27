@@ -18,11 +18,11 @@ function SubmitSignup() {
 
   if (!animationData)
     return (
-      <ul className="loader">
-        <li className="loader-item"></li>
-        <li className="loader-item"></li>
-        <li className="loader-item"></li>
-      </ul>
+      <div className="loader loaderCenter">
+        <div className="loader-item"></div>
+        <div className="loader-item"></div>
+        <div className="loader-item"></div>
+      </div>
     );
   return (
     <div id="submit-container">

@@ -1,9 +1,10 @@
-import { Button, Stack } from "@mui/material";
+import { Button, IconButton, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useRecoilState } from "recoil";
 import config from "../../../../assets/config";
 import { partyDetailsState } from "../NewParty";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function PhotosButtons() {
   const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
@@ -13,6 +14,10 @@ function PhotosButtons() {
     tooltipMessage: false,
     disable: false,
   });
+
+  useEffect(() => {
+    localStorage.setItem("details", JSON.stringify(partyDetails));
+  }, [partyDetails]);
 
   async function submitFiles() {
     if (partyDetails.photos.length) {
@@ -42,8 +47,11 @@ function PhotosButtons() {
     });
     const data = await req.json();
     if (data.success) {
+      console.log(data.files);
+
       localStorage.setItem("names", JSON.stringify(data.names));
       setPartyDetails({ ...partyDetails, photos: data.files });
+      console.log(partyDetails);
       // localStorage.setItem("src", JSON.stringify(data.files.map((x: any) =>
       //     x.path.replaceAll("src", `http:${config.apiHost}`)
       //     )
@@ -65,8 +73,39 @@ function PhotosButtons() {
         direction="row"
         justifyContent={"flex-start"}
         alignItems={"center"}
-        spacing={2}
+        spacing={1}
       >
+        <IconButton
+          onClick={() => {
+            const names = JSON.parse(localStorage.getItem("names")!);
+            fetch(`${config.apiHost}/api/photos/remove`, {
+              method: "post",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+              body: JSON.stringify({ photos: names }),
+            }).then((res) => {
+              if (!res.ok) {
+                setSettings({
+                  ...settings,
+                  errorMessage: "There is a problem with deleting the images.",
+                });
+              } else {
+                setPartyDetails({
+                  ...partyDetails,
+                  photos: [],
+                });
+                localStorage.removeItem("names");
+              }
+            });
+          }}
+          size="large"
+          aria-label="delete"
+        >
+          <DeleteIcon />
+        </IconButton>
         <OverlayTrigger
           placement="top"
           show={settings.tooltipMessage}

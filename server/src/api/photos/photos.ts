@@ -112,21 +112,17 @@ router.post("/", isAuthenticated, async (req, res) => {
 
 router.post("/remove", isAuthenticated, async (req, res) => {
   if (req.body.photos) {
-    const deleteFromCloud = req.body.photos.map(async (fileName) => {
-      return await cloudinary.v2.uploader.destroy(fileName, (err) => {
-        if (err) {
-          console.log(err);
-          return res.status(500).json({
-            message: err,
-            success: false,
-          });
-        }
+    try {
+      cloudinary.v2.api.delete_resources(req.body.photos);
+      return res.json({
+        success: true,
       });
-    });
-    await Promise.all(deleteFromCloud);
-    return res.json({
-      success: true,
-    });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+      });
+    }
   }
   return res.status(500).json({
     success: false,

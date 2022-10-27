@@ -19,14 +19,10 @@ function Unknown() {
 
   if (!animationData)
     return (
-      <div className="main">
-        <div className="center-section">
-          <ul className="loader">
-            <li className="loader-item"></li>
-            <li className="loader-item"></li>
-            <li className="loader-item"></li>
-          </ul>
-        </div>
+      <div className="loader loaderCenter">
+        <div className="loader-item"></div>
+        <div className="loader-item"></div>
+        <div className="loader-item"></div>
       </div>
     );
   return (

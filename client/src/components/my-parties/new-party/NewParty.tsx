@@ -19,7 +19,7 @@ import { useEffect } from "react";
 
 export const partyDetailsState = atom({
   key: "partyDetails",
-  default: {
+  default: JSON.parse(localStorage.getItem("details")!) || {
     title: "" as string,
     des: "" as string,
     date: null as Dayjs | null,

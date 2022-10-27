@@ -1,7 +1,6 @@
 import { Button, Grid, Modal, Paper, Stack, Typography } from "@mui/material";
 import DashboardTemplate from "../../../dashboard/DashboardTemplate";
-import config from "../../../../assets/config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { partyDetailsState } from "../NewParty";
 import PhotosCarousel from "./PhotosCarousel";
@@ -9,6 +8,7 @@ import PhotosHeader from "./PhotosHeader";
 import PhotosButtons from "./PhotosButtons";
 import Lottie from "react-lottie-player";
 import { useNavigate } from "react-router-dom";
+import config from "../../../../assets/config";
 
 function PhotosMain() {
   const partyDetails = useRecoilValue(partyDetailsState);
@@ -66,7 +66,7 @@ function PhotosMain() {
             justifyContent="center"
             alignItems="center"
             style={{ textAlign: "center", display: submit ? "" : "none" }}
-            spacing={2}
+            spacing={3}
           >
             {!animationData ? (
               <div className="loader">
@@ -91,19 +91,19 @@ function PhotosMain() {
                     variant="outlined"
                     color="secondary"
                     onClick={() => {
-                      navigate(`${config.host}/invite/${partyToken}`);
+                      navigate(`/invite/${partyToken}`);
                     }}
                   >
-                    Get me in!
+                    Get me in
                   </Button>
                   <Button
                     variant="outlined"
                     color="secondary"
                     onClick={() => {
-                      navigate(`${config.host}/dashboard`);
+                      navigate("/dashboard");
                     }}
                   >
-                    Back to dashboard
+                    dashboard
                   </Button>
                 </Stack>
               </>
