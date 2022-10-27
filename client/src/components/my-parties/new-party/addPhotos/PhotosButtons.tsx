@@ -31,6 +31,7 @@ function PhotosButtons() {
             ...settings,
             errorMessage: "There is a problem with changing the images.",
           });
+          return;
         }
       });
     }

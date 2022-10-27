@@ -24,20 +24,36 @@ router.get("/", isAuthenticated, async (req: Request, res: Response) => {
 });
 
 router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
-  const serviceFunctions = Object.entries(req.body.services).map(
-    async ([serviceKey, serviceValue]: any) => {
-      const tableName = serviceKey.toLowerCase().replace("service", "_service");
-      return await getServiceIDByTitle(serviceValue, tableName);
-    }
-  );
-  const servicesIDReq = await Promise.all(serviceFunctions);
-  const servicesID = Object.assign({}, ...servicesIDReq);
   const token = req.cookies.token;
   const { id } = jwt.verify(token, authConfig.secret) as JwtPayload;
+  let servicesID = {
+    location_service: null,
+    music_service: null,
+    food_service: null,
+    entertainment_service: null,
+    general_service: null,
+  };
+  if (req.body.services) {
+    const filteredPartyServices = Object.entries(req.body.services).filter(
+      ([serviceKey, serviceValue]) => {
+        serviceValue !== null;
+      }
+    );
+    const serviceFunctions = filteredPartyServices.map(
+      async ([serviceKey, serviceValue]: any) => {
+        const tableName = serviceKey
+          .toLowerCase()
+          .replace("service", "_service");
+        return await getServiceIDByTitle(serviceValue, tableName);
+      }
+    );
+    const servicesIDReq = await Promise.all(serviceFunctions);
+    servicesID = Object.assign(servicesID, ...servicesIDReq);
+  }
   try {
     addParty({
       title: req.body.title,
-      description: req.body.description,
+      description: req.body.description || "",
       date: req.body.date,
       ownerId: Number(id),
       locationID: servicesID.location_service,
@@ -45,6 +61,7 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
       foodID: servicesID.food_service,
       entertainmentID: servicesID.entertainment_service,
       generalID: servicesID.general_service,
+      photos: req.body.photos || [],
     }).then((partyToken) => {
       return res.json({ success: true, partyToken: partyToken });
     });
