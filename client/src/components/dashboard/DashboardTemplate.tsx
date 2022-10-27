@@ -18,7 +18,7 @@ import hat from "../../assets/icons/hatSvg.svg";
 import { Icon, Stack } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import PartyInviteFooter from "../partyInvite/PartyInviteFooter";
 
@@ -74,7 +74,7 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 
-function DashboardTemplate({ children }: React.PropsWithChildren<{}>) {
+function DashboardTemplate() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -202,7 +202,7 @@ function DashboardTemplate({ children }: React.PropsWithChildren<{}>) {
           >
             <Toolbar />
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-              {children}
+              <Outlet />
               <PartyInviteFooter style={{ marginTop: 30 }} />
             </Container>
           </Box>

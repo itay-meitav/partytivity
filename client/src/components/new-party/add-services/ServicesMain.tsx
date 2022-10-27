@@ -6,9 +6,10 @@ import {
   ListItemText,
   MenuItem,
   Select,
+  Stack,
   Typography,
 } from "@mui/material";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import ServiceInputs from "./ServiceInputs";
 import { addServicesInputsState } from "../globalStates";
@@ -24,27 +25,12 @@ const services = [
 function ServicesMain() {
   const [msg, setMsg] = useState<boolean>(false);
   const [markedService, setMarkedService] = useState<string>("");
-  const [serviceType, setServiceType] = useRecoilState<string[]>(
+  const [addServicesInput, setAddServicesInput] = useRecoilState(
     addServicesInputsState
   );
 
-  function switchCaseService(serviceType: string, i: number) {
-    switch (serviceType) {
-      case "Entertainment Service":
-        return <ServiceInputs serviceType={"entertainmentService"} key={i} />;
-      case "Food Service":
-        return <ServiceInputs serviceType={"foodService"} key={i} />;
-      case "Music Service":
-        return <ServiceInputs serviceType={"musicService"} key={i} />;
-      case "General Service":
-        return <ServiceInputs serviceType={"generalService"} key={i} />;
-      case "Location Service":
-        return <ServiceInputs serviceType={"locationService"} key={i} />;
-    }
-  }
-
   return (
-    <div>
+    <Stack alignItems={"flex-start"} justifyContent={"flex-start"} spacing={5}>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         Services
       </Typography>
@@ -85,8 +71,7 @@ function ServicesMain() {
           show={msg}
           overlay={
             <Tooltip id="button-tooltip-2">
-              At this stage you can add up to 5 services only, as well as <br />
-              one service of each type. You will be able to add more later.
+              You can add one service of each type
             </Tooltip>
           }
         >
@@ -97,26 +82,24 @@ function ServicesMain() {
             size="small"
             type="button"
             onClick={() => {
-              if (markedService) {
-                if (serviceType.length < 5) {
-                  if (!serviceType.find((x) => x == markedService)) {
-                    setServiceType([...serviceType, markedService]);
-                  } else {
-                    setMsg(true);
-                    setTimeout(() => {
-                      setMsg(false);
-                    }, 4000);
-                  }
-                }
+              if (addServicesInput.find((x) => x == markedService)) {
+                setMsg(true);
+                setTimeout(() => {
+                  setMsg(false);
+                }, 3000);
+              } else {
+                setAddServicesInput([...addServicesInput, markedService]);
               }
-              return false;
             }}
           >
             Add New Service
           </Button>
         </OverlayTrigger>
       </FormControl>
-    </div>
+      {addServicesInput.map((x, i) => (
+        <ServiceInputs serviceType={x} key={i} />
+      ))}
+    </Stack>
   );
 }
 

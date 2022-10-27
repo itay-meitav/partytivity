@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { addServicesInputsState, partyDetailsState } from "../globalStates";
 import config from "../../../assets/config";
 
@@ -12,15 +12,15 @@ type Tprops = {
 };
 
 function ServiceInputs(props: Tprops) {
-  const [servicesList, setServicesList] = useState<string[]>([]);
+  const key = props.serviceType.toLowerCase().replace(" service", "Service");
   const [show, setShow] = useState(false);
-  const [serviceType, setServiceType] = useRecoilState(addServicesInputsState);
-  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
-  const [inputVal, setInputVal] = useState(
-    JSON.parse(localStorage.getItem("details")!)[props.serviceType] || ""
+  const [addServicesInput, setAddServicesInput] = useRecoilState(
+    addServicesInputsState
   );
+  const [servicesList, setServicesList] = useState<string[]>([]);
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const filteredOptions = servicesList.filter((service) =>
-    service.toLowerCase().includes(inputVal.toLowerCase())
+    service.toLowerCase().includes(partyDetails.services[key].toLowerCase())
   );
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function ServiceInputs(props: Tprops) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ serviceType: props.serviceType }),
+      body: JSON.stringify({ serviceType: key }),
     })
       .then(async (res) => {
         const data = await res.json();
@@ -46,19 +46,14 @@ function ServiceInputs(props: Tprops) {
   }, [filteredOptions]);
 
   return (
-    <div>
-      <Typography
-        variant="body2"
-        style={{ marginLeft: 7, padding: 0 }}
-        color="text.secondary"
-      >
+    <Stack justifyContent={"flex-start"} alignItems={"flex-start"} spacing={2}>
+      <Typography variant="body2" color="text.secondary">
         {props.serviceType}
       </Typography>
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           alignItems: "center",
           gap: 10,
         }}
@@ -72,23 +67,28 @@ function ServiceInputs(props: Tprops) {
               type="search"
               className="me-1 shadow-none"
               placeholder={props.serviceType}
-              value={inputVal}
+              value={partyDetails.services[key]}
               onFocus={() => setShow(true)}
               onChange={(e) => {
                 const val = e.currentTarget.value;
-                setInputVal(val);
-              }}
-              onBlur={(e) => {
-                const val = e.currentTarget.value;
-                if (servicesList.filter((x) => x == val).length) {
-                  return false;
-                }
-                setInputVal("");
                 setPartyDetails({
                   ...partyDetails,
                   services: {
                     ...partyDetails.services,
-                    [props.serviceType]: "",
+                    [key]: val,
+                  },
+                });
+              }}
+              onBlur={(e) => {
+                const val = e.currentTarget.value;
+                if (addServicesInput.filter((x) => x == val).length) {
+                  return false;
+                }
+                setPartyDetails({
+                  ...partyDetails,
+                  services: {
+                    ...partyDetails.services,
+                    [key]: "",
                   },
                 });
               }}
@@ -110,12 +110,11 @@ function ServiceInputs(props: Tprops) {
                     type="button"
                     as="button"
                     onClick={() => {
-                      setInputVal(x);
                       setPartyDetails({
                         ...partyDetails,
                         services: {
                           ...partyDetails.services,
-                          [props.serviceType]: x,
+                          [key]: x,
                         },
                       });
                       setShow(false);
@@ -136,7 +135,9 @@ function ServiceInputs(props: Tprops) {
             alignItems: "center",
           }}
           onClick={() => {
-            setServiceType(serviceType.filter((x) => x !== props.serviceType));
+            setAddServicesInput(
+              addServicesInput.filter((x) => x !== props.serviceType)
+            );
           }}
           aria-label="delete"
           size="medium"
@@ -144,7 +145,7 @@ function ServiceInputs(props: Tprops) {
           <DeleteIcon />
         </IconButton>
       </div>
-    </div>
+    </Stack>
   );
 }
 

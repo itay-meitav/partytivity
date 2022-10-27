@@ -10,6 +10,7 @@ import PartyInvite from "../partyInvite/PartyInvite";
 import config from "../../assets/config";
 import { WelcomeRoutes } from "./WelcomeRoutes";
 import { DashboardRoutes } from "./DashboardRoutes";
+import DashboardTemplate from "../dashboard/DashboardTemplate";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/welcome" /> },
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
+    element: <DashboardTemplate />,
     loader: async () => {
       const req = await fetch(`${config.apiHost}/login`, {
         credentials: "include",
