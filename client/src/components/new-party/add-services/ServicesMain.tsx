@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { atom, useRecoilState } from "recoil";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import ServiceInputs from "./ServiceInputs";
+import { addServicesInputsState } from "../globalStates";
 
 const services = [
   "Location Service",
@@ -19,19 +21,30 @@ const services = [
   "General Service",
 ];
 
-export const addServicesInputsState = atom({
-  key: "service",
-  default: [] as string[],
-});
-
 function ServicesMain() {
   const [msg, setMsg] = useState<boolean>(false);
   const [markedService, setMarkedService] = useState<string>("");
   const [serviceType, setServiceType] = useRecoilState<string[]>(
     addServicesInputsState
   );
+
+  function switchCaseService(serviceType: string, i: number) {
+    switch (serviceType) {
+      case "Entertainment Service":
+        return <ServiceInputs serviceType={"entertainmentService"} key={i} />;
+      case "Food Service":
+        return <ServiceInputs serviceType={"foodService"} key={i} />;
+      case "Music Service":
+        return <ServiceInputs serviceType={"musicService"} key={i} />;
+      case "General Service":
+        return <ServiceInputs serviceType={"generalService"} key={i} />;
+      case "Location Service":
+        return <ServiceInputs serviceType={"locationService"} key={i} />;
+    }
+  }
+
   return (
-    <>
+    <div>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         Services
       </Typography>
@@ -103,7 +116,7 @@ function ServicesMain() {
           </Button>
         </OverlayTrigger>
       </FormControl>
-    </>
+    </div>
   );
 }
 

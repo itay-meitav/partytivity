@@ -1,12 +1,5 @@
-import React from "react";
-import DashboardTemplate from "../dashboard/DashboardTemplate";
-
 function Recommendations() {
-  return (
-    <DashboardTemplate>
-      <div>Recommendations</div>
-    </DashboardTemplate>
-  );
+  return <div>Recommendations</div>;
 }
 
 export default Recommendations;

@@ -1,19 +1,11 @@
 require("dotenv").config({ path: __dirname + "/../../.env" });
-import { Pool } from "pg";
 import { addParty } from "./dashboard/my-parties";
 import { addUser } from "./users";
 import * as chrono from "chrono-node";
 import bcrypt from "bcrypt";
+import { pool } from "./general";
 import { insertExampleServices } from "./servicesExample";
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-pool.connect();
 initDB();
 
 async function initDB() {

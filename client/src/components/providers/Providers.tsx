@@ -2,40 +2,37 @@ import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
-import DashboardTemplate from "../dashboard/DashboardTemplate";
 import { Grid, IconButton, Paper } from "@mui/material";
 import Title from "../dashboard/Title";
 
 function Providers() {
   return (
-    <DashboardTemplate>
-      <Grid item xs={12}>
-        <Paper
-          style={{ minWidth: "max-content" }}
-          sx={{ p: 2, display: "flex", flexDirection: "column" }}
-          elevation={2}
-        >
-          <Title style={{ marginBottom: 20 }}>Providers</Title>
-          <ImageList cols={3}>
-            {itemData.map((item) => (
-              <ImageListItem key={item.img}>
-                <img
-                  src={`${item.img}?w=248&fit=crop&auto=format`}
-                  srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                  alt={item.title}
-                  loading="lazy"
-                />
-                <ImageListItemBar
-                  title={item.title}
-                  subtitle={<span>by: {item.author}</span>}
-                  position="below"
-                />
-              </ImageListItem>
-            ))}
-          </ImageList>
-        </Paper>
-      </Grid>
-    </DashboardTemplate>
+    <Grid item xs={12}>
+      <Paper
+        style={{ minWidth: "max-content" }}
+        sx={{ p: 2, display: "flex", flexDirection: "column" }}
+        elevation={2}
+      >
+        <Title style={{ marginBottom: 20 }}>Providers</Title>
+        <ImageList cols={3}>
+          {itemData.map((item) => (
+            <ImageListItem key={item.img}>
+              <img
+                src={`${item.img}?w=248&fit=crop&auto=format`}
+                srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                alt={item.title}
+                loading="lazy"
+              />
+              <ImageListItemBar
+                title={item.title}
+                subtitle={<span>by: {item.author}</span>}
+                position="below"
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Paper>
+    </Grid>
   );
 }
 

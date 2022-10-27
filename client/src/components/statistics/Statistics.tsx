@@ -1,12 +1,5 @@
-import React from "react";
-import DashboardTemplate from "../dashboard/DashboardTemplate";
-
 function Statistics() {
-  return (
-    <DashboardTemplate>
-      <div>Statistics</div>
-    </DashboardTemplate>
-  );
+  return <div>Statistics</div>;
 }
 
 export default Statistics;

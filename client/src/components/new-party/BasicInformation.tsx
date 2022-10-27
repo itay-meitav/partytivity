@@ -14,7 +14,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
-import { partyDetailsState } from "./NewParty";
+import { partyDetailsState } from "./globalStates";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -34,12 +34,12 @@ function BasicInformation() {
   };
 
   return (
-    <Stack direction="column" spacing={3}>
+    <Stack direction="column" spacing={5}>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         Basic Information
       </Typography>
       <FormControl variant="standard">
-        <Stack style={{ marginTop: 30 }} direction="row" spacing={1}>
+        <Stack direction="row" spacing={2}>
           <TextField
             id="filled-textarea"
             label="Party Title"

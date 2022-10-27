@@ -1,28 +1,23 @@
 import { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { addServicesInputsState } from "./ServicesMain";
 import { useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
-import config from "../../../../assets/config";
 import { Typography } from "@mui/material";
-import { partyDetailsState } from "../NewParty";
+import { addServicesInputsState, partyDetailsState } from "../globalStates";
+import config from "../../../assets/config";
 
 type Tprops = {
   serviceType: string;
 };
 
 function ServiceInputs(props: Tprops) {
-  const key = props.serviceType
-    .replace(" ", "")
-    .toLowerCase()
-    .replace("service", "Service");
   const [servicesList, setServicesList] = useState<string[]>([]);
   const [show, setShow] = useState(false);
   const [serviceType, setServiceType] = useRecoilState(addServicesInputsState);
   const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
   const [inputVal, setInputVal] = useState(
-    JSON.parse(localStorage.getItem("details")!)[key] || ""
+    JSON.parse(localStorage.getItem("details")!)[props.serviceType] || ""
   );
   const filteredOptions = servicesList.filter((service) =>
     service.toLowerCase().includes(inputVal.toLowerCase())
@@ -48,11 +43,10 @@ function ServiceInputs(props: Tprops) {
     if (!filteredOptions.length) {
       setShow(false);
     }
-    return;
   }, [filteredOptions]);
 
   return (
-    <>
+    <div>
       <Typography
         variant="body2"
         style={{ marginLeft: 7, padding: 0 }}
@@ -92,7 +86,10 @@ function ServiceInputs(props: Tprops) {
                 setInputVal("");
                 setPartyDetails({
                   ...partyDetails,
-                  services: { ...partyDetails.services, [key]: "" },
+                  services: {
+                    ...partyDetails.services,
+                    [props.serviceType]: "",
+                  },
                 });
               }}
               required
@@ -116,7 +113,10 @@ function ServiceInputs(props: Tprops) {
                       setInputVal(x);
                       setPartyDetails({
                         ...partyDetails,
-                        services: { ...partyDetails.services, [key]: x },
+                        services: {
+                          ...partyDetails.services,
+                          [props.serviceType]: x,
+                        },
                       });
                       setShow(false);
                     }}
@@ -144,7 +144,7 @@ function ServiceInputs(props: Tprops) {
           <DeleteIcon />
         </IconButton>
       </div>
-    </>
+    </div>
   );
 }
 

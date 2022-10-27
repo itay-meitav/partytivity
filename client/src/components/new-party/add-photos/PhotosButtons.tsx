@@ -2,9 +2,9 @@ import { Button, IconButton, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useRecoilState } from "recoil";
-import config from "../../../../assets/config";
-import { partyDetailsState } from "../NewParty";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { partyDetailsState } from "../globalStates";
+import config from "../../../assets/config";
 
 function PhotosButtons() {
   const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);

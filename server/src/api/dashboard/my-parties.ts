@@ -72,7 +72,10 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
 
 router.post("/new/services", async (req, res) => {
   try {
-    const serviceType = req.body.serviceType.toLowerCase().replace(" ", "_");
+    const serviceType = req.body.serviceType
+      .split(/(?=[A-Z])/)
+      .join("_")
+      .toLowerCase();
     const data = await getServicesByType(serviceType);
     return res.json({ services: data, success: true });
   } catch (error) {
