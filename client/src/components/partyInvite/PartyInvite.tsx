@@ -53,7 +53,7 @@ function PartyInvite() {
     import("../welcome/dance-party.json").then(setPartyAnimation);
     setLinkTransition("fade-in");
   }, []);
-
+  console.log(partyDetails);
   if (!sparklesAnimation || !partyAnimation)
     return (
       <div className="loader loaderCenter">

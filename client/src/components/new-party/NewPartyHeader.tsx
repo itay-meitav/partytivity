@@ -5,7 +5,6 @@ import Title from "../dashboard/Title";
 
 type Tprops = {
   title: string;
-  des?: any;
   link: string;
 };
 
@@ -19,12 +18,11 @@ function NewPartyHeader(props: Tprops) {
       width="100%"
     >
       <Title>{props.title}</Title>
-      <Typography color="text.secondary">{props.des || ""}</Typography>
       <IconButton
         size="small"
         style={{ marginBottom: 15 }}
         aria-label="back"
-        onClick={() => navigate("/dashboard/my-parties/")}
+        onClick={() => navigate(props.link)}
       >
         <ArrowForwardIcon />
       </IconButton>

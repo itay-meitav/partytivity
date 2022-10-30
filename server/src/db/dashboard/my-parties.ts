@@ -66,7 +66,7 @@ export async function getServiceIDByTitle(title: string, serviceType: string) {
 }
 
 export async function getServiceTitleByID(
-  serviceID: number,
+  serviceID: string,
   serviceType: string
 ) {
   const query = {
@@ -101,40 +101,34 @@ export async function getPartyDetailsByID(partyID: string | JwtPayload) {
   };
   const res = await execQuery(query);
   const partyOwner = await getOwnerNameByID(res.rows[0].owner_id);
-  const { entertainment_id, music_id, food_id, general_id, location_id } =
-    res.rows[0];
-  const partyServices = {
-    entertainment: entertainment_id,
-    music: music_id,
-    food: food_id,
-    general: general_id,
-    location: location_id,
-  };
-  const filteredPartyServices = Object.entries(partyServices).filter(
-    ([serviceKey, serviceValue]) => {
-      serviceValue !== null;
-    }
+  const partyServices = Object.entries(res.rows[0]).slice(5, 10);
+  const filteredPartyServices = partyServices.filter(
+    ([serviceKey, serviceValue]) => serviceValue !== null
   );
   const serviceFunctions = filteredPartyServices.map(
     async ([serviceKey, serviceValue]) => {
-      const tableName = serviceKey + "_service";
-      return await getServiceTitleByID(serviceValue, tableName);
+      const tableName = serviceKey.replace("id", "service");
+      return await getServiceTitleByID(serviceValue.toString(), tableName);
     }
   );
-  const servicesIDReq = await Promise.all(serviceFunctions);
-  const servicesTitles = Object.assign({}, ...servicesIDReq);
-  return {
-    title: res.rows[0].title,
-    description: res.rows[0].description,
-    date: res.rows[0].date,
-    partyOwner: partyOwner,
-    entertainmentService: servicesTitles.entertainment_service || "",
-    musicService: servicesTitles.music_service || "",
-    foodService: servicesTitles.food_service || "",
-    generalService: servicesTitles.general_service || "",
-    locationService: servicesTitles.location_service || "",
-    photos: res.rows[0].photos,
-  };
+  try {
+    const servicesIDReq = await Promise.all(serviceFunctions);
+    const servicesTitles = Object.assign({}, ...servicesIDReq);
+    return {
+      title: res.rows[0].title,
+      description: res.rows[0].description || "",
+      date: res.rows[0].date,
+      partyOwner: partyOwner,
+      entertainmentService: servicesTitles.entertainment_service || "",
+      musicService: servicesTitles.music_service || "",
+      foodService: servicesTitles.food_service || "",
+      generalService: servicesTitles.general_service || "",
+      locationService: servicesTitles.location_service || "",
+      photos: res.rows[0].photos || [],
+    };
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 export async function addGuestToParty(details: {

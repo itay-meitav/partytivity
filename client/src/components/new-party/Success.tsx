@@ -2,7 +2,7 @@ import { Button, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
 import { useNavigate } from "react-router-dom";
-import { atom, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { partySubmitState } from "./globalStates";
 
 export default function Success() {
@@ -40,6 +40,7 @@ export default function Success() {
           <p>The new party has been added to your event list.</p>
           <Stack direction={"row"} spacing={2}>
             <Button
+              style={{ width: "max-content" }}
               variant="outlined"
               color="secondary"
               onClick={() => {
@@ -49,6 +50,7 @@ export default function Success() {
               Get me in
             </Button>
             <Button
+              style={{ width: "max-content" }}
               variant="outlined"
               color="secondary"
               onClick={() => {

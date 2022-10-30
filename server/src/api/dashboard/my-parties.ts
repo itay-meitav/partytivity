@@ -35,9 +35,7 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
   };
   if (req.body.services) {
     const filteredPartyServices = Object.entries(req.body.services).filter(
-      ([serviceKey, serviceValue]) => {
-        serviceValue !== null;
-      }
+      ([serviceKey, serviceValue]) => serviceValue !== ""
     );
     const serviceFunctions = filteredPartyServices.map(
       async ([serviceKey, serviceValue]: any) => {
@@ -47,8 +45,16 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
         return await getServiceIDByTitle(serviceValue, tableName);
       }
     );
-    const servicesIDReq = await Promise.all(serviceFunctions);
-    servicesID = Object.assign(servicesID, ...servicesIDReq);
+    try {
+      const servicesIDReq = await Promise.all(serviceFunctions);
+      servicesID = Object.assign(servicesID, ...servicesIDReq);
+    } catch (error) {
+      return res.status(404).json({
+        message:
+          "One or more of the services you specified does not exist in the system",
+        success: false,
+      });
+    }
   }
   try {
     addParty({
@@ -66,7 +72,11 @@ router.post("/new", isAuthenticated, async (req: Request, res: Response) => {
       return res.json({ success: true, partyToken: partyToken });
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message, success: false });
+    return res.status(500).json({
+      message:
+        "There is an error creating the party right now. Try again later.",
+      success: false,
+    });
   }
 });
 

@@ -86,7 +86,7 @@ function ServicesMain() {
                 setMsg(true);
                 setTimeout(() => {
                   setMsg(false);
-                }, 3000);
+                }, 5000);
               } else {
                 setAddServicesInput([...addServicesInput, markedService]);
               }

@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import PhotosCarousel from "./PhotosCarousel";
 import PhotosButtons from "./PhotosButtons";
-import Lottie from "react-lottie-player";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { partyDetailsState, partySubmitState } from "../globalStates";
 import NewPartyHeader from "../NewPartyHeader";
 import config from "../../../assets/config";
+import Success from "../Success";
 
 function PhotosMain() {
   const partyDetails = useRecoilValue(partyDetailsState);
   const [partySubmit, setPartySubmit] = useRecoilState(partySubmitState);
   const resetPartyDetails = useResetRecoilState(partyDetailsState);
-  const [submit, setSubmit] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState({ show: false, error: "" });
   const [modal, setModal] = useState(false);
 
   async function submitParty() {
@@ -33,7 +33,10 @@ function PhotosMain() {
         localStorage.removeItem("names");
       } else {
         const data = await res.json();
-        setErrorMsg(data.message);
+        setErrorMsg({ show: true, error: data.message });
+        setTimeout(() => {
+          setErrorMsg({ show: false, error: "" });
+        }, 5000);
       }
     });
   }
@@ -46,32 +49,37 @@ function PhotosMain() {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-          backgroundColor: submit ? "#e7e8fd" : "",
+          backgroundColor: partySubmit.submit ? "#e7e8fd" : "",
           minWidth: "max-content",
           minHeight: "400px",
           padding: 20,
-          paddingBottom: submit ? 50 : 20,
+          paddingBottom: partySubmit.submit ? 50 : 20,
         }}
         elevation={2}
       >
+        <Success />
         <Stack
-          style={submit ? { display: "none" } : {}}
+          style={partySubmit.submit ? { display: "none" } : {}}
           alignItems={"space-between"}
           justifyContent={"center"}
           width={"100%"}
           spacing={5}
         >
-          <NewPartyHeader
-            title={`Add life to your party! Try something that will get people in without
-          even blinking! ${(<br />)}
-          ${(
-            <small>
-              This step is optional, however you will be able to add images
-              later.
-            </small>
-          )}`}
-            link={"/dashboard/my-parties/new"}
-          />
+          <div>
+            <NewPartyHeader
+              title={"Party Photos"}
+              link={"/dashboard/my-parties/new"}
+            />
+            <Typography color="text.secondary">
+              Add life to your party! Try something that will get people in
+              without even blinking!
+              <br />
+              <small>
+                This step is optional, however you will be able to add images
+                later.
+              </small>
+            </Typography>
+          </div>
           <div style={{ alignSelf: "center" }}>
             {!partyDetails.photos.length ? (
               <PhotosCarousel />
@@ -86,8 +94,13 @@ function PhotosMain() {
             }}
           >
             <PhotosButtons />
-            <div style={{ display: "flex", alignItems: "center", gap: 45 }}>
-              <div style={{ color: "#75706f" }}>{errorMsg}</div>
+            <OverlayTrigger
+              placement="top"
+              show={errorMsg.show}
+              overlay={
+                <Tooltip id="button-tooltip-2">{errorMsg.error}</Tooltip>
+              }
+            >
               <Button
                 style={{ width: "max-content", alignSelf: "flex-end" }}
                 variant="contained"
@@ -102,7 +115,7 @@ function PhotosMain() {
               >
                 Create Party
               </Button>
-            </div>
+            </OverlayTrigger>
           </div>
           <Modal
             open={modal}
