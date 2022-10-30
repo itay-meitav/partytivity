@@ -13,7 +13,7 @@ export default function Success() {
 
   useEffect(() => {
     import("./V.json").then(setAnimationData);
-  }, [partySubmit]);
+  }, []);
 
   return (
     <Stack

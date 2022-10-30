@@ -4,7 +4,11 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import PhotosCarousel from "./PhotosCarousel";
 import PhotosButtons from "./PhotosButtons";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { partyDetailsState, partySubmitState } from "../globalStates";
+import {
+  addServicesInputsState,
+  partyDetailsState,
+  partySubmitState,
+} from "../globalStates";
 import NewPartyHeader from "../NewPartyHeader";
 import config from "../../../assets/config";
 import Success from "../Success";
@@ -12,6 +16,7 @@ import Success from "../Success";
 function PhotosMain() {
   const partyDetails = useRecoilValue(partyDetailsState);
   const [partySubmit, setPartySubmit] = useRecoilState(partySubmitState);
+  const resetAddServicesInput = useResetRecoilState(addServicesInputsState);
   const resetPartyDetails = useResetRecoilState(partyDetailsState);
   const [errorMsg, setErrorMsg] = useState({ show: false, error: "" });
   const [modal, setModal] = useState(false);
@@ -30,6 +35,7 @@ function PhotosMain() {
         const data = await res.json();
         setPartySubmit({ submit: true, partyToken: data.partyToken });
         resetPartyDetails();
+        resetAddServicesInput();
         localStorage.removeItem("names");
       } else {
         const data = await res.json();
@@ -57,7 +63,7 @@ function PhotosMain() {
         }}
         elevation={2}
       >
-        <Success />
+        {partySubmit.submit ? <Success /> : ""}
         <Stack
           style={partySubmit.submit ? { display: "none" } : {}}
           alignItems={"space-between"}

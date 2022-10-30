@@ -11,6 +11,13 @@ import Lottie from "react-lottie-player";
 import discoBallSvg from "../../assets/icons/discoBallSvg.svg";
 import { useSetRecoilState } from "recoil";
 import { linkTransitionState } from "../Link";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
 
 const initialPartyDetails = {
   title: "" as string,
@@ -53,7 +60,7 @@ function PartyInvite() {
     import("../welcome/dance-party.json").then(setPartyAnimation);
     setLinkTransition("fade-in");
   }, []);
-  console.log(partyDetails);
+
   if (!sparklesAnimation || !partyAnimation)
     return (
       <div className="loader loaderCenter">
@@ -89,10 +96,23 @@ function PartyInvite() {
             />
           </div>
           {partyDetails.photos.length ? (
-            <Carousel width={950}>
+            <Carousel
+              width={"100%"}
+              showThumbs={false}
+              showStatus={false}
+              showArrows={false}
+              interval={4000}
+              infiniteLoop
+              autoPlay
+            >
               {partyDetails.photos.map((x) => (
                 <div>
-                  <img className="d-block w-100 h-100" src={x} alt="Photo" />
+                  <img
+                    className="d-block w-100 h-100"
+                    style={{ borderRadius: 10 }}
+                    src={x}
+                    alt="Photo"
+                  />
                 </div>
               ))}
             </Carousel>

@@ -64,24 +64,28 @@ function PartyInviteForm() {
           label="Full Name"
           style={{ width: 200 }}
           onChange={(e) => {
-            const val = e.currentTarget.value;
+            const val = e.currentTarget.value.replace(/[^\w\s]|[0-9]/gi, "");
             setRegistrationDetails({ ...registrationDetails, name: val });
           }}
+          value={registrationDetails.name}
           placeholder="Your full name"
+          inputProps={{ maxLength: 20, minLength: 2 }}
           required
         />
         <TextField
-          type="number"
+          type="text"
           id="filled-textarea"
           label="Phone Number"
           style={{ width: 200 }}
           onChange={(e) => {
-            const val = e.currentTarget.value;
+            const val = e.currentTarget.value.replace(/[^\w\s]|[a-zA-Z]$/g, "");
             setRegistrationDetails({
               ...registrationDetails,
               phone: val.toString(),
             });
           }}
+          value={registrationDetails.phone}
+          inputProps={{ maxLength: 10, minLength: 10 }}
           placeholder="Your phone number"
           required
         />
