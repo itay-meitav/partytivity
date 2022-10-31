@@ -1,0 +1,25 @@
+version: "3.4"
+
+services:
+  client:
+    image: client
+    build:
+      context: client
+      dockerfile: ./Dockerfile.prod
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/app
+  server:
+    image: server
+    build:
+      context: server
+      dockerfile: ./Dockerfile.prod
+    environment:
+      NODE_ENV: production
+    ports:
+      - 5000:5000
+    volumes:
+      - ./server:/app
