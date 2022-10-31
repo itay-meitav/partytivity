@@ -1,15 +1,13 @@
 import { Grid, Paper } from "@mui/material";
-import List from "./List";
+import PartiesList from "./PartiesList";
+import MyPartiesHeading from "./MyPartiesHeading";
 
 function MyParties() {
   return (
     <Grid item xs={12}>
-      <Paper
-        style={{ minWidth: "max-content" }}
-        sx={{ p: 2, display: "flex", flexDirection: "column" }}
-        elevation={2}
-      >
-        <List />
+      <Paper className="myParties" elevation={2}>
+        <MyPartiesHeading />
+        <PartiesList />
       </Paper>
     </Grid>
   );

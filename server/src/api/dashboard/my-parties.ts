@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import {
   addParty,
+  countUserParties,
   getServiceIDByTitle,
   getServicesByType,
   getUserParties,
@@ -11,16 +12,31 @@ import { isAuthenticated } from "../auth/authMiddle";
 const router = express.Router();
 
 router.get("/", isAuthenticated, async (req: Request, res: Response) => {
-  const token = req.cookies.token;
-  const { id } = jwt.verify(token, authConfig.secret) as JwtPayload;
-  const limit = Number(req.query.limit) || 20;
-  const offset = Number(req.query.offset) || 0;
-  const orderBy = req.query.orderBy ? req.query.orderBy.toString() : undefined;
-  const parties = await getUserParties(id, limit, offset, orderBy);
-  res.json({
-    parties: parties,
-    success: true,
-  });
+  try {
+    const token = req.cookies.token;
+    const { id } = jwt.verify(token, authConfig.secret) as JwtPayload;
+    const limit = Number(req.query.limit) || 5;
+    const offset = Number(req.query.offset) || 0;
+    const orderBy = req.query.orderBy || undefined;
+    const parties = await getUserParties(id, limit, offset, orderBy);
+    const count = await countUserParties(id);
+    if (!parties) {
+      return res.status(404).json({
+        success: false,
+        message: "This user doesn't own any party",
+      });
+    }
+    res.json({
+      parties: parties,
+      count: count,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "You are not authorized to do that",
+    });
+  }
 });
 
 router.post("/new", isAuthenticated, async (req: Request, res: Response) => {

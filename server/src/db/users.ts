@@ -5,10 +5,17 @@ export async function addUser(details: {
   password: string;
   email: string;
   name: string;
+  status?: string;
 }) {
   const query = {
-    text: `INSERT INTO users(username, password, email, name) VALUES($1, $2, $3, $4) RETURNING *`,
-    values: [details.username, details.password, details.email, details.name],
+    text: `INSERT INTO users(username, password, email, name, status) VALUES($1, $2, $3, $4, $5) RETURNING *`,
+    values: [
+      details.username,
+      details.password,
+      details.email,
+      details.name,
+      details.status || "pending",
+    ],
   };
   const res = await execQuery(query);
   return res.rows[0];

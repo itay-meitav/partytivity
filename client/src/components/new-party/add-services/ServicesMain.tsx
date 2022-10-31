@@ -120,7 +120,9 @@ function ServicesMain() {
             size="small"
             type="button"
             onClick={() => {
-              if (addServicesInput.find((x) => x == markedService)) {
+              if (!markedService) {
+                return false;
+              } else if (addServicesInput.find((x) => x == markedService)) {
                 setMessages({ ...messages, message2: true });
                 setTimeout(() => {
                   setMessages({ ...messages, message2: false });

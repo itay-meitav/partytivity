@@ -65,7 +65,7 @@ function PhotosMain() {
       >
         {partySubmit.submit ? <Success /> : ""}
         <Stack
-          style={partySubmit.submit ? { display: "none" } : {}}
+          style={{ display: partySubmit.submit ? "none" : "" }}
           alignItems={"space-between"}
           justifyContent={"center"}
           width={"100%"}

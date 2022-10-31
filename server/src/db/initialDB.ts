@@ -16,6 +16,7 @@ async function initDB() {
     password: await bcrypt.hash("admin", 12),
     email: process.env.ADMIN_EMAIL,
     name: "admin",
+    status: "active",
   });
   await addParty({
     title: "my first party",
