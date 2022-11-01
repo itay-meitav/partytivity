@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -16,6 +16,7 @@ export default function PartiesList() {
   const [loadDisabled, setLoadDisabled] = useState(false);
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getUserParties();
@@ -66,7 +67,19 @@ export default function PartiesList() {
               </TableHead>
               <TableBody>
                 {parties.map((party) => (
-                  <TableRow hover role={"button"} key={party.id}>
+                  <TableRow
+                    onClick={() =>
+                      navigate(
+                        `/dashboard/my-parties/${party.title.replaceAll(
+                          /\s/g,
+                          "-"
+                        )}`
+                      )
+                    }
+                    hover
+                    role={"button"}
+                    key={party.id}
+                  >
                     <TableCell>
                       {dayjs(party.date).format("DD/MM/YYYY, LT")}
                     </TableCell>
@@ -81,6 +94,7 @@ export default function PartiesList() {
                         <Button
                           color="secondary"
                           style={{ width: "max-content" }}
+                          onClick={(e) => e.stopPropagation()}
                         >
                           Click Here
                         </Button>

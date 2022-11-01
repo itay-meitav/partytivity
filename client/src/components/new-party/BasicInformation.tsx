@@ -45,7 +45,7 @@ function BasicInformation() {
             label="Party Title"
             placeholder="Title"
             onChange={(e) => {
-              const val = e.currentTarget.value;
+              const val = e.currentTarget.value.replace(/[^\w\s]/gi, "");
               setPartyDetails({ ...partyDetails, title: val });
             }}
             value={partyDetails.title}

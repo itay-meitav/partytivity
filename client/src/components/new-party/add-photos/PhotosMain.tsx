@@ -29,7 +29,10 @@ function PhotosMain() {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(partyDetails),
+      body: JSON.stringify({
+        ...partyDetails,
+        title: partyDetails.title.trim(),
+      }),
     }).then(async (res) => {
       if (res.ok) {
         const data = await res.json();

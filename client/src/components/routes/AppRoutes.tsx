@@ -62,7 +62,7 @@ export const router = createBrowserRouter([
       });
       if (!req.ok) return redirect("/login");
     },
-    children: [...DashboardRoutes],
+    children: DashboardRoutes,
   },
   {
     path: "/invite",
