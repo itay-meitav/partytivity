@@ -26,10 +26,10 @@ export async function countUserParties(usernameId: string) {
   return res.rows[0].count;
 }
 
-export async function checkIfPartyExists(partyTitle: string) {
+export async function checkIfPartyExists(partyTitle: string, userID: number) {
   const query = {
-    text: `SELECT * FROM parties WHERE title = $1`,
-    values: [partyTitle],
+    text: `SELECT * FROM parties WHERE title = $1 AND owner_id = $2`,
+    values: [partyTitle, userID],
   };
   const res = await execQuery(query);
   return res.rows[0];

@@ -10,7 +10,7 @@ import MyParties from "../my-parties/MyParties";
 import UserSettings from "../userSettings/UserSettings";
 import NewParty from "../new-party/NewParty";
 import PhotosMain from "../new-party/add-photos/PhotosMain";
-import PartyDetails from "../my-parties/PartyDetails";
+import PartyDetails from "../my-parties/party-details/PartyDetailsMain";
 import config from "../../assets/config";
 
 export const DashboardRoutes: RouteObject[] = [

@@ -1,5 +1,6 @@
 import express from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { getPartyDetailsByID } from "../../db/party-invite/party-invite";
 import {
   checkIfPartyExists,
   countUserParties,
@@ -41,16 +42,29 @@ router.get("/", isAuthenticated, async (req, res) => {
 });
 
 router.get("/:partyTitle", isAuthenticated, async (req, res) => {
-  const partyTitle = req.params.partyTitle.replaceAll("-", " ");
-  const check = await checkIfPartyExists(partyTitle);
-  if (!check) {
-    return res.status(404).json({
+  try {
+    const { id } = jwt.verify(
+      req.cookies.token,
+      authConfig.secret
+    ) as JwtPayload;
+    const partyTitle = req.params.partyTitle.replaceAll("-", " ");
+    const check = await checkIfPartyExists(partyTitle, id);
+    const partyDetails = await getPartyDetailsByID(check.id);
+    if (!check) {
+      return res.status(404).json({
+        success: false,
+        message: "Party with that title was not found",
+      });
+    }
+    return res.json({
+      success: true,
+      partyDetails: partyDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
       success: false,
-      message: "Party with that title was not found",
+      message: "Internal Server Error",
     });
   }
-  return res.json({
-    success: true,
-  });
 });
 export default router;

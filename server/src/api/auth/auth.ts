@@ -23,7 +23,7 @@ router.get("/confirm/:token", async (req: Request, res: Response) => {
     }
   } else {
     return res.status(404).json({
-      message: "Internal Server Error",
+      message: "Some credentials are missing",
       success: false,
     });
   }

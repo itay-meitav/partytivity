@@ -1,7 +1,9 @@
 import express from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { getPartyDetailsByID } from "../db/dashboard/new-party";
-import { addGuestToParty } from "../db/party-invite/party-invite";
+import {
+  addGuestToParty,
+  getPartyDetailsByID,
+} from "../db/party-invite/party-invite";
 import authConfig from "./auth/auth.config";
 const router = express.Router();
 
