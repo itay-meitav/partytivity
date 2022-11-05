@@ -3,7 +3,6 @@ require("dotenv").config({ path: path.join(__dirname, "../../../.env") });
 import express from "express";
 import multer from "multer";
 import fs from "fs";
-import sharp from "sharp";
 import { isAuthenticated } from "../auth/authMiddle";
 import cloudinary from "cloudinary";
 
@@ -90,8 +89,6 @@ router.post("/", isAuthenticated, async (req, res) => {
     }
     for (let i = 0; i < req.files.length; i++) {
       const element = req.files[i];
-      let buffer = await sharp(element.path).resize(800, 400).toBuffer();
-      await sharp(buffer).toFile(element.path);
     }
     const cloudUpload = (req.files as any[]).map(async (file) => {
       await cloudinaryUploader(file.path).then((res) => {

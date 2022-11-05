@@ -1,2 +1,2 @@
-docker-compose.dev build
-docker-compose.dev up
+docker-compose build
+docker-compose up

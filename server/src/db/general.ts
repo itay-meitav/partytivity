@@ -2,7 +2,7 @@ require("dotenv").config({ path: __dirname + "/../../.env" });
 import { Pool } from "pg";
 
 export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL2,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },

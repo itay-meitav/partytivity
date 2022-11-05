@@ -1,13 +1,13 @@
-version: "3.4"
+version: "3.8"
 
 services:
   client:
     image: client
     build:
       context: client
-      dockerfile: ./Dockerfile.prod
+      dockerfile: ./Dockerfile
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
     ports:
       - 3000:3000
     volumes:
@@ -16,9 +16,15 @@ services:
     image: server
     build:
       context: server
-      dockerfile: ./Dockerfile.prod
+      dockerfile: ./Dockerfile
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
+      DATABASE_URL:
+        # EMAIL_USER:
+        # EMAIL_PASS:
+        # CLOUDINARY_NAME:
+        # CLOUDINARY_API_KEY:
+        # CLOUDINARY_SECRET:
     ports:
       - 5000:5000
     volumes:
