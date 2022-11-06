@@ -18,7 +18,10 @@ cloudinary.v2.config({
 const cloudinaryUploader = async (filePath) => {
   return await cloudinary.v2.uploader.upload(
     filePath,
-    { timestamp: new Date().getTime() },
+    {
+      timestamp: new Date().getTime(),
+      transformation: { width: 800, height: 400, crop: "fill" },
+    },
     (err, result) => {
       if (err) {
         console.log(err);
@@ -86,9 +89,6 @@ router.post("/", isAuthenticated, async (req, res) => {
           success: false,
         });
       }
-    }
-    for (let i = 0; i < req.files.length; i++) {
-      const element = req.files[i];
     }
     const cloudUpload = (req.files as any[]).map(async (file) => {
       await cloudinaryUploader(file.path).then((res) => {

@@ -1,6 +1,8 @@
-require("dotenv").config();
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
 import RestApi from "./api/index";
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authConfig from "./api/auth/auth.config";
@@ -19,7 +21,14 @@ app.use(
 app.use(cookieParser());
 app.use("/api", RestApi);
 
-app.get("/login", (req: Request, res: Response) => {
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static("build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+  });
+}
+
+app.get("/login", (req, res) => {
   if (req.cookies.token) {
     try {
       jwt.verify(req.cookies.token, authConfig.secret);
