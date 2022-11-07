@@ -21,13 +21,6 @@ app.use(
 app.use(cookieParser());
 app.use("/api", RestApi);
 
-if (process.env.NODE_ENV == "production") {
-  app.use(express.static("build"));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "build", "index.html"));
-  });
-}
-
 app.get("/login", (req, res) => {
   if (req.cookies.token) {
     try {
@@ -39,6 +32,13 @@ app.get("/login", (req, res) => {
   }
   return res.status(401).json({ success: false });
 });
+
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static("build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+  });
+}
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

@@ -3,7 +3,7 @@
   "scripts": {
     "start": "gulp",
     "dev": "nodemon --watch ./src ./src/server.ts",
-    "prod": "cross-env NODE_ENV=production nodemon server.js",
+    "prod": "cross-env NODE_ENV=production node server.js",
     "deploy": "gulp deploy",
     "lint": "eslint ./src --ext .ts",
     "lint-fix": "eslint ./src --ext .ts --fix",
