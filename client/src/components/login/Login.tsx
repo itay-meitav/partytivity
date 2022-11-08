@@ -25,6 +25,7 @@ function Login() {
       body: JSON.stringify({
         username: username,
         password: password,
+        location: window.location.origin,
       }),
     }).then(async (res) => {
       if (res.ok) {
@@ -35,7 +36,6 @@ function Login() {
       }
     });
   }
-
   return (
     <div id="login-container">
       <CustomLink to="/welcome" className="back-icon">

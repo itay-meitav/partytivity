@@ -35,6 +35,7 @@ function SignUp() {
         password: password,
         email: email,
         name: name,
+        location: window.location.origin,
       }),
     });
   }

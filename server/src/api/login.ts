@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { changeUserPass, checkIfUserExist, checkUserEmail } from "../db/users";
@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, location } = req.body;
   const cookie = req.cookies.verify;
   const check = await checkIfUserExist(username);
   if (check) {
@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
       const token = jwt.sign({ email: check.email }, authConfig.secret, {
         expiresIn: "24h",
       });
-      await sendConfirmationEmail(check.email, token);
+      await sendConfirmationEmail(check.email, token, location);
       return res
         .cookie(
           "verify",
@@ -61,12 +61,10 @@ router.post("/", async (req, res) => {
           success: false,
         });
     }
-    return res
-      .status(401)
-      .json({
-        message: "Please complete the email verification process",
-        success: false,
-      });
+    return res.status(401).json({
+      message: "Please complete the email verification process",
+      success: false,
+    });
   } else {
     return res.status(401).json({
       message: "The username entered is incorrect",
@@ -76,13 +74,13 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/reset", async (req, res) => {
-  const { email } = req.body;
+  const { email, location } = req.body;
   const check = await checkUserEmail(email);
   if (check) {
     const token = jwt.sign({ email: check.email }, authConfig.secret, {
       expiresIn: "10m",
     });
-    await sendResetEmail(email, token);
+    await sendResetEmail(email, token, location);
     return res
       .cookie(
         "reset",

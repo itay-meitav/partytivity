@@ -12,44 +12,64 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendConfirmationEmail(email: string, token: string) {
+export async function sendConfirmationEmail(
+  email: string,
+  token: string,
+  location: string
+) {
   const content = await fs.readFile(
     __dirname + "/EmailStaticFiles/verify.html",
     "utf8"
   );
-
-  const html = content.replaceAll(
-    "$$TOKEN_LINK$$",
-    `http://localhost:3000/auth/confirm/${token}`
-  );
+  const html = getEmailBody("confirm", content, token, location);
 
   let info = await transporter.sendMail({
     from: `"Partytivity 🎉" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Please confirm your account",
-    html,
+    html: html,
   });
-
   console.log("Message sent: %s", info.messageId);
 }
 
-export async function sendResetEmail(email: string, token: string) {
+export async function sendResetEmail(
+  email: string,
+  token: string,
+  location: string
+) {
   const content = await fs.readFile(
     __dirname + "/EmailStaticFiles/reset.html",
     "utf8"
   );
-
-  const html = content.replaceAll(
-    "$$TOKEN_LINK$$",
-    `http://localhost:3000/login/reset/new/${token}`
-  );
+  const html = getEmailBody("reset", content, token, location);
 
   let info = await transporter.sendMail({
     from: `"Partytivity 🎉" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Reset your password",
-    html,
+    html: html,
   });
 
   console.log("Message sent: %s", info.messageId);
+}
+
+function getEmailBody(
+  emailType: string,
+  content: string,
+  token: string,
+  location: string
+) {
+  const mapObj = {
+    TOKEN_LINK:
+      emailType == "confirm"
+        ? `${location}/auth/confirm/${token}`
+        : `${location}/login/reset/new/${token}`,
+    EMAIL_ENV: process.env.EMAIL_USER,
+    SITE_LINK: location,
+  };
+  const regex = new RegExp(Object.keys(mapObj).join("|"), "gi");
+  const html = content.replace(regex, (matched) => {
+    return mapObj[matched];
+  });
+  return html;
 }

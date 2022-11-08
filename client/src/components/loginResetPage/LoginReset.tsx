@@ -29,7 +29,7 @@ function LoginReset() {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: email }),
+      body: JSON.stringify({ location: window.location.origin, email: email }),
     }).then(async (res) => {
       if (res.ok) {
         import("../confirm/V.json").then(setSuccessAnimation);

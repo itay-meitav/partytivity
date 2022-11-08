@@ -14,7 +14,7 @@ async function initDB() {
   await addUser({
     username: "admin",
     password: await bcrypt.hash("admin", 12),
-    email: process.env.ADMIN_EMAIL,
+    email: "admin@admin",
     name: "admin",
     status: "active",
   });

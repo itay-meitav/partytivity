@@ -7,7 +7,7 @@ import { sendConfirmationEmail } from "./auth/nodemailer.config";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { username, password, email, name } = req.body;
+  const { username, password, email, name, location } = req.body;
   const checkUsername = await checkIfUserExist(username);
   const checkEmail = await checkUserEmail(email);
   if (!checkUsername && !checkEmail) {
@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
           email: email,
           name: name,
         });
-        await sendConfirmationEmail(email, token);
+        await sendConfirmationEmail(email, token, location);
         return res
           .cookie(
             "verify",
