@@ -5,11 +5,15 @@
 My party management app is a web app application that assists
 party lovers with organizing events in a more accessible and efficient way.
 
+<br/>
+
 ## Why I chose this project:
 
 The truth is that there is no specific reason that concerns my personal world,
 I thought about a problem, a solution and a need and tried to find a way to bridge all of these.
 I see this project as something that could absolutely work in the real world.
+
+<br/>
 
 ## Technologies:
 
@@ -18,6 +22,8 @@ I see this project as something that could absolutely work in the real world.
 - **[Sass](https://www.npmjs.com/package/sass)**
 - **[Express](https://www.npmjs.com/package/express)**
 - **[PostgreSQL](https://www.postgresql.org/)**
+
+<br/>
 
 ## Packages:
 
@@ -31,6 +37,7 @@ I see this project as something that could absolutely work in the real world.
   - **[Material-ui](https://www.npmjs.com/package/@mui/material)** - For design purposes.
 
 - **Back-end**:
+
   - **[Node-postgres](https://www.npmjs.com/package/pg)** - For DB management.
   - **[Nodemailer](https://www.npmjs.com/package/nodemailer)** - For email sending.
   - **[JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)** - For authentication.
@@ -41,7 +48,15 @@ I see this project as something that could absolutely work in the real world.
   - **[Webpack](https://www.npmjs.com/package/webpack)** - For modules bundling and build the server side.
   - **[Dotenv](https://www.npmjs.com/package/dotenv)** - For environment variables.
 
-## Installation
+   <br/>
+
+## Live Version:
+
+### [Partytivity](https://partytivity.herokuapp.com/)
+
+<br/>
+
+## Local installation without Docker
 
 1. **Clone the repo**
    ```
@@ -63,11 +78,59 @@ I see this project as something that could absolutely work in the real world.
 
 5. **Go to http://localhost:3000 and have fun**!
 
+   <br/>
+
+## Local installation with Docker
+
+1. **Clone the repo**
+
+   ```
+   git clone https://github.com/itay-meitav/partytivity.git
+   ```
+
+2. **In the main root directory**
+
+   If you are on a computer with a Linux os
+
+   ```
+   bash dev.sh
+   ```
+
+   If not
+
+   ```
+   docker-compose build
+   ```
+
+   ```
+   docker-compose up
+   ```
+
+3. **Go to http://localhost:3000 and have fun**!
+
+<br/>
+
+# Important Note
+
+In both methods, in order for you to experience all the features of the application, the local variables specified in the docker-compose file must be entered.
+
+```
+   # DATABASE_URL - for saving the data in a database.
+   # EMAIL_USER - for user authentication via email.
+   # EMAIL_PASS - for user authentication via email.
+   # CLOUDINARY_NAME - for saving the photos of the parties in the cloud (free service).
+   # CLOUDINARY_API_KEY - for saving the photos of the parties in the cloud (free service).
+   # CLOUDINARY_SECRET - for saving the photos of the parties in the cloud (free service).
+```
+
+<br/>
+
 ## Main Features:
 
-1. **Modify App's Data** - Create/Read/Update/Delete users, parties, services and more.
-2. **Party invitation** - Inviting unregistered external users and registering them for events.
-3. **Autocomplete Search Input** - In the new party view when you add new services.
+1. **Registration system including email verification** is fully functional.
+2. **Modify App's Data** - Create/Read/Update/Delete users, parties, services and more.
+3. **Party invitation** - Inviting unregistered external users and registering them for events.
+4. **Autocomplete Search Input** - In the new party view when you add new services.
 
 ## Coming soon:
 
