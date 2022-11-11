@@ -1,0 +1,120 @@
+.welcomePage {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  min-height: 570px;
+  gap: 50px;
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;
+    min-width: 90%;
+    .nav-logo {
+      .nav-logo-text {
+        height: 40px;
+        font-family: "Montserrat-Light-Alt1", sans-serif;
+        letter-spacing: 23px;
+        font-size: 18pt;
+        user-select: none;
+        white-space: nowrap;
+      }
+      .nav-logo-img {
+        height: 20px;
+        width: 20px;
+        margin-right: 23px;
+        user-select: none;
+      }
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      @media only screen and (max-width: 1000px) {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      .textButtons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        font-size: 20px;
+        font-family: "Rubik", sans-serif;
+        transition: all 0.2s ease;
+        @media only screen and (max-width: 1000px) {
+          display: none;
+          animation: fadeIn 2s;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          gap: 30px;
+          font-size: 20px;
+          font-family: "Rubik", sans-serif;
+          transition: all 0.2s ease;
+          position: fixed;
+          left: 50%;
+          top: 35%;
+          transform: translate(-50%, 0);
+          z-index: 100;
+          text-shadow: 0px 0px 5px rgb(255, 255, 255);
+          & a:hover {
+            transition: all 0.4s;
+            text-shadow: 0 0 20px #fff;
+          }
+        }
+      }
+    }
+    .nav-icon {
+      display: none;
+      height: 40px;
+      width: 40px;
+      z-index: 100;
+      @media only screen and (max-width: 1000px) {
+        display: flex;
+        right: 5%;
+        z-index: 100;
+      }
+    }
+  }
+  .balloons-mobile {
+    display: none;
+    @media only screen and (max-width: 1000px) {
+      display: unset;
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 99;
+      width: 100%;
+      height: 100%;
+      animation: sweepIn 1s;
+    }
+  }
+}
+
+@keyframes sweepIn {
+  from {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  to {
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

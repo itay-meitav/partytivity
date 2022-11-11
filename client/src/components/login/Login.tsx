@@ -1,6 +1,7 @@
+import "./_login.scss";
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import CustomLink from "../Link";
@@ -13,6 +14,15 @@ function Login() {
   const [errorMsg, setErrorMsg] = useState("");
   const content = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      const req = await fetch(`${config.apiHost}/login`, {
+        credentials: "include",
+      });
+      if (req.ok) return navigate("/dashboard");
+    })();
+  }, []);
 
   async function loginReq(username: string, password: string) {
     fetch(`${config.apiHost}/api/login`, {

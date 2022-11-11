@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Paper from "@mui/material/Paper";
 import config from "../../assets/config";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
@@ -11,6 +10,7 @@ import Lottie from "react-lottie-player";
 import discoBallSvg from "../../assets/icons/discoBallSvg.svg";
 import { useSetRecoilState } from "recoil";
 import { linkTransitionState } from "../Link";
+import "./_partyInvite.scss";
 import {
   EmailShareButton,
   FacebookShareButton,

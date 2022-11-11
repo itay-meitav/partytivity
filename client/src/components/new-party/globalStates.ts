@@ -1,8 +1,8 @@
 import { Dayjs } from "dayjs";
 import { atom } from "recoil";
 
-export const partyDetailsState = atom({
-  key: "partyDetails",
+export const newPartyDetailsState = atom({
+  key: "newPartyDetails",
   default: JSON.parse(localStorage.getItem("details")!) || {
     title: "" as string,
     des: "" as string,

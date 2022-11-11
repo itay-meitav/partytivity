@@ -14,7 +14,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
-import { partyDetailsState } from "./globalStates";
+import { newPartyDetailsState } from "./globalStates";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -28,7 +28,7 @@ const MenuProps = {
 };
 
 function BasicInformation() {
-  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
+  const [partyDetails, setPartyDetails] = useRecoilState(newPartyDetailsState);
   const handleChange = (newValue: Dayjs | null) => {
     setPartyDetails({ ...partyDetails, date: newValue });
   };

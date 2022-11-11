@@ -1,6 +1,7 @@
 import { Grid, Paper } from "@mui/material";
 import PartiesList from "./PartiesList";
 import MyPartiesHeading from "./MyPartiesHeading";
+import "./_myParties.scss";
 
 function MyParties() {
   return (

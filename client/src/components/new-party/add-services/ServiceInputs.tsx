@@ -4,7 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useRecoilState } from "recoil";
 import { Dropdown, Form } from "react-bootstrap";
 import { Stack, Typography } from "@mui/material";
-import { addServicesInputsState, partyDetailsState } from "../globalStates";
+import { addServicesInputsState, newPartyDetailsState } from "../globalStates";
 import config from "../../../assets/config";
 
 type Tprops = {
@@ -18,7 +18,7 @@ function ServiceInputs(props: Tprops) {
     addServicesInputsState
   );
   const [servicesList, setServicesList] = useState<string[]>([]);
-  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
+  const [partyDetails, setPartyDetails] = useRecoilState(newPartyDetailsState);
   const filteredOptions = servicesList.filter((service) =>
     service.toLowerCase().includes(partyDetails.services[key].toLowerCase())
   );

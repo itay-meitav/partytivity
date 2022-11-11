@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useRecoilState } from "recoil";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { partyDetailsState } from "../globalStates";
+import { newPartyDetailsState } from "../globalStates";
 import config from "../../../assets/config";
 
 function PhotosButtons() {
-  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
+  const [partyDetails, setPartyDetails] = useRecoilState(newPartyDetailsState);
   const [files, setFiles] = useState<FormData>(new FormData());
   const [settings, setSettings] = useState({
     errorMessage: "",

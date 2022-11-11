@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie-player";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../../assets/config";
+import "./_newPassForm.scss";
 
 function NewPassForm() {
   const content = useRef<HTMLDivElement>(null);

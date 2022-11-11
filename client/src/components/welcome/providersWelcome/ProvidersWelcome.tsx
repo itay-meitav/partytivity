@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
 import WelcomeTemplate from "../welcomeTemplate/WelcomeTemplate";
 import hat from "../../../assets/icons/hat.png";
+import "./_providersWelcome.scss";
 
 function ProvidersWelcome() {
   const [animationData, setAnimationData] =

@@ -6,7 +6,7 @@ import PhotosButtons from "./PhotosButtons";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import {
   addServicesInputsState,
-  partyDetailsState,
+  newPartyDetailsState,
   partySubmitState,
 } from "../globalStates";
 import NewPartyHeader from "../NewPartyHeader";
@@ -14,10 +14,10 @@ import config from "../../../assets/config";
 import Success from "../Success";
 
 function PhotosMain() {
-  const partyDetails = useRecoilValue(partyDetailsState);
+  const partyDetails = useRecoilValue(newPartyDetailsState);
   const [partySubmit, setPartySubmit] = useRecoilState(partySubmitState);
   const resetAddServicesInput = useResetRecoilState(addServicesInputsState);
-  const resetPartyDetails = useResetRecoilState(partyDetailsState);
+  const resetPartyDetails = useResetRecoilState(newPartyDetailsState);
   const [errorMsg, setErrorMsg] = useState({ show: false, error: "" });
   const [modal, setModal] = useState(false);
 

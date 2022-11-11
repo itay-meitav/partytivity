@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie-player";
 import { useNavigate } from "react-router-dom";
 import CustomLink from "../Link";
+import "./_submitRegister.scss";
 
 function SubmitSignup() {
   const navigate = useNavigate();

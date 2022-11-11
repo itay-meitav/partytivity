@@ -5,12 +5,12 @@ import { useRecoilValue, useResetRecoilState } from "recoil";
 import { useEffect } from "react";
 import ServicesMain from "./add-services/ServicesMain";
 import NewPartyHeader from "./NewPartyHeader";
-import { addServicesInputsState, partyDetailsState } from "./globalStates";
+import { addServicesInputsState, newPartyDetailsState } from "./globalStates";
 
 function NewParty() {
-  const partyDetails = useRecoilValue(partyDetailsState);
+  const partyDetails = useRecoilValue(newPartyDetailsState);
   const resetServiceTypes = useResetRecoilState(addServicesInputsState);
-  const resetPartyDetails = useResetRecoilState(partyDetailsState);
+  const resetPartyDetails = useResetRecoilState(newPartyDetailsState);
   const navigate = useNavigate();
 
   useEffect(() => {
