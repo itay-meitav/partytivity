@@ -1,50 +1,41 @@
-.center-section {
+.providers-center-section {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  margin: auto;
-  margin-top: 65px;
-  gap: 25px;
   width: 90%;
-  flex: 1;
-
-  .text {
-    max-width: 90%;
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .left-center-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
     font-family: "Poppins", sans-serif;
-    align-self: flex-start;
-    flex: 2;
+    width: 50%;
+    color: rgba(71, 71, 71, 0.814);
+    @media only screen and (max-width: 1000px) {
+      text-align: center;
+      width: 70%;
+    }
     .title {
+      align-self: flex-start;
       font-size: 48pt;
-      z-index: 2;
       color: rgba(0, 0, 0, 0.657);
-      user-select: none;
       font-weight: 600;
-      line-height: 55px;
-      @media only screen and (max-width: 800px) {
-        font-size: 38pt;
+      @media only screen and (max-width: 1000px) {
+        word-spacing: 9999px;
+        align-self: center;
       }
     }
-    .text-content {
-      margin-top: 40px;
-      color: rgba(71, 71, 71, 0.814);
-    }
   }
-  .providers-animation {
-    margin: 0;
-    margin-top: 90px;
-    padding: 0;
-    // height: 300px;
+  .right-center-section {
+    height: 350px;
     pointer-events: none;
-    flex: 1;
-    align-self: center;
   }
-
-  @media only screen and (max-width: 800px) {
-    flex-direction: column;
-    margin-top: 100px;
-
-    .dance-party {
-      height: 300px;
-    }
+  @media only screen and (max-width: 1000px) {
+    height: 300px;
   }
 }

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
-import WelcomeTemplate from "./welcomeTemplate/WelcomeTemplate";
-import "./_welcome.scss";
 
 export default function Welcome() {
   const [animationData, setAnimationData] =
@@ -20,22 +18,20 @@ export default function Welcome() {
       </div>
     );
   return (
-    <WelcomeTemplate>
-      <div className="center-section">
-        <div className="logos">
-          <div className="center-logo-main">PARTYTIVITY</div>
-          <div className="center-logo-subs">
-            <div className="center-logo-sub1">Party.</div>
-            <div className="center-logo-sub2">Simple.</div>
-          </div>
+    <div className="welcome-center-section">
+      <div className="left-center-section">
+        <div className="center-logo-main">PARTYTIVITY</div>
+        <div className="center-logo-subs">
+          <div className="center-logo-sub">Party.</div>
+          <div className="center-logo-sub">Simple.</div>
         </div>
-        <Lottie
-          className="dance-party"
-          animationData={animationData}
-          play={true}
-          loop={true}
-        />
       </div>
-    </WelcomeTemplate>
+      <Lottie
+        className="right-center-section"
+        animationData={animationData}
+        play={true}
+        loop={true}
+      />
+    </div>
   );
 }

@@ -1,8 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
-import CustomLink from "../Link";
-import WelcomeTemplate from "../welcome/welcomeTemplate/WelcomeTemplate";
 import { useNavigate } from "react-router-dom";
 
 function Unknown() {
@@ -26,17 +24,15 @@ function Unknown() {
       </div>
     );
   return (
-    <WelcomeTemplate>
-      <div className="center-section">
-        <Lottie
-          className="unknown-animation"
-          animationData={animationData}
-          play={true}
-          loop={true}
-          style={{ width: 600, height: 600, margin: 0, padding: 0 }}
-        />
-      </div>
-    </WelcomeTemplate>
+    <div className="center-section">
+      <Lottie
+        className="unknown-animation"
+        animationData={animationData}
+        play={true}
+        loop={true}
+        style={{ width: 600, height: 600, margin: 0, padding: 0 }}
+      />
+    </div>
   );
 }
 

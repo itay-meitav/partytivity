@@ -6,8 +6,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 import Lottie from "react-lottie-player";
 import "./_welcomeTemplate.scss";
+import { Outlet } from "react-router-dom";
 
-function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
+function WelcomeTemplate() {
   const [showPhoneNav, setShowPhoneNav] = useState(false);
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
@@ -26,6 +27,7 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
     );
   return (
     <div className="welcomePage">
+      <div />
       <div className="navbar">
         <CustomLink
           to="/"
@@ -76,14 +78,14 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
             </CustomLink>
           </div>
         </nav>
-        <IconButton
-          className="nav-icon"
-          style={showPhoneNav ? { position: "fixed" } : {}}
-          onClick={() => setShowPhoneNav(!showPhoneNav)}
-        >
-          {!showPhoneNav ? <MenuIcon /> : <CloseIcon />}
-        </IconButton>
       </div>
+      <IconButton
+        className="nav-icon"
+        style={{ position: showPhoneNav ? "fixed" : "absolute" }}
+        onClick={() => setShowPhoneNav(!showPhoneNav)}
+      >
+        {!showPhoneNav ? <MenuIcon /> : <CloseIcon />}
+      </IconButton>
       {showPhoneNav ? (
         <Lottie
           className="balloons-mobile"
@@ -95,8 +97,15 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
       ) : (
         ""
       )}
-
-      {children}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Outlet />
+      </div>
     </div>
   );
 }

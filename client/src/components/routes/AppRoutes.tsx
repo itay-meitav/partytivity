@@ -11,11 +11,16 @@ import config from "../../assets/config";
 import { WelcomeRoutes } from "./WelcomeRoutes";
 import { DashboardRoutes } from "./DashboardRoutes";
 import DashboardTemplate from "../dashboard/DashboardTemplate";
+import WelcomeTemplate from "../welcome/welcomeTemplate/WelcomeTemplate";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/welcome" /> },
   { path: "*", element: <Unknown /> },
-  { path: "/welcome", children: [...WelcomeRoutes] },
+  {
+    path: "/welcome",
+    element: <WelcomeTemplate />,
+    children: WelcomeRoutes,
+  },
   { path: "/login", children: [] },
   {
     path: "/login",
