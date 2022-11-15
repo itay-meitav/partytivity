@@ -90,11 +90,7 @@ function PhotosMain() {
             </Typography>
           </div>
           <div style={{ alignSelf: "center" }}>
-            {!partyDetails.photos.length ? (
-              <PhotosCarousel />
-            ) : (
-              <PhotosCarousel sources={partyDetails.photos} />
-            )}
+            <PhotosCarousel sources={partyDetails.photos} />
           </div>
           <div
             style={{

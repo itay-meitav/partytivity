@@ -1,11 +1,13 @@
 .welcomePage {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  gap: 100px;
+  @media only screen and (max-width: 1000px) {
+    gap: 100px;
+  }
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -22,12 +24,19 @@
         font-size: 18pt;
         user-select: none;
         white-space: nowrap;
+        @media only screen and (max-width: 490px) {
+          font-size: 12pt;
+        }
       }
       .nav-logo-img {
         height: 20px;
         width: 20px;
         margin-right: 23px;
         user-select: none;
+        @media only screen and (max-width: 490px) {
+          height: 15px;
+          width: 15px;
+        }
       }
     }
     nav {
@@ -95,11 +104,11 @@
 @keyframes sweepIn {
   from {
     opacity: 0;
-    transform: scaleX(0);
+    width: 0%;
   }
   to {
     opacity: 1;
-    transform: scaleX(1);
+    width: 100%;
   }
 }
 

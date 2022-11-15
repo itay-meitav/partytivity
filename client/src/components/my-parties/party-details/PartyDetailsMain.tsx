@@ -1,10 +1,12 @@
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../../../assets/config";
 import PartyDetailsHeading from "./PartyDetailsHeading";
 import { atom, useRecoilState } from "recoil";
 import { Dayjs } from "dayjs";
+import PartyDetailsBasic from "./PartyDetailsBasic";
+import PartyPhotos from "./PartyPhotos";
 
 export const partyDetailsState = atom({
   key: "partyDetails",
@@ -40,8 +42,12 @@ function PartyDetailsMain() {
 
   return (
     <Grid item xs={12}>
-      <Paper className="myParties" elevation={2}>
+      <Paper className="partyDetails" elevation={2}>
         <PartyDetailsHeading />
+        <Typography color="text.secondary">Basic Information</Typography>
+        <PartyDetailsBasic />
+        <Typography color="text.secondary">Party Photos</Typography>
+        <PartyPhotos sources={partyDetails.photos} />
       </Paper>
     </Grid>
   );

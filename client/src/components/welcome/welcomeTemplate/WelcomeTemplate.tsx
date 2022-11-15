@@ -27,7 +27,7 @@ function WelcomeTemplate() {
     );
   return (
     <div className="welcomePage">
-      <div />
+      <div style={{ height: 50 }} />
       <div className="navbar">
         <CustomLink
           to="/"

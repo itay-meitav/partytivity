@@ -1,15 +1,20 @@
+import { Typography } from "@mui/material";
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useRecoilState } from "recoil";
+import { partyDetailsState } from "./PartyDetailsMain";
 
 type TProps = {
   sources: string[];
 };
 
-function PhotosCarousel(props: TProps) {
+function PartyPhotos(props: TProps) {
+  const [partyDetails, setPartyDetails] = useRecoilState(partyDetailsState);
+
   if (props.sources.length) {
     return (
-      <Carousel width={"100%"}>
+      <Carousel width={"80%"} className="partyPhotos" showThumbs={false}>
         {props.sources.map((x: string, i: number) => (
           <div key={i}>
             <img className="d-block w-100 h-100" src={x} alt="Photo" />
@@ -19,7 +24,7 @@ function PhotosCarousel(props: TProps) {
     );
   }
   return (
-    <Carousel width={"100%"}>
+    <Carousel width={"80%"} className="partyPhotos" showThumbs={false}>
       <div>
         <img
           className="d-block w-100 h-100"
@@ -52,4 +57,4 @@ function PhotosCarousel(props: TProps) {
   );
 }
 
-export default PhotosCarousel;
+export default PartyPhotos;

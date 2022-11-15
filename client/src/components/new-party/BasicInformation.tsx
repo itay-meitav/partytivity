@@ -5,9 +5,7 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
-  Stack,
   TextField,
-  Typography,
 } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -15,105 +13,99 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 import { newPartyDetailsState } from "./globalStates";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+import { useNavigate } from "react-router-dom";
 
 function BasicInformation() {
   const [partyDetails, setPartyDetails] = useRecoilState(newPartyDetailsState);
   const handleChange = (newValue: Dayjs | null) => {
     setPartyDetails({ ...partyDetails, date: newValue });
   };
+  const navigate = useNavigate();
 
   return (
-    <Stack direction="column" spacing={5}>
-      <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Basic Information
-      </Typography>
-      <FormControl variant="standard">
-        <Stack direction="row" spacing={2}>
-          <TextField
-            id="filled-textarea"
-            label="Party Title"
-            placeholder="Title"
-            onChange={(e) => {
-              const val = e.currentTarget.value.replace(/[^\w\s]/gi, "");
-              setPartyDetails({ ...partyDetails, title: val });
-            }}
-            value={partyDetails.title}
-            required
+    <form
+      className="basicInformation"
+      onSubmit={(e) => {
+        e.preventDefault();
+        navigate("/dashboard/my-parties/new/photos");
+      }}
+    >
+      <div className="left-section">
+        <TextField
+          id="filled-textarea"
+          label="Party Title"
+          placeholder="Title"
+          onChange={(e) => {
+            const val = e.currentTarget.value.replace(/[^\w\s]/gi, "");
+            setPartyDetails({ ...partyDetails, title: val });
+          }}
+          value={partyDetails.title}
+          fullWidth
+          required
+        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateTimePicker
+            label="Party Date"
+            value={partyDetails.date}
+            onChange={handleChange}
+            renderInput={(params: any) => (
+              <TextField fullWidth required {...params} />
+            )}
           />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              label="Party Date"
-              value={partyDetails.date}
-              onChange={handleChange}
-              renderInput={(params: any) => <TextField required {...params} />}
-            />
-          </LocalizationProvider>
-          <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="demo-multiple-checkbox-label">
-              Collaborators
-            </InputLabel>
-            <Select
-              labelId="demo-multiple-checkbox-label"
-              id="demo-multiple-checkbox"
-              multiple
-              value={partyDetails.collaborators}
-              input={<OutlinedInput label="Collaborators" />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
-            >
-              {names.map((name, i) => (
-                <MenuItem
-                  key={i}
-                  value={name}
-                  onClick={() => {
-                    if (partyDetails.collaborators.includes(name)) {
-                      setPartyDetails({
-                        ...partyDetails,
-                        collaborators: partyDetails.collaborators.filter(
-                          (x: any) => x !== name
-                        ),
-                      });
-                    } else {
-                      setPartyDetails({
-                        ...partyDetails,
-                        collaborators: [...partyDetails.collaborators, name],
-                      });
-                    }
-                  }}
-                >
-                  <ListItemText secondary={name} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
-      </FormControl>
+        </LocalizationProvider>
+        <FormControl fullWidth>
+          <InputLabel id="test-select-label">Collaborators</InputLabel>
+          <Select
+            labelId="demo-multiple-checkbox-label"
+            id="demo-multiple-checkbox"
+            multiple
+            value={partyDetails.collaborators}
+            label="Collaborators"
+            placeholder="Collaborators"
+            input={<OutlinedInput label="Collaborators" />}
+            renderValue={(selected) => selected.join(", ")}
+          >
+            {names.map((name, i) => (
+              <MenuItem
+                key={i}
+                value={name}
+                onClick={() => {
+                  if (partyDetails.collaborators.includes(name)) {
+                    setPartyDetails({
+                      ...partyDetails,
+                      collaborators: partyDetails.collaborators.filter(
+                        (x: any) => x !== name
+                      ),
+                    });
+                  } else {
+                    setPartyDetails({
+                      ...partyDetails,
+                      collaborators: [...partyDetails.collaborators, name],
+                    });
+                  }
+                }}
+              >
+                <ListItemText secondary={name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
       <TextField
-        sx={{ flex: 1 }}
         id="filled-textarea"
         label="Party Description"
         onChange={(e) => {
           const val = e.currentTarget.value;
           setPartyDetails({ ...partyDetails, des: val });
         }}
-        style={{ width: 400 }}
         value={partyDetails.des}
+        className="desInput"
         placeholder="Description"
         multiline
-        maxRows={5}
+        minRows={7}
+        maxRows={7}
       />
-    </Stack>
+    </form>
   );
 }
 

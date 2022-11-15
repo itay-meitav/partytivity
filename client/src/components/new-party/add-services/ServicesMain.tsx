@@ -2,19 +2,16 @@ import React, { useState } from "react";
 import {
   Button,
   FormControl,
-  IconButton,
   InputLabel,
   ListItemText,
   MenuItem,
   Select,
   Stack,
-  Typography,
 } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import ServiceInputs from "./ServiceInputs";
 import { addServicesInputsState } from "../globalStates";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const services = [
   "Location Service",
@@ -41,37 +38,7 @@ function ServicesMain() {
         alignItems={"center"}
         justifyContent={"flex-start"}
         spacing={1}
-      >
-        <Typography color="text.secondary" sx={{ flex: 1 }}>
-          Services
-        </Typography>
-        <OverlayTrigger
-          placement="right"
-          show={messages.message1}
-          overlay={
-            <Tooltip id="button-tooltip-2">
-              This step is completely optional. Only if you are already familiar
-              with a provider's services and would like them again, you can add
-              them here.
-            </Tooltip>
-          }
-        >
-          <IconButton
-            sx={{ width: 18, height: 18 }}
-            onClick={() => {
-              if (messages.message1) {
-                setMessages({ ...messages, message1: false });
-              } else {
-                setMessages({ ...messages, message1: true });
-              }
-            }}
-            onBlur={() => setMessages({ ...messages, message1: false })}
-            size={"small"}
-          >
-            <ErrorOutlineIcon sx={{ width: 18, height: 18 }} />
-          </IconButton>
-        </OverlayTrigger>
-      </Stack>
+      ></Stack>
       <FormControl
         sx={{
           width: 400,

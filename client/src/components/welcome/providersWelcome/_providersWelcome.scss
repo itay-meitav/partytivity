@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   width: 90%;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1200px) {
     flex-direction: column;
     gap: 30px;
   }
@@ -16,7 +16,7 @@
     font-family: "Poppins", sans-serif;
     width: 50%;
     color: rgba(71, 71, 71, 0.814);
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1200px) {
       text-align: center;
       width: 70%;
     }
@@ -25,7 +25,7 @@
       font-size: 48pt;
       color: rgba(0, 0, 0, 0.657);
       font-weight: 600;
-      @media only screen and (max-width: 1000px) {
+      @media only screen and (max-width: 1200px) {
         word-spacing: 9999px;
         align-self: center;
       }
@@ -34,8 +34,10 @@
   .right-center-section {
     height: 350px;
     pointer-events: none;
+    margin: 0;
+    padding: 0;
   }
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1200px) {
     height: 300px;
   }
 }
