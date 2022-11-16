@@ -19,9 +19,9 @@ export const newPartyDetailsState = atom({
   },
 });
 
-export const partySubmitState = atom({
+export const newPartySubmitState = atom({
   key: "partySubmit",
-  default: { submit: false, partyToken: "" },
+  default: { errorMessage: "", partyToken: "" },
 });
 
 export const addServicesInputsState = atom({

@@ -1,27 +1,23 @@
-import { Button, IconButton, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { useRecoilState } from "recoil";
+import { Button, IconButton, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { newPartyDetailsState } from "../globalStates";
+import { newPartyDetailsState, newPartySubmitState } from "../globalStates";
 import config from "../../../assets/config";
 
-function PhotosButtons() {
+function PhotosButtons(props: React.PropsWithChildren) {
   const [partyDetails, setPartyDetails] = useRecoilState(newPartyDetailsState);
+  const newPartySubmit = useRecoilValue(newPartySubmitState);
   const [files, setFiles] = useState<FormData>(new FormData());
-  const [settings, setSettings] = useState({
-    errorMessage: "",
-    tooltipMessage: false,
-    disable: false,
-  });
+  const [error, setError] = useState("");
 
   useEffect(() => {
     localStorage.setItem("details", JSON.stringify(partyDetails));
   }, [partyDetails]);
 
   async function submitFiles() {
-    if (partyDetails.photos.length) {
-      const names = JSON.parse(localStorage.getItem("names")!);
+    const names = JSON.parse(localStorage.getItem("names")!);
+    if (names.length) {
       fetch(`${config.apiHost}/api/photos/remove`, {
         method: "post",
         headers: {
@@ -32,143 +28,98 @@ function PhotosButtons() {
         body: JSON.stringify({ photos: names }),
       }).then((res) => {
         if (!res.ok) {
-          setSettings({
-            ...settings,
-            errorMessage: "There is a problem with changing the images.",
-          });
-          return;
+          setError("There is a problem with changing the images");
+          return false;
         }
       });
+    } else if (partyDetails.photos && !names.length) {
+      setError("There is a problem with changing the images");
+      return false;
     }
-    const req = await fetch(`${config.apiHost}/api/photos`, {
+    fetch(`${config.apiHost}/api/photos`, {
       method: "post",
       credentials: "include",
       body: files,
+    }).then(async (res) => {
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem("names", JSON.stringify(data.names));
+        setPartyDetails({ ...partyDetails, photos: data.files });
+        // localStorage.setItem("src", JSON.stringify(data.files.map((x: any) =>
+        //     x.path.replaceAll("src", `http:${config.apiHost}`)
+        //     )
+        //   ));
+        // window.location.reload();
+      } else {
+        const data = await res.json();
+        setError(data.message);
+      }
     });
-    const data = await req.json();
-    if (data.success) {
-      console.log(data.files);
-
-      localStorage.setItem("names", JSON.stringify(data.names));
-      setPartyDetails({ ...partyDetails, photos: data.files });
-      console.log(partyDetails);
-      // localStorage.setItem("src", JSON.stringify(data.files.map((x: any) =>
-      //     x.path.replaceAll("src", `http:${config.apiHost}`)
-      //     )
-      //   ));
-      // window.location.reload();
-    } else {
-      setSettings({ ...settings, errorMessage: data.massage });
-    }
   }
   return (
     <div className="partyPhotosFooter">
-      <div className="photosButtons">
-        <form
-          encType="multipart/form-data"
-          onSubmit={(e) => {
-            e.preventDefault();
-            submitFiles();
-          }}
-        >
-          <IconButton
-            onClick={() => {
-              const names = JSON.parse(localStorage.getItem("names")!);
-              fetch(`${config.apiHost}/api/photos/remove`, {
-                method: "post",
-                headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                },
-                credentials: "include",
-                body: JSON.stringify({ photos: names }),
-              }).then((res) => {
-                if (!res.ok) {
-                  setSettings({
-                    ...settings,
-                    errorMessage:
-                      "There is a problem with deleting the images.",
-                  });
-                } else {
-                  setPartyDetails({
-                    ...partyDetails,
-                    photos: [],
-                  });
-                  localStorage.removeItem("names");
-                }
+      <IconButton
+        onClick={() => {
+          const names = JSON.parse(localStorage.getItem("names")!);
+          fetch(`${config.apiHost}/api/photos/remove`, {
+            method: "post",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ photos: names }),
+          }).then((res) => {
+            if (!res.ok) {
+              setError("There is a problem with deleting the images");
+            } else {
+              setError("");
+              setPartyDetails({
+                ...partyDetails,
+                photos: [],
               });
-            }}
-            size="large"
-            aria-label="delete"
-          >
-            <DeleteIcon />
-          </IconButton>
-          <Button
-            style={{ width: "max-content" }}
-            variant="outlined"
-            component="label"
-          >
-            Choose Photos
-            <input
-              hidden
-              accept="image/*"
-              multiple
-              type="file"
-              name="files"
-              onChange={(e: any) => {
-                if (e.target.files.length > 4) {
-                  setSettings({
-                    errorMessage: "",
-                    disable: true,
-                    tooltipMessage: true,
-                  });
-                  setTimeout(() => {
-                    setSettings({
-                      errorMessage: "",
-                      disable: true,
-                      tooltipMessage: false,
-                    });
-                  }, 3000);
-                } else {
-                  setSettings({
-                    ...settings,
-                    errorMessage: "",
-                    disable: false,
-                  });
-                  const formData = new FormData();
-                  for (let i = 0; i < e.target.files.length; i++) {
-                    formData.append("files", e.target.files[i]);
-                  }
-                  setFiles(formData);
-                }
-              }}
-            />
-          </Button>
-          <Button
-            style={{ width: "max-content" }}
-            variant="contained"
-            type="submit"
-            disabled={settings.disable}
-          >
-            Upload
-          </Button>
-          <Button
-            style={{ width: "max-content", alignSelf: "flex-end" }}
-            variant="contained"
-            color="success"
-            // onClick={() => {
-            //   if (partyDetails.photos.length) {
-            //     submitParty();
-            //   } else {
-            //     setModal(true);
-            //   }
-            // }}
-          >
-            Create Party
-          </Button>
-        </form>
-      </div>
-      <div style={{ color: "#75706f" }}>{settings.errorMessage}</div>
+              localStorage.removeItem("names");
+            }
+          });
+        }}
+        size="large"
+        aria-label="delete"
+      >
+        <DeleteIcon />
+      </IconButton>
+      <Button component="label" variant="outlined">
+        Choose Photos
+        <input
+          hidden
+          multiple
+          accept="image/*"
+          type="file"
+          name="files"
+          onChange={(e: any) => {
+            if (e.target.files.length > 4) {
+              setError("You can upload up to four photos only");
+            } else {
+              setError("");
+              const formData = new FormData();
+              for (let i = 0; i < e.target.files.length; i++) {
+                formData.append("files", e.target.files[i]);
+              }
+              setFiles(formData);
+            }
+          }}
+        />
+      </Button>
+      <Button
+        variant="contained"
+        disabled={error.length ? true : false}
+        onClick={() => submitFiles()}
+      >
+        Upload
+      </Button>
+      <Typography color="text.secondary">
+        {newPartySubmit.errorMessage || error}
+      </Typography>
+      {props.children}
     </div>
   );
 }

@@ -55,46 +55,54 @@
     align-items: center;
     width: 100%;
   }
-  .partyPhotos {
+  .partyPhotosFooter {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    .createButton {
+      margin-left: auto;
+      justify-self: flex-end;
+    }
+  }
+}
+
+.successParty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 400px;
+  padding: 20px;
+  text-align: center;
+  .buttons {
+    display: flex;
+    gap: 20px;
+  }
+}
+
+.errorModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.5px;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #eeeeeef1;
+  border-radius: 10px;
+  box-shadow: 24px;
+  padding: 15px;
+  .modalButtons {
     display: flex;
     justify-content: center;
-    align-items: space-between;
-    flex-direction: column;
+    align-items: center;
     gap: 10px;
-    width: 100%;
-    .errorModal {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1.5px;
-      text-align: center;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 400px;
-      background-color: #eeeeee;
-      border-radius: 2px;
-      box-shadow: 24px;
-      padding: 4px;
-      .modalButtons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-      }
-    }
-    .partyPhotosFooter {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      .photosButtons {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 10px;
-      }
-    }
   }
 }
