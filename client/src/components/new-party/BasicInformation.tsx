@@ -13,23 +13,15 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 import { newPartyDetailsState } from "./globalStates";
-import { useNavigate } from "react-router-dom";
 
 function BasicInformation() {
   const [partyDetails, setPartyDetails] = useRecoilState(newPartyDetailsState);
   const handleChange = (newValue: Dayjs | null) => {
     setPartyDetails({ ...partyDetails, date: newValue });
   };
-  const navigate = useNavigate();
 
   return (
-    <form
-      className="basicInformation"
-      onSubmit={(e) => {
-        e.preventDefault();
-        navigate("/dashboard/my-parties/new/photos");
-      }}
-    >
+    <div className="basicInformation">
       <div className="left-section">
         <TextField
           id="filled-textarea"
@@ -105,7 +97,7 @@ function BasicInformation() {
         minRows={7}
         maxRows={7}
       />
-    </form>
+    </div>
   );
 }
 

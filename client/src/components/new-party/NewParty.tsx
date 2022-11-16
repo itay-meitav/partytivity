@@ -1,16 +1,18 @@
 import { Button, Grid, Paper, Tooltip, Typography } from "@mui/material";
 import BasicInformation from "./BasicInformation";
 import { useRecoilValue, useResetRecoilState } from "recoil";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ServicesMain from "./add-services/ServicesMain";
 import NewPartyHeader from "./NewPartyHeader";
 import { addServicesInputsState, newPartyDetailsState } from "./globalStates";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { useNavigate } from "react-router-dom";
 
 function NewParty() {
   const partyDetails = useRecoilValue(newPartyDetailsState);
   const resetServiceTypes = useResetRecoilState(addServicesInputsState);
   const resetPartyDetails = useResetRecoilState(newPartyDetailsState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem("details", JSON.stringify(partyDetails));
@@ -21,7 +23,16 @@ function NewParty() {
       <Paper className="newParty" elevation={2}>
         <NewPartyHeader title="New Party" link="/dashboard/my-parties" />
         <Typography color="text.secondary">Basic Information</Typography>
-        <BasicInformation />
+        <form
+          id="myForm"
+          style={{ width: "100%" }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            navigate("/dashboard/my-parties/new/photos");
+          }}
+        >
+          <BasicInformation />
+        </form>
         <div className="servicesHeader">
           <Typography color="text.secondary">Services</Typography>
           <Tooltip
@@ -53,6 +64,7 @@ function NewParty() {
             variant="outlined"
             size="small"
             type="submit"
+            form="myForm"
           >
             Next Step
           </Button>

@@ -62,59 +62,47 @@ function PhotosButtons() {
     }
   }
   return (
-    <form
-      encType="multipart/form-data"
-      onSubmit={(e) => {
-        e.preventDefault();
-        submitFiles();
-      }}
-    >
-      <Stack
-        direction="row"
-        justifyContent={"flex-start"}
-        alignItems={"center"}
-        spacing={1}
-      >
-        <IconButton
-          onClick={() => {
-            const names = JSON.parse(localStorage.getItem("names")!);
-            fetch(`${config.apiHost}/api/photos/remove`, {
-              method: "post",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({ photos: names }),
-            }).then((res) => {
-              if (!res.ok) {
-                setSettings({
-                  ...settings,
-                  errorMessage: "There is a problem with deleting the images.",
-                });
-              } else {
-                setPartyDetails({
-                  ...partyDetails,
-                  photos: [],
-                });
-                localStorage.removeItem("names");
-              }
-            });
+    <div className="partyPhotosFooter">
+      <div className="photosButtons">
+        <form
+          encType="multipart/form-data"
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitFiles();
           }}
-          size="large"
-          aria-label="delete"
         >
-          <DeleteIcon />
-        </IconButton>
-        <OverlayTrigger
-          placement="top"
-          show={settings.tooltipMessage}
-          overlay={
-            <Tooltip id="button-tooltip-2">
-              You can add up to four photos only. Try again.
-            </Tooltip>
-          }
-        >
+          <IconButton
+            onClick={() => {
+              const names = JSON.parse(localStorage.getItem("names")!);
+              fetch(`${config.apiHost}/api/photos/remove`, {
+                method: "post",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({ photos: names }),
+              }).then((res) => {
+                if (!res.ok) {
+                  setSettings({
+                    ...settings,
+                    errorMessage:
+                      "There is a problem with deleting the images.",
+                  });
+                } else {
+                  setPartyDetails({
+                    ...partyDetails,
+                    photos: [],
+                  });
+                  localStorage.removeItem("names");
+                }
+              });
+            }}
+            size="large"
+            aria-label="delete"
+          >
+            <DeleteIcon />
+          </IconButton>
           <Button
             style={{ width: "max-content" }}
             variant="outlined"
@@ -156,18 +144,32 @@ function PhotosButtons() {
               }}
             />
           </Button>
-        </OverlayTrigger>
-        <Button
-          style={{ width: "max-content" }}
-          variant="contained"
-          type="submit"
-          disabled={settings.disable}
-        >
-          Upload
-        </Button>
-        <div style={{ color: "#75706f" }}>{settings.errorMessage}</div>
-      </Stack>
-    </form>
+          <Button
+            style={{ width: "max-content" }}
+            variant="contained"
+            type="submit"
+            disabled={settings.disable}
+          >
+            Upload
+          </Button>
+          <Button
+            style={{ width: "max-content", alignSelf: "flex-end" }}
+            variant="contained"
+            color="success"
+            // onClick={() => {
+            //   if (partyDetails.photos.length) {
+            //     submitParty();
+            //   } else {
+            //     setModal(true);
+            //   }
+            // }}
+          >
+            Create Party
+          </Button>
+        </form>
+      </div>
+      <div style={{ color: "#75706f" }}>{settings.errorMessage}</div>
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   FormControl,
@@ -6,10 +6,9 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  Stack,
+  Tooltip,
 } from "@mui/material";
 import { useRecoilState } from "recoil";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import ServiceInputs from "./ServiceInputs";
 import { addServicesInputsState } from "../globalStates";
 
@@ -22,43 +21,26 @@ const services = [
 ];
 
 function ServicesMain() {
-  const [messages, setMessages] = useState({
-    message1: false,
-    message2: false,
-  });
+  const [message, setMessage] = useState(false);
   const [markedService, setMarkedService] = useState<string>("");
   const [addServicesInput, setAddServicesInput] = useRecoilState(
     addServicesInputsState
   );
 
   return (
-    <Stack alignItems={"flex-start"} justifyContent={"flex-start"} spacing={5}>
-      <Stack
-        direction={"row"}
-        alignItems={"center"}
-        justifyContent={"flex-start"}
-        spacing={1}
-      ></Stack>
-      <FormControl
-        sx={{
-          width: 400,
-          height: 50,
-          display: "flex",
-          flexDirection: "row",
-          gap: 3,
-        }}
-      >
-        <InputLabel id="demo-simple-select-label">Service Type</InputLabel>
-        <Select
-          style={{ flex: 2 }}
-          labelId="demo-simple-select-label"
-          placeholder="Service Type"
-          id="demo-simple-select"
-          label="Service Type"
-          value={markedService}
-        >
-          {services.map((x, i) => {
-            return (
+    <>
+      <div className="addServices">
+        <FormControl size="medium" fullWidth>
+          <InputLabel id="demo-simple-select-label">Service Type</InputLabel>
+          <Select
+            className="selectService"
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            placeholder="Service Type"
+            label="Service Type"
+            value={markedService}
+          >
+            {services.map((x, i) => (
               <MenuItem
                 value={x}
                 key={i}
@@ -68,46 +50,40 @@ function ServicesMain() {
               >
                 <ListItemText primary={x} />
               </MenuItem>
-            );
-          })}
-        </Select>
-        <OverlayTrigger
+            ))}
+            ;
+          </Select>
+        </FormControl>
+        <Tooltip
+          open={message}
+          onOpen={() => setMessage(true)}
+          onClose={() => setMessage(false)}
+          title="You can add one service of each type"
           placement="top"
-          show={messages.message2}
-          overlay={
-            <Tooltip id="button-tooltip-2">
-              You can add one service of each type
-            </Tooltip>
-          }
         >
           <Button
-            style={{ width: "max-content" }}
             variant="outlined"
             color="success"
-            size="small"
-            type="button"
+            size="medium"
+            className="addButton"
             onClick={() => {
               if (!markedService) {
                 return false;
               } else if (addServicesInput.find((x) => x == markedService)) {
-                setMessages({ ...messages, message2: true });
-                setTimeout(() => {
-                  setMessages({ ...messages, message2: false });
-                }, 5000);
+                return false;
               } else {
                 setAddServicesInput([...addServicesInput, markedService]);
               }
             }}
-            onBlur={() => setMessages({ ...messages, message2: false })}
           >
             Add New Service
           </Button>
-        </OverlayTrigger>
-      </FormControl>
+        </Tooltip>
+      </div>
       {addServicesInput.map((x, i) => (
         <ServiceInputs serviceType={x} key={i} />
       ))}
-    </Stack>
+    </>
   );
 }
 

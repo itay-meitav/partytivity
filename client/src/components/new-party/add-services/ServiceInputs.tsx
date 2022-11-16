@@ -46,17 +46,12 @@ function ServiceInputs(props: Tprops) {
   }, [filteredOptions]);
 
   return (
-    <Stack justifyContent={"flex-start"} alignItems={"flex-start"} spacing={2}>
+    <>
       <Typography variant="body2" color="text.secondary">
         {props.serviceType}
       </Typography>
       <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "center",
-          gap: 10,
-        }}
+        className="servicesInput"
         onBlur={(e) => {
           if (!e.currentTarget.contains(e.relatedTarget)) setShow(false);
         }}
@@ -145,7 +140,7 @@ function ServiceInputs(props: Tprops) {
           <DeleteIcon />
         </IconButton>
       </div>
-    </Stack>
+    </>
   );
 }
 

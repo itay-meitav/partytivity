@@ -2,11 +2,12 @@ import { Button, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { partySubmitState } from "./globalStates";
 
 export default function Success() {
   const partySubmit = useRecoilValue(partySubmitState);
+  const resetPartySubmit = useResetRecoilState(partySubmitState);
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ export default function Success() {
               variant="outlined"
               color="secondary"
               onClick={() => {
+                resetPartySubmit();
                 navigate(`/invite/${partySubmit.partyToken}`);
               }}
             >
@@ -54,6 +56,7 @@ export default function Success() {
               variant="outlined"
               color="secondary"
               onClick={() => {
+                resetPartySubmit();
                 navigate("/dashboard");
               }}
             >

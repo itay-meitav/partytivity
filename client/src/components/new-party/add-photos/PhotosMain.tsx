@@ -53,28 +53,18 @@ function PhotosMain() {
   return (
     <Grid item xs={12}>
       <Paper
+        className="newParty"
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
+          alignItems: partySubmit.submit ? "center" : "",
           backgroundColor: partySubmit.submit ? "#e7e8fd" : "",
-          minWidth: "max-content",
-          minHeight: "400px",
-          padding: 20,
           paddingBottom: partySubmit.submit ? 50 : 20,
         }}
         elevation={2}
       >
-        {partySubmit.submit ? <Success /> : ""}
-        <Stack
-          style={{ display: partySubmit.submit ? "none" : "" }}
-          alignItems={"space-between"}
-          justifyContent={"center"}
-          width={"100%"}
-          spacing={5}
-        >
-          <div>
+        {partySubmit.submit ? (
+          <Success />
+        ) : (
+          <>
             <NewPartyHeader
               title={"Party Photos"}
               link={"/dashboard/my-parties/new"}
@@ -88,94 +78,44 @@ function PhotosMain() {
                 later.
               </small>
             </Typography>
-          </div>
-          <div style={{ alignSelf: "center" }}>
             <PhotosCarousel sources={partyDetails.photos} />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
             <PhotosButtons />
-            <OverlayTrigger
-              placement="top"
-              show={errorMsg.show}
-              overlay={
-                <Tooltip id="button-tooltip-2">{errorMsg.error}</Tooltip>
-              }
+            <Modal
+              open={modal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
             >
-              <Button
-                style={{ width: "max-content", alignSelf: "flex-end" }}
-                variant="contained"
-                color="success"
-                onClick={() => {
-                  if (partyDetails.photos.length) {
-                    submitParty();
-                  } else {
-                    setModal(true);
-                  }
-                }}
-              >
-                Create Party
-              </Button>
-            </OverlayTrigger>
-          </div>
-          <Modal
-            open={modal}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Stack
-              alignItems={"center"}
-              justifyContent={"center"}
-              sx={{
-                position: "absolute" as "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: 400,
-                bgcolor: "#EEEEEE",
-                borderRadius: 2,
-                boxShadow: 24,
-                p: 4,
-                gap: 1.5,
-              }}
-            >
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Are you sure?
-              </Typography>
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 2, textAlign: "center" }}
-              >
-                We noticed that you chose to continue <br />
-                <b>without</b> setting photos. <br />
-                Are you sure?
-              </Typography>
-              <Stack direction={"row"} spacing={3}>
-                <Button
-                  variant="outlined"
-                  color="success"
-                  onClick={() => {
-                    setModal(false);
-                    submitParty();
-                  }}
-                >
-                  I'm sure
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => setModal(false)}
-                >
-                  Take me back
-                </Button>
-              </Stack>
-            </Stack>
-          </Modal>
-        </Stack>
+              <div className="errorModal">
+                <h2>Are you sure?</h2>
+                <p>
+                  {" "}
+                  We noticed that you chose to continue <br />
+                  <b>without</b> setting photos. <br />
+                  Are you sure?
+                </p>
+                <div className="modalButtons">
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    onClick={() => {
+                      setModal(false);
+                      submitParty();
+                    }}
+                  >
+                    I'm sure
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => setModal(false)}
+                  >
+                    Take me back
+                  </Button>
+                </div>
+              </div>
+            </Modal>
+          </>
+        )}
       </Paper>
     </Grid>
   );
