@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import authConfig from "src/api/config/auth.config";
 import {
   checkIfPartyExists,
   countUserParties,
   getUserParties,
-} from "src/database/dashboard/my-parties";
-import { getPartyDetailsByID } from "src/database/party-invite/party-invite";
+} from "../../../database/dashboard/myParties";
+import { getPartyDetailsByID } from "../../../database/dashboard/partyInvite";
+import envConfig from "../../config/environment.config";
 
 export const getUserPartiesList = async (req: Request, res: Response) => {
   try {
     const token = req.cookies.token;
-    const { id } = jwt.verify(token, authConfig.secret) as JwtPayload;
+    const { id } = jwt.verify(token, envConfig.JWT_SECRET) as JwtPayload;
     const limit = Number(req.query.limit) || 5;
     const offset = Number(req.query.offset) || 0;
     const orderBy = req.query.orderBy || undefined;
@@ -40,7 +40,7 @@ export const getUserParty = async (req: Request, res: Response) => {
   try {
     const { id } = jwt.verify(
       req.cookies.token,
-      authConfig.secret
+      envConfig.JWT_SECRET
     ) as JwtPayload;
     const partyTitle = req.params.partyTitle.replaceAll("-", " ");
     const check = await checkIfPartyExists(partyTitle, id);

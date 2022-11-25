@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import authConfig from "../config/auth.config";
+import envConfig from "../config/environment.config";
 import jwt from "jsonwebtoken";
 
 export async function isAuthenticated(
@@ -10,7 +10,7 @@ export async function isAuthenticated(
   const cookie = req.cookies.token;
   if (cookie) {
     try {
-      jwt.verify(cookie, authConfig.secret);
+      jwt.verify(cookie, envConfig.JWT_SECRET);
       return next();
     } catch (error) {
       return res.status(500).json({

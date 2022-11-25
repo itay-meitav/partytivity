@@ -5,12 +5,12 @@ import {
   changeUserPass,
   checkIfUserExist,
   checkUserEmail,
-} from "src/database/users";
-import authConfig from "../config/auth.config";
+} from "../../database/users";
 import {
   sendConfirmationEmail,
   sendResetEmail,
 } from "../config/nodemailer.config";
+import envConfig from "../config/environment.config";
 
 export const login = async (req: Request, res: Response) => {
   const { username, password, location } = req.body;
@@ -20,7 +20,7 @@ export const login = async (req: Request, res: Response) => {
     if (checkUser.status == "active") {
       const checkPass = await bcrypt.compare(password, checkUser.password);
       if (checkPass) {
-        const token = jwt.sign({ id: checkUser.id }, authConfig.secret, {
+        const token = jwt.sign({ id: checkUser.id }, envConfig.JWT_SECRET, {
           expiresIn: "24h",
         });
         return res
@@ -66,14 +66,14 @@ export const sendReset = async (req: Request, res: Response) => {
       }
       return await sendVerificationEmail(checkUser, location, res);
     }
-    const token = jwt.sign({ email: checkUser.email }, authConfig.secret, {
+    const token = jwt.sign({ email: checkUser.email }, envConfig.JWT_SECRET, {
       expiresIn: "10m",
     });
     await sendResetEmail(email, token, location);
     return res
       .cookie(
         "reset",
-        jwt.sign({ id: checkUser.id }, authConfig.secret, {
+        jwt.sign({ id: checkUser.id }, envConfig.JWT_SECRET, {
           expiresIn: "10m",
         }),
         {
@@ -99,7 +99,7 @@ export const checkResetToken = async (req: Request, res: Response) => {
   const cookie = req.cookies.reset;
   if (token && cookie) {
     try {
-      jwt.verify(token, authConfig.secret);
+      jwt.verify(token, envConfig.JWT_SECRET);
       return res.json({
         success: true,
       });
@@ -118,7 +118,7 @@ export const changePassword = async (req: Request, res: Response) => {
   const cookie = req.cookies.reset;
   if (cookie) {
     try {
-      const { email } = jwt.verify(token, authConfig.secret) as JwtPayload;
+      const { email } = jwt.verify(token, envConfig.JWT_SECRET) as JwtPayload;
       if (password) {
         const hashedPassword = await bcrypt.hash(password, 12);
         await changeUserPass({
@@ -150,14 +150,14 @@ async function sendVerificationEmail(
   location: any,
   res: Response
 ) {
-  const token = jwt.sign({ email: checkUser.email }, authConfig.secret, {
+  const token = jwt.sign({ email: checkUser.email }, envConfig.JWT_SECRET, {
     expiresIn: "24h",
   });
   await sendConfirmationEmail(checkUser.email, token, location);
   return res
     .cookie(
       "verify",
-      jwt.sign({ name: checkUser.name }, authConfig.secret, {
+      jwt.sign({ name: checkUser.name }, envConfig.JWT_SECRET, {
         expiresIn: "10m",
       }),
       {

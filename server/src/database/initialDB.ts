@@ -1,10 +1,9 @@
-require("dotenv").config({ path: __dirname + "/../../.env" });
 import { addUser } from "./users";
 import * as chrono from "chrono-node";
 import bcrypt from "bcrypt";
 import { pool } from "./general";
-import { insertExampleServices } from "./servicesExample";
-import { addParty } from "./dashboard/new-party";
+import { insertExampleServices } from "./initalServices";
+import { addParty } from "./dashboard/newParty";
 
 initDB();
 

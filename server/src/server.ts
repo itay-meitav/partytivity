@@ -5,10 +5,10 @@ import RestApi from "./api/api.route";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import authConfig from "./api/config/auth.config";
 import jwt from "jsonwebtoken";
 import path from "path";
 import helmet from "helmet";
+import envConfig from "./api/config/environment.config";
 
 const app = express();
 app.use(express.json());
@@ -26,7 +26,7 @@ app.use("/api", RestApi);
 app.get("/login", (req, res) => {
   if (req.cookies.token) {
     try {
-      jwt.verify(req.cookies.token, authConfig.secret);
+      jwt.verify(req.cookies.token, envConfig.JWT_SECRET);
       return res.json({ success: true });
     } catch (error) {
       return res.status(401).json({ success: false });

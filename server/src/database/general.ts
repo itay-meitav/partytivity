@@ -1,8 +1,8 @@
-require("dotenv").config({ path: __dirname + "/../../.env" });
+import envConfig from "../api/config/environment.config";
 import { Pool } from "pg";
 
 export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: envConfig.db.DATABASE_URL,
   idleTimeoutMillis: 0,
   connectionTimeoutMillis: 0,
   keepAlive: true,

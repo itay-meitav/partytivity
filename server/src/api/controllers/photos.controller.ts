@@ -1,13 +1,13 @@
 import path from "path";
-require("dotenv").config({ path: path.join(__dirname, "../../.env") });
 import multer from "multer";
 import fs from "fs";
 import cloudinary from "cloudinary";
+import envConfig from "../config/environment.config";
 
 cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET,
+  cloud_name: envConfig.CLOUDINARY_NAME,
+  api_key: envConfig.CLOUDINARY_API_KEY,
+  api_secret: envConfig.CLOUDINARY_SECRET,
 });
 
 const cloudinaryUploader = async (filePath) => {
@@ -29,7 +29,7 @@ const cloudinaryUploader = async (filePath) => {
 };
 
 const storage = multer.diskStorage({
-  destination: "./src/api/photos/photos/",
+  destination: "./src/api/assets/",
   filename: function (req, file, cb) {
     cb(
       null,

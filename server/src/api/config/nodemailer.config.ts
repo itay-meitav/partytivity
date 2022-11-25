@@ -1,4 +1,4 @@
-require("dotenv").config({ path: __dirname + "/../../../.env" });
+import envConfig from "../config/environment.config";
 import fs from "fs/promises";
 const nodemailer = require("nodemailer");
 
@@ -7,8 +7,8 @@ const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: envConfig.EMAIL_USER,
+    pass: envConfig.EMAIL_PASS,
   },
 });
 
@@ -18,13 +18,13 @@ export async function sendConfirmationEmail(
   location: string
 ) {
   const content = await fs.readFile(
-    __dirname + "../assets/verify.html",
+    __dirname + "/../assets/verify.html",
     "utf8"
   );
   const html = getEmailBody("confirm", content, token, location);
 
   let info = await transporter.sendMail({
-    from: `"Partytivity 🎉" <${process.env.EMAIL_USER}>`,
+    from: `"Partytivity 🎉" <${envConfig.EMAIL_USER}>`,
     to: email,
     subject: "Please confirm your account",
     html: html,
@@ -37,11 +37,14 @@ export async function sendResetEmail(
   token: string,
   location: string
 ) {
-  const content = await fs.readFile(__dirname + "../assets/reset.html", "utf8");
+  const content = await fs.readFile(
+    __dirname + "/../assets/reset.html",
+    "utf8"
+  );
   const html = getEmailBody("reset", content, token, location);
 
   let info = await transporter.sendMail({
-    from: `"Partytivity 🎉" <${process.env.EMAIL_USER}>`,
+    from: `"Partytivity 🎉" <${envConfig.EMAIL_USER}>`,
     to: email,
     subject: "Reset your password",
     html: html,
@@ -61,7 +64,7 @@ function getEmailBody(
       emailType == "confirm"
         ? `${location}/auth/confirm/${token}`
         : `${location}/login/reset/new/${token}`,
-    EMAIL_ENV: process.env.EMAIL_USER,
+    EMAIL_ENV: envConfig.EMAIL_USER,
     SITE_LINK: location,
   };
   const regex = new RegExp(Object.keys(mapObj).join("|"), "gi");

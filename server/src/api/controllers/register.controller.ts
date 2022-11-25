@@ -6,8 +6,8 @@ import {
 } from "../../database/users";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import authConfig from "../config/auth.config";
 import { sendConfirmationEmail } from "../config/nodemailer.config";
+import envConfig from "../config/environment.config";
 
 export const register = async (req: Request, res: Response) => {
   const { username, password, email, name, location } = req.body;
@@ -16,7 +16,7 @@ export const register = async (req: Request, res: Response) => {
   if (!checkUsername && !checkEmail) {
     if (username && password && email) {
       try {
-        const token = jwt.sign({ email: email }, authConfig.secret, {
+        const token = jwt.sign({ email: email }, envConfig.JWT_SECRET, {
           expiresIn: "10m",
         });
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -30,7 +30,7 @@ export const register = async (req: Request, res: Response) => {
         return res
           .cookie(
             "verify",
-            jwt.sign({ name: name }, authConfig.secret, {
+            jwt.sign({ name: name }, envConfig.JWT_SECRET, {
               expiresIn: "10m",
             }),
             {
@@ -60,7 +60,7 @@ export const register = async (req: Request, res: Response) => {
   } else {
     if (checkEmail && !checkUsername) {
       return res.status(400).json({
-        message: "This email already exists",
+        message: "This email is already used",
         success: false,
       });
     } else if (checkUsername && !checkEmail) {

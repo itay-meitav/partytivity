@@ -2,7 +2,7 @@ import express from "express";
 import {
   createNewParty,
   getServicesList,
-} from "src/api/controllers/dashboard/newParty.controller";
+} from "../../controllers/dashboard/newParty.controller";
 import { isAuthenticated } from "../../middlewares/auth";
 const router = express.Router();
 

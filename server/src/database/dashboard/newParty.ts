@@ -1,6 +1,6 @@
-import authConfig from "../../config/auth.config";
 import { query as execQuery } from "../general";
 import jwt from "jsonwebtoken";
+import envConfig from "../../api/config/environment.config";
 
 export async function addParty(details: {
   title: string;
@@ -30,7 +30,7 @@ export async function addParty(details: {
     ],
   };
   const res = await execQuery(query);
-  const token = jwt.sign({ id: res.rows[0].id }, authConfig.secret);
+  const token = jwt.sign({ id: res.rows[0].id }, envConfig.JWT_SECRET);
   const tokenQuery = {
     text: `UPDATE parties SET invite_token = $1 WHERE id = $2 RETURNING *`,
     values: [token, res.rows[0].id],
