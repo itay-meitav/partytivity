@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import authConfig from "./auth.config";
+import authConfig from "../config/auth.config";
 import jwt from "jsonwebtoken";
 
 export async function isAuthenticated(

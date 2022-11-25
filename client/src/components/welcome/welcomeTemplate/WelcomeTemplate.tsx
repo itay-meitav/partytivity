@@ -5,7 +5,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 import Lottie from "react-lottie-player";
-import "./_welcomeTemplate.scss";
 import { Outlet } from "react-router-dom";
 
 function WelcomeTemplate() {

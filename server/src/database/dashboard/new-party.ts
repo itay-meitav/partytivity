@@ -1,4 +1,4 @@
-import authConfig from "../../api/auth/auth.config";
+import authConfig from "../../config/auth.config";
 import { query as execQuery } from "../general";
 import jwt from "jsonwebtoken";
 

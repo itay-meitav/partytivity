@@ -1,10 +1,9 @@
-import express, { Request, Response } from "express";
-import { changeUserStatus } from "../../db/users";
+import { Request, Response } from "express";
+import { changeUserStatus } from "../../database/users";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import authConfig from "./auth.config";
-const router = express.Router();
+import authConfig from "../config/auth.config";
 
-router.get("/confirm/:token", async (req: Request, res: Response) => {
+export const auth = async (req: Request, res: Response) => {
   const token = req.params.token;
   const cookie = req.cookies.verify;
   if (token && cookie) {
@@ -27,6 +26,4 @@ router.get("/confirm/:token", async (req: Request, res: Response) => {
       success: false,
     });
   }
-});
-
-export default router;
+};

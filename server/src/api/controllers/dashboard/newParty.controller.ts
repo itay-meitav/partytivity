@@ -1,15 +1,13 @@
-import express from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { Request, Response } from "express";
+import authConfig from "src/api/config/auth.config";
 import {
   addParty,
   getServiceIDByTitle,
   getServicesByType,
-} from "../../db/dashboard/new-party";
-import authConfig from "../auth/auth.config";
-import { isAuthenticated } from "../auth/authMiddle";
-const router = express.Router();
+} from "src/database/dashboard/new-party";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-router.post("/", isAuthenticated, async (req, res) => {
+export const createNewParty = async (req: Request, res: Response) => {
   const token = req.cookies.token;
   const { id } = jwt.verify(token, authConfig.secret) as JwtPayload;
   let servicesID = {
@@ -64,9 +62,9 @@ router.post("/", isAuthenticated, async (req, res) => {
       success: false,
     });
   }
-});
+};
 
-router.post("/services", async (req, res) => {
+export const getServicesList = async (req: Request, res: Response) => {
   try {
     const serviceType = req.body.serviceType
       .split(/(?=[A-Z])/)
@@ -77,6 +75,4 @@ router.post("/services", async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message, success: false });
   }
-});
-
-export default router;
+};

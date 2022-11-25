@@ -1,4 +1,3 @@
-import "./_login.scss";
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { useEffect, useRef, useState } from "react";

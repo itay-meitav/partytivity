@@ -1,13 +1,8 @@
 import path from "path";
-require("dotenv").config({ path: path.join(__dirname, "../../../.env") });
-import express from "express";
+require("dotenv").config({ path: path.join(__dirname, "../../.env") });
 import multer from "multer";
 import fs from "fs";
-import { isAuthenticated } from "../auth/authMiddle";
 import cloudinary from "cloudinary";
-
-const router = express.Router();
-router.use("/photos", express.static(__dirname + "/photos/"));
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -64,7 +59,7 @@ async function checkFileType(file, cb) {
   }
 }
 
-router.post("/", isAuthenticated, async (req, res) => {
+export const uploadPhoto = async (req, res) => {
   upload(req, res, async (err) => {
     let uploadsLinksArr = [];
     let uploadsNamesArr = [];
@@ -105,9 +100,9 @@ router.post("/", isAuthenticated, async (req, res) => {
       success: true,
     });
   });
-});
+};
 
-router.post("/remove", isAuthenticated, async (req, res) => {
+export const removePhoto = async (req, res) => {
   if (req.body.photos) {
     try {
       cloudinary.v2.api.delete_resources(req.body.photos);
@@ -124,6 +119,4 @@ router.post("/remove", isAuthenticated, async (req, res) => {
   return res.status(500).json({
     success: false,
   });
-});
-
-export default router;
+};

@@ -1,19 +1,14 @@
-import express from "express";
+import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { getPartyDetailsByID } from "../../db/party-invite/party-invite";
+import authConfig from "src/api/config/auth.config";
 import {
   checkIfPartyExists,
   countUserParties,
   getUserParties,
-} from "../../db/dashboard/my-parties";
-import authConfig from "../auth/auth.config";
-import { isAuthenticated } from "../auth/authMiddle";
-import newParty from "./new-party";
-const router = express.Router();
+} from "src/database/dashboard/my-parties";
+import { getPartyDetailsByID } from "src/database/party-invite/party-invite";
 
-router.use("/new", newParty);
-
-router.get("/", isAuthenticated, async (req, res) => {
+export const getUserPartiesList = async (req: Request, res: Response) => {
   try {
     const token = req.cookies.token;
     const { id } = jwt.verify(token, authConfig.secret) as JwtPayload;
@@ -39,9 +34,9 @@ router.get("/", isAuthenticated, async (req, res) => {
       message: "You are not authorized to do that",
     });
   }
-});
+};
 
-router.get("/:partyTitle", isAuthenticated, async (req, res) => {
+export const getUserParty = async (req: Request, res: Response) => {
   try {
     const { id } = jwt.verify(
       req.cookies.token,
@@ -66,5 +61,4 @@ router.get("/:partyTitle", isAuthenticated, async (req, res) => {
       message: "Internal Server Error",
     });
   }
-});
-export default router;
+};

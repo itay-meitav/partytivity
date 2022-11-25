@@ -1,13 +1,14 @@
 if (process.env.NODE_ENV != "production") {
   require("dotenv").config();
 }
-import RestApi from "./api/index";
+import RestApi from "./api/api.route";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import authConfig from "./api/auth/auth.config";
+import authConfig from "./api/config/auth.config";
 import jwt from "jsonwebtoken";
 import path from "path";
+import helmet from "helmet";
 
 const app = express();
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(helmet());
 app.use("/api", RestApi);
 
 app.get("/login", (req, res) => {

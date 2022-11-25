@@ -18,7 +18,7 @@ export async function sendConfirmationEmail(
   location: string
 ) {
   const content = await fs.readFile(
-    __dirname + "/EmailStaticFiles/verify.html",
+    __dirname + "../assets/verify.html",
     "utf8"
   );
   const html = getEmailBody("confirm", content, token, location);
@@ -37,10 +37,7 @@ export async function sendResetEmail(
   token: string,
   location: string
 ) {
-  const content = await fs.readFile(
-    __dirname + "/EmailStaticFiles/reset.html",
-    "utf8"
-  );
+  const content = await fs.readFile(__dirname + "../assets/reset.html", "utf8");
   const html = getEmailBody("reset", content, token, location);
 
   let info = await transporter.sendMail({

@@ -3,8 +3,8 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import {
   addGuestToParty,
   getPartyDetailsByID,
-} from "../db/party-invite/party-invite";
-import authConfig from "./auth/auth.config";
+} from "../../database/party-invite/party-invite";
+import authConfig from "../config/auth.config";
 const router = express.Router();
 
 router.post("/", async (req, res) => {

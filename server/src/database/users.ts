@@ -59,3 +59,12 @@ export async function changeUserPass(details: {
   const res = await execQuery(query);
   return res.rows[0];
 }
+
+export async function checkUserLastPassword(email: string) {
+  const query = {
+    text: `SELECT password FROM users WHERE email = $1`,
+    values: [email],
+  };
+  const res = await execQuery(query);
+  return res.rows[0];
+}

@@ -6,7 +6,6 @@ import { useRecoilValue } from "recoil";
 import config from "../../assets/config";
 import CustomLink from "../Link";
 import SignUpInputs, { signUpInputsState } from "./SignUpInputs";
-import "./_signupPage.scss";
 
 function SignUp() {
   const navigate = useNavigate();

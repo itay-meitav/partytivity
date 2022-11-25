@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie-player";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../../assets/config";
-import "./_confirm.scss";
 
 function ConfirmEmail() {
   const content = useRef<HTMLDivElement>(null);

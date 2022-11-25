@@ -5,7 +5,6 @@ import Lottie from "react-lottie-player";
 import { Link, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import CustomLink from "../Link";
-import "./_loginReset.scss";
 
 function LoginReset() {
   const content = useRef<HTMLDivElement>(null);

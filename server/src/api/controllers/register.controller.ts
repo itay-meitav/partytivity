@@ -1,12 +1,15 @@
-import express from "express";
-import { addUser, checkIfUserExist, checkUserEmail } from "../db/users";
+import { Request, Response } from "express";
+import {
+  addUser,
+  checkIfUserExist,
+  checkUserEmail,
+} from "../../database/users";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import authConfig from "./auth/auth.config";
-import { sendConfirmationEmail } from "./auth/nodemailer.config";
-const router = express.Router();
+import authConfig from "../config/auth.config";
+import { sendConfirmationEmail } from "../config/nodemailer.config";
 
-router.post("/", async (req, res) => {
+export const register = async (req: Request, res: Response) => {
   const { username, password, email, name, location } = req.body;
   const checkUsername = await checkIfUserExist(username);
   const checkEmail = await checkUserEmail(email);
@@ -72,6 +75,4 @@ router.post("/", async (req, res) => {
       });
     }
   }
-});
-
-export default router;
+};
