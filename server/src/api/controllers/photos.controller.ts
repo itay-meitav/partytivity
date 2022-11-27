@@ -1,17 +1,11 @@
 import path from "path";
 import multer from "multer";
 import fs from "fs";
-import cloudinary from "cloudinary";
-import envConfig from "../config/environment.config";
-
-cloudinary.v2.config({
-  cloud_name: envConfig.photos.CLOUDINARY_NAME,
-  api_key: envConfig.photos.CLOUDINARY_API_KEY,
-  api_secret: envConfig.photos.CLOUDINARY_SECRET,
-});
+import { cloudinary } from "../config/cloudinary.config";
+import { Request, Response } from "express";
 
 const cloudinaryUploader = async (filePath) => {
-  return await cloudinary.v2.uploader.upload(
+  return await cloudinary.uploader.upload(
     filePath,
     {
       timestamp: new Date().getTime(),
@@ -59,7 +53,7 @@ async function checkFileType(file, cb) {
   }
 }
 
-export const uploadPhoto = async (req, res) => {
+export const uploadPhoto = async (req: Request, res: Response) => {
   upload(req, res, async (err) => {
     let uploadsLinksArr = [];
     let uploadsNamesArr = [];
@@ -102,10 +96,10 @@ export const uploadPhoto = async (req, res) => {
   });
 };
 
-export const removePhoto = async (req, res) => {
+export const removePhoto = async (req: Request, res: Response) => {
   if (req.body.photos) {
     try {
-      cloudinary.v2.api.delete_resources(req.body.photos);
+      cloudinary.api.delete_resources(req.body.photos);
       return res.json({
         success: true,
       });

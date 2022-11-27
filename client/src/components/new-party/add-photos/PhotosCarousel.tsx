@@ -9,7 +9,7 @@ type TProps = {
 function PhotosCarousel(props: TProps) {
   if (props.sources.length) {
     return (
-      <Carousel width={"100%"}>
+      <Carousel className="photosCarousel">
         {props.sources.map((x: string, i: number) => (
           <div key={i}>
             <img className="d-block w-100 h-100" src={x} alt="Photo" />
@@ -19,7 +19,7 @@ function PhotosCarousel(props: TProps) {
     );
   }
   return (
-    <Carousel width={"100%"}>
+    <Carousel className="photosCarousel">
       <div>
         <img
           className="d-block w-100 h-100"

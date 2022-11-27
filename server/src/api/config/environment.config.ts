@@ -11,6 +11,7 @@ export default {
     CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET,
   },
   db: {
-    DATABASE_URL: process.env.DATABASE_URL,
+    PROD_DATABASE_URL: process.env.PROD_DATABASE_URL,
+    DEV_DATABASE_URL: process.env.DEV_DATABASE_URL,
   },
 };

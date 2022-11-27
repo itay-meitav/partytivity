@@ -17,7 +17,7 @@ function PhotosButtons(props: React.PropsWithChildren) {
 
   async function submitFiles() {
     const names = JSON.parse(localStorage.getItem("names")!);
-    if (names.length) {
+    if (names) {
       fetch(`${config.apiHost}/api/photos/remove`, {
         method: "post",
         headers: {
@@ -32,7 +32,7 @@ function PhotosButtons(props: React.PropsWithChildren) {
           return false;
         }
       });
-    } else if (partyDetails.photos && !names.length) {
+    } else if (partyDetails.photos.length && !names) {
       setError("There is a problem with changing the images");
       return false;
     }
