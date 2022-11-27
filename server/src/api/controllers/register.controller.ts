@@ -16,7 +16,7 @@ export const register = async (req: Request, res: Response) => {
   if (!checkUsername && !checkEmail) {
     if (username && password && email) {
       try {
-        const token = jwt.sign({ email: email }, envConfig.JWT_SECRET, {
+        const token = jwt.sign({ email: email }, envConfig.jwt.JWT_SECRET, {
           expiresIn: "10m",
         });
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -30,7 +30,7 @@ export const register = async (req: Request, res: Response) => {
         return res
           .cookie(
             "verify",
-            jwt.sign({ name: name }, envConfig.JWT_SECRET, {
+            jwt.sign({ name: name }, envConfig.jwt.JWT_SECRET, {
               expiresIn: "10m",
             }),
             {

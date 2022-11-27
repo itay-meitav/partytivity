@@ -9,7 +9,7 @@ import envConfig from "../../config/environment.config";
 
 export const createNewParty = async (req: Request, res: Response) => {
   const token = req.cookies.token;
-  const { id } = jwt.verify(token, envConfig.JWT_SECRET) as JwtPayload;
+  const { id } = jwt.verify(token, envConfig.jwt.JWT_SECRET) as JwtPayload;
   let servicesID = {
     location_service: null,
     music_service: null,

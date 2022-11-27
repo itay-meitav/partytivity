@@ -7,8 +7,8 @@ const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   secure: false,
   auth: {
-    user: envConfig.EMAIL_USER,
-    pass: envConfig.EMAIL_PASS,
+    user: envConfig.email.EMAIL_USER,
+    pass: envConfig.email.EMAIL_PASS,
   },
 });
 
@@ -24,7 +24,7 @@ export async function sendConfirmationEmail(
   const html = getEmailBody("confirm", content, token, location);
 
   let info = await transporter.sendMail({
-    from: `"Partytivity 🎉" <${envConfig.EMAIL_USER}>`,
+    from: `"Partytivity 🎉" <${envConfig.email.EMAIL_USER}>`,
     to: email,
     subject: "Please confirm your account",
     html: html,
@@ -44,7 +44,7 @@ export async function sendResetEmail(
   const html = getEmailBody("reset", content, token, location);
 
   let info = await transporter.sendMail({
-    from: `"Partytivity 🎉" <${envConfig.EMAIL_USER}>`,
+    from: `"Partytivity 🎉" <${envConfig.email.EMAIL_USER}>`,
     to: email,
     subject: "Reset your password",
     html: html,
@@ -64,7 +64,7 @@ function getEmailBody(
       emailType == "confirm"
         ? `${location}/auth/confirm/${token}`
         : `${location}/login/reset/new/${token}`,
-    EMAIL_ENV: envConfig.EMAIL_USER,
+    EMAIL_ENV: envConfig.email.EMAIL_USER,
     SITE_LINK: location,
   };
   const regex = new RegExp(Object.keys(mapObj).join("|"), "gi");

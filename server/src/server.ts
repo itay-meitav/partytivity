@@ -26,7 +26,7 @@ app.use("/api", RestApi);
 app.get("/login", (req, res) => {
   if (req.cookies.token) {
     try {
-      jwt.verify(req.cookies.token, envConfig.JWT_SECRET);
+      jwt.verify(req.cookies.token, envConfig.jwt.JWT_SECRET);
       return res.json({ success: true });
     } catch (error) {
       return res.status(401).json({ success: false });

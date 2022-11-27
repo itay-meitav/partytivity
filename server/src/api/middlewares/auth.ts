@@ -10,7 +10,7 @@ export async function isAuthenticated(
   const cookie = req.cookies.token;
   if (cookie) {
     try {
-      jwt.verify(cookie, envConfig.JWT_SECRET);
+      jwt.verify(cookie, envConfig.jwt.JWT_SECRET);
       return next();
     } catch (error) {
       return res.status(500).json({

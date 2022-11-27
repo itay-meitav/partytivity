@@ -5,9 +5,9 @@ import cloudinary from "cloudinary";
 import envConfig from "../config/environment.config";
 
 cloudinary.v2.config({
-  cloud_name: envConfig.CLOUDINARY_NAME,
-  api_key: envConfig.CLOUDINARY_API_KEY,
-  api_secret: envConfig.CLOUDINARY_SECRET,
+  cloud_name: envConfig.photos.CLOUDINARY_NAME,
+  api_key: envConfig.photos.CLOUDINARY_API_KEY,
+  api_secret: envConfig.photos.CLOUDINARY_SECRET,
 });
 
 const cloudinaryUploader = async (filePath) => {

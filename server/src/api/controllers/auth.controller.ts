@@ -8,7 +8,10 @@ export const auth = async (req: Request, res: Response) => {
   const cookie = req.cookies.verify;
   if (token && cookie) {
     try {
-      const { email } = jwt.verify(token, envConfig.JWT_SECRET) as JwtPayload;
+      const { email } = jwt.verify(
+        token,
+        envConfig.jwt.JWT_SECRET
+      ) as JwtPayload;
       await changeUserStatus(email).then(() => {
         return res
           .clearCookie("verify")

@@ -11,7 +11,7 @@ import envConfig from "../../config/environment.config";
 export const getUserPartiesList = async (req: Request, res: Response) => {
   try {
     const token = req.cookies.token;
-    const { id } = jwt.verify(token, envConfig.JWT_SECRET) as JwtPayload;
+    const { id } = jwt.verify(token, envConfig.jwt.JWT_SECRET) as JwtPayload;
     const limit = Number(req.query.limit) || 5;
     const offset = Number(req.query.offset) || 0;
     const orderBy = req.query.orderBy || undefined;
@@ -40,7 +40,7 @@ export const getUserParty = async (req: Request, res: Response) => {
   try {
     const { id } = jwt.verify(
       req.cookies.token,
-      envConfig.JWT_SECRET
+      envConfig.jwt.JWT_SECRET
     ) as JwtPayload;
     const partyTitle = req.params.partyTitle.replaceAll("-", " ");
     const check = await checkIfPartyExists(partyTitle, id);
