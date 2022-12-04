@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import animation from "./dance-party.json";
 import Lottie from "react-lottie-player";
 
 export default function Welcome() {
@@ -7,8 +6,7 @@ export default function Welcome() {
     useState<Record<string | number, any>>();
 
   useEffect(() => {
-    setAnimationData(animation);
-    console.log(animation);
+    import("./dance-party.json").then(setAnimationData);
   }, []);
 
   if (!animationData)
