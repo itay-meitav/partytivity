@@ -19,16 +19,6 @@ export default function PartiesList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getUserParties();
-  }, []);
-
-  useEffect(() => {
-    if (noParties) {
-      import("./no-parties.json").then(setAnimationData);
-    }
-  }, [noParties]);
-
-  function getUserParties() {
     fetch(`${config.apiHost}/api/dashboard/my-parties/`, {
       credentials: "include",
     }).then(async (res) => {
@@ -42,7 +32,13 @@ export default function PartiesList() {
         setNoParties(true);
       }
     });
-  }
+  }, []);
+
+  useEffect(() => {
+    if (noParties) {
+      import("./no-parties.json").then(setAnimationData);
+    }
+  }, [noParties]);
 
   return (
     <>

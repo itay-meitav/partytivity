@@ -15,12 +15,11 @@ function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      const req = await fetch(`${config.apiHost}/login`, {
-        credentials: "include",
-      });
-      if (req.ok) return navigate("/dashboard");
-    })();
+    fetch(`${config.apiHost}/login`, {
+      credentials: "include",
+    }).then((res) => {
+      if (res.ok) navigate("/dashboard");
+    });
   }, []);
 
   async function loginReq(username: string, password: string) {

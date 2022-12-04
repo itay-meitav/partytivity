@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import {
   changeUserPass,
@@ -18,7 +18,7 @@ export const login = async (req: Request, res: Response) => {
   const checkUser = await checkIfUserExist(username);
   if (checkUser) {
     if (checkUser.status == "active") {
-      const checkPass = await bcrypt.compare(password, checkUser.password);
+      const checkPass = await bcryptjs.compare(password, checkUser.password);
       if (checkPass) {
         const token = jwt.sign({ id: checkUser.id }, envConfig.jwt.JWT_SECRET, {
           expiresIn: "24h",
@@ -127,7 +127,7 @@ export const changePassword = async (req: Request, res: Response) => {
         envConfig.jwt.JWT_SECRET
       ) as JwtPayload;
       if (password) {
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await bcryptjs.hash(password, 12);
         await changeUserPass({
           email: email,
           password: hashedPassword,

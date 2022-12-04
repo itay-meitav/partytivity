@@ -1,14 +1,11 @@
-if (process.env.NODE_ENV != "production") {
-  require("dotenv").config();
-}
-import RestApi from "./api/api.route";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import path from "path";
-import helmet from "helmet";
 import envConfig from "./api/config/environment.config";
+import RestApi from "./api/api.route";
+import { connectDB } from "./database/general";
 
 const app = express();
 app.use(express.json());
@@ -20,7 +17,6 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(helmet());
 app.use("/api", RestApi);
 
 app.get("/login", (req, res) => {
@@ -35,24 +31,22 @@ app.get("/login", (req, res) => {
   return res.status(401).json({ success: false });
 });
 
-if (process.env.NODE_ENV == "production") {
-  app.use(express.static("build"));
+if (envConfig.node_env == "production") {
+  app.use(express.static(path.join(__dirname, "build")));
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "build", "index.html"));
   });
 }
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-  console.log(`app on port ${port}`);
-});
-
-app.use((req, res) => {
-  res.status(404).json({
-    message: "Requested resource was not found on this server",
-    success: false,
-  });
-});
+(async (): Promise<void> => {
+  const port = process.env.PORT || 5000;
+  try {
+    await connectDB();
+    app.listen(port, () => console.log(`Server running on port ${port}`));
+  } catch (err) {
+    console.log(err.message);
+  }
+})();
 
 //This will output unhandled Rejection
 process.on("unhandledRejection", (error: Error, promise) => {

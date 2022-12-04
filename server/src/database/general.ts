@@ -1,4 +1,3 @@
-require("dotenv").config({ path: __dirname + "/../../../.env" });
 import envConfig from "../api/config/environment.config";
 import { Pool } from "pg";
 
@@ -15,9 +14,8 @@ export const pool = new Pool({
     rejectUnauthorized: false,
   },
 });
-connect();
 
-async function connect() {
+export async function connectDB() {
   try {
     await pool.connect();
     console.log("Connected to database");

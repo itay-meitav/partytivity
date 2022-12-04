@@ -1,5 +1,5 @@
 import express from "express";
-import { isAuthenticated } from "../middlewares/auth";
+import { isAuthenticated } from "../middleware/auth.middleware";
 import { removePhoto, uploadPhoto } from "../controllers/photos.controller";
 
 const router = express.Router();

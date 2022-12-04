@@ -4,7 +4,7 @@ import {
   checkIfUserExist,
   checkUserEmail,
 } from "../../database/users";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { sendConfirmationEmail } from "../config/nodemailer.config";
 import envConfig from "../config/environment.config";
@@ -19,7 +19,7 @@ export const register = async (req: Request, res: Response) => {
         const token = jwt.sign({ email: email }, envConfig.jwt.JWT_SECRET, {
           expiresIn: "10m",
         });
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await bcryptjs.hash(password, 12);
         await addUser({
           username: username,
           password: hashedPassword,

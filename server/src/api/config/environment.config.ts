@@ -1,5 +1,6 @@
 require("dotenv").config({ path: __dirname + "/../../../.env" });
 export default {
+  node_env: process.env.NODE_ENV,
   jwt: { JWT_SECRET: process.env.JWT_SECRET },
   email: {
     EMAIL_USER: process.env.EMAIL_USER,

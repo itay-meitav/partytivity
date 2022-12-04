@@ -14,12 +14,11 @@ function SignUp() {
   const details = useRecoilValue(signUpInputsState);
 
   useEffect(() => {
-    (async () => {
-      const req = await fetch(`${config.apiHost}/login`, {
-        credentials: "include",
-      });
-      if (req.ok) return navigate("/dashboard");
-    })();
+    fetch(`${config.apiHost}/login`, {
+      credentials: "include",
+    }).then((res) => {
+      if (res.ok) navigate("/dashboard");
+    });
   }, []);
 
   async function sighUpReq(

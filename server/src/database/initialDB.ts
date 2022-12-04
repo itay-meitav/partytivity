@@ -1,6 +1,6 @@
 import { addUser } from "./users";
 import * as chrono from "chrono-node";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { pool } from "./general";
 import { insertExampleServices } from "./initalServices";
 import { addParty } from "./dashboard/newParty";
@@ -12,7 +12,7 @@ async function initDB() {
   await createAllTables();
   await addUser({
     username: "admin",
-    password: await bcrypt.hash("admin", 12),
+    password: await bcryptjs.hash("admin", 12),
     email: "admin@admin",
     name: "admin",
     status: "active",
