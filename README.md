@@ -52,7 +52,7 @@ I see this project as something that could absolutely work in the real world.
 
 ## Live Version:
 
-### [Partytivity](https://partytivity.herokuapp.com/)
+### [Partytivity](https://www.partytivity.tk/)
 
 <br/>
 
