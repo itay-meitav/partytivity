@@ -3,8 +3,8 @@ export default {
   node_env: process.env.NODE_ENV,
   jwt: { JWT_SECRET: process.env.JWT_SECRET },
   email: {
-    EMAIL_USER: process.env.EMAIL_USER,
-    EMAIL_PASS: process.env.EMAIL_PASS,
+    EMAIL_API_KEY: process.env.EMAIL_API_KEY,
+    EMAIL_API_PASS: process.env.EMAIL_API_PASS,
   },
   photos: {
     CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,

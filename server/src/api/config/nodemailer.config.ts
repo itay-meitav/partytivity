@@ -1,14 +1,14 @@
 import envConfig from "../config/environment.config";
 import fs from "fs/promises";
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: "smtp.gmail.com",
-  secure: false,
+  service: "mailjet",
+  host: "in-v3.mailjet.com",
+  port: 507,
   auth: {
-    user: envConfig.email.EMAIL_USER,
-    pass: envConfig.email.EMAIL_PASS,
+    user: envConfig.email.EMAIL_API_KEY,
+    pass: envConfig.email.EMAIL_API_PASS,
   },
 });
 
@@ -24,7 +24,7 @@ export async function sendConfirmationEmail(
   const html = getEmailBody("confirm", content, token, location);
 
   let info = await transporter.sendMail({
-    from: `"Partytivity 🎉" <${envConfig.email.EMAIL_USER}>`,
+    from: `"Partytivity 🎉" <stuff@partytivity.tk>`,
     to: email,
     subject: "Please confirm your account",
     html: html,
@@ -44,7 +44,7 @@ export async function sendResetEmail(
   const html = getEmailBody("reset", content, token, location);
 
   let info = await transporter.sendMail({
-    from: `"Partytivity 🎉" <${envConfig.email.EMAIL_USER}>`,
+    from: `"Partytivity 🎉" <stuff@partytivity.tk>`,
     to: email,
     subject: "Reset your password",
     html: html,
@@ -64,7 +64,7 @@ function getEmailBody(
       emailType == "confirm"
         ? `${location}/auth/confirm/${token}`
         : `${location}/login/reset/new/${token}`,
-    EMAIL_ENV: envConfig.email.EMAIL_USER,
+    EMAIL_ENV: "stuff@partytivity.tk",
     SITE_LINK: location,
   };
   const regex = new RegExp(Object.keys(mapObj).join("|"), "gi");
