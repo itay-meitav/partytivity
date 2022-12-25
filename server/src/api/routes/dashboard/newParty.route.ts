@@ -1,12 +1,12 @@
-import express from "express";
+import express from 'express'
 import {
-  createNewParty,
-  getServicesList,
-} from "../../controllers/dashboard/newParty.controller";
-import { isAuthenticated } from "../../middleware/auth.middleware";
-const router = express.Router();
+    newPartyController,
+    servicesListController,
+} from '../../controllers/dashboard/newParty.controller'
+import { isAuthenticated } from '../../middleware/auth.middleware'
+const router = express.Router()
 
-router.post("/", isAuthenticated, createNewParty);
-router.post("/services", getServicesList);
+router.post('/', isAuthenticated, newPartyController)
+router.post('/services', servicesListController)
 
-export default router;
+export default router

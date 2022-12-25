@@ -8,7 +8,7 @@ import {
 import { getPartyDetailsByID } from '../../../database/dashboard/partyInvite'
 import envConfig from '../../config/environment.config'
 
-export const getUserPartiesList = async (req: Request, res: Response) => {
+export async function userPartiesController(req: Request, res: Response) {
     try {
         const token = req.cookies.token
         const { id } = jwt.verify(token, envConfig.JWT_SECRET) as JwtPayload
@@ -36,7 +36,7 @@ export const getUserPartiesList = async (req: Request, res: Response) => {
     }
 }
 
-export const getUserParty = async (req: Request, res: Response) => {
+export async function partyDetailsController(req: Request, res: Response) {
     try {
         const { id } = jwt.verify(
             req.cookies.token,

@@ -1,16 +1,19 @@
-import express from "express";
+import express from 'express'
 import {
-  changePassword,
-  checkResetToken,
-  login,
-  logout,
-  sendReset,
-} from "../controllers/login.controller";
-const router = express.Router();
+    changePasswordController,
+    checkResetTokenController,
+    loginController,
+    logoutController,
+    sendResetController,
+} from '../controllers/login.controller'
+const router = express.Router()
 
-router.post("/", login);
-router.post("/reset", sendReset);
-router.route("/reset/new/:token").get(checkResetToken).post(changePassword);
-router.get("/logout", logout);
+router.post('/', loginController)
+router.post('/reset', sendResetController)
+router
+    .route('/reset/new/:token')
+    .get(checkResetTokenController)
+    .post(changePasswordController)
+router.get('/logout', logoutController)
 
-export default router;
+export default router

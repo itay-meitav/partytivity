@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import { sendConfirmationEmail } from '../config/nodemailer.config'
 import envConfig from '../config/environment.config'
 
-export const register = async (req: Request, res: Response) => {
+export async function registerController(req: Request, res: Response) {
     const { username, password, email, name, location } = req.body
     const checkUsername = await checkIfUserExist(username)
     const checkEmail = await checkUserEmail(email)

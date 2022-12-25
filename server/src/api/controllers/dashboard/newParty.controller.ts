@@ -7,10 +7,10 @@ import {
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import envConfig from '../../config/environment.config'
 
-export const createNewParty = async (req: Request, res: Response) => {
+export async function newPartyController(req: Request, res: Response) {
     const token = req.cookies.token
     const { id } = jwt.verify(token, envConfig.JWT_SECRET) as JwtPayload
-    let servicesID;
+    let servicesID
     if (req.body.services) {
         const filteredPartyServices = Object.entries(req.body.services).filter(
             ([serviceKey, serviceValue]) => serviceValue !== ''
@@ -58,7 +58,7 @@ export const createNewParty = async (req: Request, res: Response) => {
     }
 }
 
-export const getServicesList = async (req: Request, res: Response) => {
+export async function servicesListController(req: Request, res: Response) {
     try {
         const serviceType = req.body.serviceType
             .split(/(?=[A-Z])/)

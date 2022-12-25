@@ -6,7 +6,7 @@ import {
 } from '../../database/dashboard/partyInvite'
 import authConfig from '../config/environment.config'
 
-export const checkIfPartyExists = async (req: Request, res: Response) => {
+export async function PartyExistenceController(req: Request, res: Response) {
     try {
         const { id } = jwt.verify(
             req.body.partyToken,
@@ -24,7 +24,7 @@ export const checkIfPartyExists = async (req: Request, res: Response) => {
     }
 }
 
-export const addGuest = async (req: Request, res: Response) => {
+export async function addGuestController(req: Request, res: Response) {
     try {
         const { id } = jwt.verify(
             req.body.partyToken,

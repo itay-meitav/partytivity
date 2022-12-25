@@ -12,7 +12,7 @@ import {
 } from '../config/nodemailer.config'
 import envConfig from '../config/environment.config'
 
-export const login = async (req: Request, res: Response) => {
+export async function loginController(req: Request, res: Response) {
     const { username, password, location } = req.body
     const cookie = req.cookies.verify
     const checkUser = await checkIfUserExist(username)
@@ -46,7 +46,7 @@ export const login = async (req: Request, res: Response) => {
                 success: false,
             })
         } else if (!cookie) {
-            return await sendVerificationEmail(checkUser, location, res)
+            await sendVerificationEmail(checkUser, location, res)
         }
         return res.status(401).json({
             message: 'Please complete the email verification process',
@@ -59,7 +59,7 @@ export const login = async (req: Request, res: Response) => {
     })
 }
 
-export const sendReset = async (req: Request, res: Response) => {
+export async function sendResetController(req: Request, res: Response) {
     const { email, location } = req.body
     const cookie = req.cookies.verify
     const checkUser = await checkUserEmail(email)
@@ -71,7 +71,7 @@ export const sendReset = async (req: Request, res: Response) => {
                     success: false,
                 })
             }
-            return await sendVerificationEmail(checkUser, location, res)
+            await sendVerificationEmail(checkUser, location, res)
         }
         const token = jwt.sign(
             { email: checkUser.email },
@@ -105,7 +105,7 @@ export const sendReset = async (req: Request, res: Response) => {
     })
 }
 
-export const checkResetToken = async (req: Request, res: Response) => {
+export async function checkResetTokenController(req: Request, res: Response) {
     const token = req.params.token
     const cookie = req.cookies.reset
     if (token && cookie) {
@@ -121,11 +121,12 @@ export const checkResetToken = async (req: Request, res: Response) => {
         }
     }
     return res.status(404).json({
+        message: 'Unauthorized!',
         success: false,
     })
 }
 
-export const changePassword = async (req: Request, res: Response) => {
+export async function changePasswordController(req: Request, res: Response) {
     const token = req.params.token
     const password = req.body.password
     const cookie = req.cookies.reset
@@ -159,7 +160,7 @@ export const changePassword = async (req: Request, res: Response) => {
     return res.status(401).json({ message: 'Unauthorized!', success: false })
 }
 
-export const logout = async (req: Request, res: Response) => {
+export async function logoutController(req: Request, res: Response) {
     return res.clearCookie('token').json({ success: true })
 }
 

@@ -3,7 +3,7 @@ import { changeUserStatus } from '../../database/users'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import envConfig from '../config/environment.config'
 
-export const auth = async (req: Request, res: Response) => {
+export async function authenticationController(req: Request, res: Response) {
     const token = req.params.token
     const cookie = req.cookies.verify
     if (token && cookie) {

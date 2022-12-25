@@ -1,8 +1,11 @@
-import express from "express";
-import { addGuest, checkIfPartyExists } from "../controllers/invite.controller";
-const router = express.Router();
+import express from 'express'
+import {
+    addGuestController,
+    PartyExistenceController,
+} from '../controllers/invite.controller'
+const router = express.Router()
 
-router.post("/", checkIfPartyExists);
-router.post("/guest", addGuest);
+router.post('/', PartyExistenceController)
+router.post('/guest', addGuestController)
 
-export default router;
+export default router
