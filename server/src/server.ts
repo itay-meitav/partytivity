@@ -38,15 +38,14 @@ if (envConfig.NODE_ENV == 'production') {
     })
 }
 
-;(async (): Promise<void> => {
-    const port = process.env.PORT || 5000
-    try {
-        await connectDB()
+const port = process.env.PORT || 5000
+try {
+    connectDB().then(() => {
         app.listen(port, () => console.log(`Server running on port ${port}`))
-    } catch (err) {
-        console.log((err as Error).message)
-    }
-})()
+    })
+} catch (err) {
+    console.log((err as Error).message)
+}
 
 //This will output unhandled Rejection
 process.on('unhandledRejection', (error: Error, promise) => {

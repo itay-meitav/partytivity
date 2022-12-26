@@ -6,9 +6,10 @@ import {
     logoutController,
     sendResetController,
 } from '../controllers/login.controller'
+import { loginValidation } from '../middleware/validations/login.validation'
 const router = express.Router()
 
-router.post('/', loginController)
+router.post('/', loginValidation, loginController)
 router.post('/reset', sendResetController)
 router
     .route('/reset/new/:token')

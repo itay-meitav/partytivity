@@ -65,11 +65,15 @@ function Login() {
             type="text"
             placeholder="Username"
             required
+            value={userDetails.username}
             onChange={(e) => {
-              const val = e.currentTarget.value;
+              const val = e.currentTarget.value.replace(/[^\w]/gi, "");
               setUserDetails({ ...userDetails, username: val });
               setErrorMsg("");
             }}
+            title="There can be minimum of 3 and maximum of 15 characters. No special characters."
+            minLength={3}
+            maxLength={15}
           />
           <input
             className="form-input"
@@ -81,6 +85,8 @@ function Login() {
               setUserDetails({ ...userDetails, password: val });
               setErrorMsg("");
             }}
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters total."
           />
           <Link to={"/login/reset"} className="link">
             forgot your password?

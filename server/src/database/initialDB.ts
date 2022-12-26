@@ -1,61 +1,62 @@
-import { addUser } from "./users";
-import * as chrono from "chrono-node";
-import bcryptjs from "bcryptjs";
-import { pool } from "./general";
-import { insertExampleServices } from "./initalServices";
-import { addParty } from "./dashboard/newParty";
+import { addUser } from './users'
+import * as chrono from 'chrono-node'
+import bcryptjs from 'bcryptjs'
+import { pool } from './general'
+import { insertExampleServices } from './initalServices'
+import { addParty } from './dashboard/newParty'
 
-initDB();
+initDB()
 
 async function initDB() {
-  await dropAllTables();
-  await createAllTables();
-  await addUser({
-    username: "admin",
-    password: await bcryptjs.hash("admin", 12),
-    email: "admin@admin",
-    name: "admin",
-    status: "active",
-  });
-  await addParty({
-    title: "my first party",
-    date: chrono.parseDate("Tomorrow"),
-    ownerId: 1,
-  });
-  insertExampleServices();
+    await dropAllTables()
+    await createAllTables()
+    await addUser({
+        username: 'admin',
+        password: await bcryptjs.hash('Abc12345', 12),
+        email: 'admin@admin',
+        name: 'admin',
+        status: 'active',
+        role: 'admin',
+    })
+    await addParty({
+        title: 'my first party',
+        date: chrono.parseDate('Tomorrow'),
+        ownerId: 1,
+    })
+    insertExampleServices()
 }
 
 async function dropAllTables() {
-  await pool.query("DROP TABLE IF EXISTS users CASCADE");
-  await pool.query("DROP TABLE IF EXISTS parties CASCADE");
-  await pool.query("DROP TABLE IF EXISTS location_service CASCADE");
-  await pool.query("DROP TABLE IF EXISTS music_service CASCADE");
-  await pool.query("DROP TABLE IF EXISTS food_service CASCADE");
-  await pool.query("DROP TABLE IF EXISTS entertainment_service CASCADE");
-  await pool.query("DROP TABLE IF EXISTS general_service CASCADE");
-  await pool.query("DROP TABLE IF EXISTS collaborators CASCADE"); //WITH (FORCE)
-  await pool.query("DROP TABLE IF EXISTS guests CASCADE");
-  await pool.query("DROP TYPE IF EXISTS STATUS");
-  await pool.query("DROP TYPE IF EXISTS ROLE");
-  await pool.query("DROP TYPE IF EXISTS PERMISSIONS");
-  await pool.query("DROP TYPE IF EXISTS FOOD_TYPE");
-  await pool.query("DROP TYPE IF EXISTS PARTY_STATUS");
-  await pool.query("DROP TYPE IF EXISTS COMING_STATUS");
+    await pool.query('DROP TABLE IF EXISTS users CASCADE')
+    await pool.query('DROP TABLE IF EXISTS parties CASCADE')
+    await pool.query('DROP TABLE IF EXISTS location_service CASCADE')
+    await pool.query('DROP TABLE IF EXISTS music_service CASCADE')
+    await pool.query('DROP TABLE IF EXISTS food_service CASCADE')
+    await pool.query('DROP TABLE IF EXISTS entertainment_service CASCADE')
+    await pool.query('DROP TABLE IF EXISTS general_service CASCADE')
+    await pool.query('DROP TABLE IF EXISTS collaborators CASCADE') //WITH (FORCE)
+    await pool.query('DROP TABLE IF EXISTS guests CASCADE')
+    await pool.query('DROP TYPE IF EXISTS STATUS')
+    await pool.query('DROP TYPE IF EXISTS ROLE')
+    await pool.query('DROP TYPE IF EXISTS PERMISSIONS')
+    await pool.query('DROP TYPE IF EXISTS FOOD_TYPE')
+    await pool.query('DROP TYPE IF EXISTS PARTY_STATUS')
+    await pool.query('DROP TYPE IF EXISTS COMING_STATUS')
 }
 
 async function createAllTables() {
-  await pool.query(`CREATE TYPE STATUS AS ENUM ('pending', 'active')`);
-  await pool.query(`CREATE TYPE ROLE AS ENUM ('admin', 'client', 'provider')`);
-  await pool.query(
-    `CREATE TYPE PERMISSIONS AS ENUM ('admin', 'readonly', 'write')`
-  );
-  await pool.query(
-    `CREATE TYPE FOOD_TYPE AS ENUM ('fast', 'chef', 'restaurant')`
-  );
-  await pool.query(`CREATE TYPE PARTY_STATUS AS ENUM ('pending', 'done')`);
-  await pool.query(`CREATE TYPE COMING_STATUS AS ENUM ('yes', 'no', 'maybe')`);
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS users(
+    await pool.query(`CREATE TYPE STATUS AS ENUM ('pending', 'active')`)
+    await pool.query(`CREATE TYPE ROLE AS ENUM ('admin', 'client', 'provider')`)
+    await pool.query(
+        `CREATE TYPE PERMISSIONS AS ENUM ('admin', 'readonly', 'write')`
+    )
+    await pool.query(
+        `CREATE TYPE FOOD_TYPE AS ENUM ('fast', 'chef', 'restaurant')`
+    )
+    await pool.query(`CREATE TYPE PARTY_STATUS AS ENUM ('pending', 'done')`)
+    await pool.query(`CREATE TYPE COMING_STATUS AS ENUM ('yes', 'no', 'maybe')`)
+    await pool.query(
+        `CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
         username TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
@@ -64,9 +65,9 @@ async function createAllTables() {
         status STATUS DEFAULT 'pending',   
         role ROLE DEFAULT 'client'
 		)`
-  );
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS location_service(
+    )
+    await pool.query(
+        `CREATE TABLE IF NOT EXISTS location_service(
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,  
         address TEXT NOT NULL,
@@ -76,9 +77,9 @@ async function createAllTables() {
         provider_id INTEGER,
         FOREIGN KEY(provider_id) REFERENCES users(id) ON DELETE CASCADE
 		)`
-  );
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS music_service(
+    )
+    await pool.query(
+        `CREATE TABLE IF NOT EXISTS music_service(
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,  
         type TEXT,
@@ -86,9 +87,9 @@ async function createAllTables() {
         provider_id INTEGER,
         FOREIGN KEY(provider_id) REFERENCES users(id) ON DELETE CASCADE
 		)`
-  );
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS food_service(
+    )
+    await pool.query(
+        `CREATE TABLE IF NOT EXISTS food_service(
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,  
         type FOOD_TYPE NOT NULL,
@@ -96,9 +97,9 @@ async function createAllTables() {
         provider_id INTEGER,
         FOREIGN KEY(provider_id) REFERENCES users(id) ON DELETE CASCADE
 		)`
-  );
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS entertainment_service(
+    )
+    await pool.query(
+        `CREATE TABLE IF NOT EXISTS entertainment_service(
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,  
         type TEXT NOT NULL,
@@ -106,9 +107,9 @@ async function createAllTables() {
         provider_id INTEGER,
         FOREIGN KEY(provider_id) REFERENCES users(id) ON DELETE CASCADE
 		)`
-  );
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS general_service(
+    )
+    await pool.query(
+        `CREATE TABLE IF NOT EXISTS general_service(
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,  
         type TEXT NOT NULL,
@@ -116,9 +117,9 @@ async function createAllTables() {
         provider_id INTEGER,
         FOREIGN KEY(provider_id) REFERENCES users(id) ON DELETE CASCADE 
 		)`
-  );
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS parties(
+    )
+    await pool.query(
+        `CREATE TABLE IF NOT EXISTS parties(
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT,
@@ -140,9 +141,9 @@ async function createAllTables() {
         invite_token TEXT,
         status PARTY_STATUS DEFAULT 'pending'
 		)`
-  );
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS collaborators(
+    )
+    await pool.query(
+        `CREATE TABLE IF NOT EXISTS collaborators(
         id SERIAL PRIMARY KEY,
         user_id INTEGER NOT NULL,
         FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -150,9 +151,9 @@ async function createAllTables() {
         FOREIGN KEY(party_id) REFERENCES parties(id) ON DELETE CASCADE,
         permission PERMISSIONS DEFAULT 'readonly'  
 		)`
-  );
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS guests(
+    )
+    await pool.query(
+        `CREATE TABLE IF NOT EXISTS guests(
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL,
         phone_number TEXT NOT NULL,
@@ -161,5 +162,5 @@ async function createAllTables() {
         party_id INTEGER NOT NULL,
         FOREIGN KEY(party_id) REFERENCES parties(id) ON DELETE CASCADE
 		)`
-  );
+    )
 }

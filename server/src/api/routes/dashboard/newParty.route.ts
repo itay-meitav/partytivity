@@ -1,4 +1,5 @@
 import express from 'express'
+import { partyValidation } from 'src/api/middleware/validations/party.validation'
 import {
     newPartyController,
     servicesListController,
@@ -6,7 +7,7 @@ import {
 import { isAuthenticated } from '../../middleware/auth.middleware'
 const router = express.Router()
 
-router.post('/', isAuthenticated, newPartyController)
+router.post('/', [isAuthenticated, partyValidation], newPartyController)
 router.post('/services', servicesListController)
 
 export default router
