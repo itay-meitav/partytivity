@@ -1,0 +1,41 @@
+.error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 5%;
+  .errorTitle {
+    animation-delay: 0.5s;
+    animation: fadeInBottom 1s;
+    animation-timing-function: cubic-bezier(0.25, 0, 0.15, 1);
+    font-weight: 700;
+    .sad-icon {
+      font-size: 30pt;
+    }
+  }
+  .errorText {
+    animation-delay: 1s;
+    animation: fadeInBottom 1s;
+    animation-timing-function: cubic-bezier(0.25, 0, 0.15, 1);
+    text-align: center;
+  }
+  .error-animation {
+    animation: fadeInBottom 1s;
+    animation-timing-function: cubic-bezier(0.25, 0, 0.15, 1);
+    width: 400px;
+  }
+}
+
+@keyframes fadeInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  75% {
+    transform: none;
+  }
+  100% {
+    opacity: 1;
+  }
+}

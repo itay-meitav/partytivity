@@ -1,12 +1,12 @@
 @use "./components/login/login";
 @use "./components/welcome/welcome";
-@use "./components/loginResetPage/loginReset";
-@use "./components/loginResetPage/newPassForm";
+@use "./components/login-reset/loginReset";
+@use "./components/login-reset/newPassForm";
 @use "./components/signup/signupPage";
 @use "./components/template/template.scss";
-@use "./components/welcome/welcomeTemplate/welcomeTemplate";
-@use "./components/welcome/providersWelcome/providersWelcome";
-@use "./components/welcome/about/about";
+@use "./components/welcome/welcome-template/welcomeTemplate";
+@use "./components/welcome/providers-welcome/providersWelcome";
+@use "./components/welcome/about-welcome/about";
 @use "./components/signup/submitRegister";
 @use "./components/confirm/confirm";
 @use "./components/my-parties/myParties";
@@ -15,10 +15,11 @@
 @use "./components/providers/providers";
 @use "./components/photos/photos";
 @use "./components/recommendations/recommendations";
-@use "./components/userSettings/userSettings";
-@use "./components/partyInvite/partyInvite";
+@use "./components/user-settings/userSettings";
+@use "./components/party-invite/partyInvite";
 @use "./components/new-party/newParty";
 @use "./components/my-parties/party-details/partyDetails";
+@use "./components/error/error";
 
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
 @import url("bootstrap/dist/css/bootstrap.min.css");

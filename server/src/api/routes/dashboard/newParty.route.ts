@@ -1,5 +1,5 @@
 import express from 'express'
-import { partyValidation } from 'src/api/middleware/validations/party.validation'
+import { partyValidation } from '../../middleware/validations/party.validation'
 import {
     newPartyController,
     servicesListController,

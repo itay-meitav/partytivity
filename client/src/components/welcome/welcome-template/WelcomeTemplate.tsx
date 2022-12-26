@@ -7,7 +7,7 @@ import { IconButton } from "@mui/material";
 import Lottie from "react-lottie-player";
 import { Outlet } from "react-router-dom";
 
-function WelcomeTemplate() {
+function WelcomeTemplate(props: React.PropsWithChildren) {
   const [showPhoneNav, setShowPhoneNav] = useState(false);
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
@@ -104,6 +104,7 @@ function WelcomeTemplate() {
         }}
       >
         <Outlet />
+        {props.children}
       </div>
     </div>
   );

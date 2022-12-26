@@ -20,7 +20,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { Outlet, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
-import PartyInviteFooter from "../partyInvite/PartyInviteFooter";
+import PartyInviteFooter from "../party-invite/PartyInviteFooter";
 
 const drawerWidth: number = 240;
 

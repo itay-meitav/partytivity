@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
 import { useNavigate } from "react-router-dom";
+import WelcomeTemplate from "../welcome/welcome-template/WelcomeTemplate";
 
 function Unknown() {
   const navigate = useNavigate();
@@ -24,15 +25,17 @@ function Unknown() {
       </div>
     );
   return (
-    <div className="center-section">
-      <Lottie
-        className="unknown-animation"
-        animationData={animationData}
-        play={true}
-        loop={true}
-        style={{ width: 600, height: 600, margin: 0, padding: 0 }}
-      />
-    </div>
+    <WelcomeTemplate>
+      <div className="center-section">
+        <Lottie
+          className="unknown-animation"
+          animationData={animationData}
+          play={true}
+          loop={true}
+          style={{ width: 600, height: 600, margin: 0, padding: 0 }}
+        />
+      </div>
+    </WelcomeTemplate>
   );
 }
 

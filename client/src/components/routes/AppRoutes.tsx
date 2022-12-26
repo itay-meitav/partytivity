@@ -1,21 +1,26 @@
 import { createBrowserRouter, Navigate, redirect } from "react-router-dom";
 import Login from "../login/Login";
-import LoginReset from "../loginResetPage/LoginReset";
+import LoginReset from "../login-reset/LoginReset";
 import SignUp from "../signup/SignUp";
 import SubmitSignup from "../signup/SubmitSignup";
 import Unknown from "../unknown/Unknown";
 import ConfirmEmail from "../confirm/ConfirmEmail";
-import NewPassForm from "../loginResetPage/NewPassForm";
-import PartyInvite from "../partyInvite/PartyInvite";
+import NewPassForm from "../login-reset/NewPassForm";
+import PartyInvite from "../party-invite/PartyInvite";
 import config from "../../assets/config";
 import { WelcomeRoutes } from "./WelcomeRoutes";
 import { DashboardRoutes } from "./DashboardRoutes";
 import DashboardTemplate from "../dashboard/DashboardTemplate";
-import WelcomeTemplate from "../welcome/welcomeTemplate/WelcomeTemplate";
+import WelcomeTemplate from "../welcome/welcome-template/WelcomeTemplate";
+import ErrorPage from "../error/ErrorPage";
 
 export const router = createBrowserRouter([
-  { path: "/", element: <Navigate to="/welcome" /> },
   { path: "*", element: <Unknown /> },
+  {
+    path: "/",
+    element: <Navigate to="/welcome" />,
+  },
+  { path: "/error", element: <ErrorPage /> },
   {
     path: "/welcome",
     element: <WelcomeTemplate />,
@@ -23,6 +28,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/login",
+    errorElement: <ErrorPage />,
     children: [
       { element: <Login />, index: true },
       {
@@ -48,6 +54,7 @@ export const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardTemplate />,
+    errorElement: <ErrorPage />,
     loader: async () => {
       const req = await fetch(`${config.apiHost}/login`, {
         credentials: "include",
@@ -58,6 +65,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/invite",
+    errorElement: <ErrorPage />,
     children: [
       { element: <Unknown />, index: true },
       {
