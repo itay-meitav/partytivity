@@ -35,14 +35,18 @@ function Login() {
         password: password,
         location: window.location.origin,
       }),
-    }).then(async (res) => {
-      if (res.ok) {
-        navigate("/dashboard");
-      } else {
-        const data = await res.json();
-        setErrorMsg(data.message);
-      }
-    });
+    })
+      .then(async (res) => {
+        if (res.ok) {
+          navigate("/dashboard");
+        } else {
+          const data = await res.json();
+          setErrorMsg(data.message);
+        }
+      })
+      .catch((err) =>
+        setErrorMsg("There is no connection to the server. Try again later.")
+      );
   }
   return (
     <div id="login-container">

@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import config from "../../assets/config";
 import CustomLink from "../Link";
-import SignUpInputs, { signUpInputsState } from "./SignUpInputs";
+import RegisterInputs, { registerInputsState } from "./RegisterInputs";
 
-function SignUp() {
+function Register() {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const content = useRef<HTMLDivElement>(null);
-  const details = useRecoilValue(signUpInputsState);
+  const details = useRecoilValue(registerInputsState);
+  
 
   useEffect(() => {
     fetch(`${config.apiHost}/login`, {
@@ -21,7 +22,7 @@ function SignUp() {
     });
   }, []);
 
-  async function sighUpReq(
+  async function submitRegistration(
     name: string,
     username: string,
     password: string,
@@ -57,22 +58,31 @@ function SignUp() {
           onSubmit={async (e) => {
             e.preventDefault();
             if (details.firstPass == details.secondPass) {
-              sighUpReq(
+              submitRegistration(
                 details.name,
                 details.username,
                 details.firstPass,
                 details.email
-              ).then(async (res) => {
-                if (res.ok) {
-                  navigate("/register/success");
-                } else {
-                  const data = await res.json();
-                  setMessage(data.message);
+              )
+                .then(async (res) => {
+                  if (res.ok) {
+                    navigate("/register/success");
+                  } else {
+                    const data = await res.json();
+                    setMessage(data.message);
+                    setTimeout(() => {
+                      setMessage("");
+                    }, 3000);
+                  }
+                })
+                .catch((err) => {
+                  setMessage(
+                    "There is no connection to the server. Try again later."
+                  );
                   setTimeout(() => {
                     setMessage("");
                   }, 3000);
-                }
-              });
+                });
             } else {
               setMessage("The passwords do not match");
               setTimeout(() => {
@@ -82,7 +92,7 @@ function SignUp() {
           }}
         >
           <h1 style={{ marginBottom: 18 }}>Sign Up</h1>
-          <SignUpInputs />
+          <RegisterInputs />
           <button type="submit" className="submit-btn">
             SIGN UP
           </button>
@@ -110,4 +120,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Register;

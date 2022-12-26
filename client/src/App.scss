@@ -2,12 +2,12 @@
 @use "./components/welcome/welcome";
 @use "./components/login-reset/loginReset";
 @use "./components/login-reset/newPassForm";
-@use "./components/signup/signupPage";
+@use "./components/register/registerPage";
 @use "./components/template/template.scss";
 @use "./components/welcome/welcome-template/welcomeTemplate";
 @use "./components/welcome/providers-welcome/providersWelcome";
 @use "./components/welcome/about-welcome/about";
-@use "./components/signup/submitRegister";
+@use "./components/register/submitRegister";
 @use "./components/confirm/confirm";
 @use "./components/my-parties/myParties";
 @use "./components/discover/discover";

@@ -1,8 +1,8 @@
 import React from "react";
 import { atom, useRecoilState } from "recoil";
 
-export const signUpInputsState = atom({
-  key: "signUpInputs",
+export const registerInputsState = atom({
+  key: "registerInputs",
   default: {
     username: "",
     name: "",
@@ -12,8 +12,8 @@ export const signUpInputsState = atom({
   },
 });
 
-function SignUpInputs() {
-  const [details, setDetails] = useRecoilState(signUpInputsState);
+function RegisterInputs() {
+  const [details, setDetails] = useRecoilState(registerInputsState);
   return (
     <>
       <input
@@ -101,4 +101,4 @@ function SignUpInputs() {
   );
 }
 
-export default SignUpInputs;
+export default RegisterInputs;

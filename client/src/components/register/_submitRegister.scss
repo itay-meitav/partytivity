@@ -33,11 +33,20 @@ $darkBlue: #554994;
         font-weight: bold;
         font-size: 48px;
       }
-      #title {
+      #success-title {
         margin-bottom: 15px;
-        animation: bounce 0.4s ease infinite alternate;
+        animation: fadeInBottom 1s;
+        animation-delay: 0.2s;
+        animation-fill-mode: backwards;
       }
-
+      #success-sub1 {
+        @extend #success-title;
+        animation-delay: 0.7s;
+      }
+      #success-sub2 {
+        @extend #success-sub1;
+        animation-delay: 1.1s;
+      }
       .form-input {
         border: none;
         outline: none;
@@ -94,14 +103,8 @@ $darkBlue: #554994;
         top: 35%;
         left: 50%;
         transform: translate(-50%, -50%);
-        margin: 0;
-        // margin-top: 30px;
-        padding: 0;
         width: 600px;
-        height: 600px;
         pointer-events: none;
-        // flex: 1;
-        // align-self: center;
         z-index: 999;
       }
       .submit-btn {
@@ -144,11 +147,15 @@ $darkBlue: #554994;
   }
 }
 
-@keyframes bounce {
+@keyframes fadeInBottom {
   0% {
-    text-shadow: 0 3px 0 #ccc;
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  75% {
+    transform: none;
   }
   100% {
-    transform: translateY(-20px);
+    opacity: 1;
   }
 }

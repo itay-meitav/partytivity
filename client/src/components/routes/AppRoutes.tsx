@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate, redirect } from "react-router-dom";
 import Login from "../login/Login";
 import LoginReset from "../login-reset/LoginReset";
-import SignUp from "../signup/SignUp";
-import SubmitSignup from "../signup/SubmitSignup";
+import Register from "../register/Register";
+import SubmitRegister from "../register/SubmitRegister";
 import Unknown from "../unknown/Unknown";
 import ConfirmEmail from "../confirm/ConfirmEmail";
 import NewPassForm from "../login-reset/NewPassForm";
@@ -43,8 +43,8 @@ export const router = createBrowserRouter([
   {
     path: "register",
     children: [
-      { element: <SignUp />, index: true },
-      { path: "success", element: <SubmitSignup /> },
+      { element: <Register />, index: true },
+      { path: "success", element: <SubmitRegister /> },
     ],
   },
   {

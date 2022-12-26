@@ -1,13 +1,12 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect,  useState } from "react";
 import Lottie from "react-lottie-player";
 import { Link, useNavigate } from "react-router-dom";
 import config from "../../assets/config";
 import CustomLink from "../Link";
 
 function LoginReset() {
-  const content = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [mailAnimation, setMailAnimation] =
     useState<Record<string | number, any>>();
@@ -30,18 +29,22 @@ function LoginReset() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ location: window.location.origin, email: email }),
-    }).then(async (res) => {
-      if (res.ok) {
-        import("../confirm/V.json").then(setSuccessAnimation);
-        setSubmit(true);
-        setTimeout(() => {
-          navigate("/login");
-        }, 3000);
-      } else {
-        const data = await res.json();
-        setErrorMsg(data.message);
-      }
-    });
+    })
+      .then(async (res) => {
+        if (res.ok) {
+          import("../confirm/V.json").then(setSuccessAnimation);
+          setSubmit(true);
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
+        } else {
+          const data = await res.json();
+          setErrorMsg(data.message);
+        }
+      })
+      .catch((err) =>
+        setErrorMsg("There is not connection to the server. Try again later.")
+      );
   }
 
   if (!mailAnimation)
@@ -59,7 +62,7 @@ function LoginReset() {
           <ArrowBack></ArrowBack>
         </IconButton>
       </CustomLink>
-      <div id="reset-content" ref={content}>
+      <div id="reset-content">
         <form
           className="login-form left"
           onSubmit={(e) => {
@@ -80,9 +83,13 @@ function LoginReset() {
             LOG IN
           </button>
         </form>
-        <div
+        <form
           style={submit ? { display: "none" } : {}}
           className="login-form overlay-panel right"
+          onSubmit={(e) => {
+            e.preventDefault();
+            resetPasswordReq();
+          }}
         >
           <Lottie
             className="email-animation"
@@ -100,13 +107,16 @@ function LoginReset() {
               const val = e.currentTarget.value;
               setEmail(val);
             }}
+            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            title="Standard email only"
+            required
             id="form-input"
           />
-          <button className="submit-btn" onClick={() => resetPasswordReq()}>
+          <button className="submit-btn" type="submit">
             Sent Email
           </button>
           <div>{errorMsg}</div>
-        </div>
+        </form>
         <div style={submit ? {} : { display: "none" }} className="afterSubmit">
           <Lottie
             className="confirm-animation"

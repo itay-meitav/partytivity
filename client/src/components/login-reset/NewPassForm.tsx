@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../../assets/config";
 
 function NewPassForm() {
-  const content = useRef<HTMLDivElement>(null);
   const [submit, setSubmit] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -67,7 +66,6 @@ function NewPassForm() {
       <div
         style={submit ? { display: "none" } : {}}
         id="newpass-content"
-        ref={content}
       >
         <Lottie
           className="confirm-animation"

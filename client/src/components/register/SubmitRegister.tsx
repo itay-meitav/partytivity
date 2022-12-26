@@ -1,16 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
-import { useNavigate } from "react-router-dom";
 import CustomLink from "../Link";
 
-function SubmitSignup() {
-  const navigate = useNavigate();
+function SubmitRegister() {
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
-  const content = useRef<HTMLDivElement>(null);
-  const username = useRef<HTMLInputElement>(null);
-  const password = useRef<HTMLInputElement>(null);
-  const email = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     import("./conffetti.json").then(setAnimationData);
@@ -26,32 +20,24 @@ function SubmitSignup() {
     );
   return (
     <div id="submit-container">
-      <div id="submit-content" ref={content}>
-        <form
-          className="register-form right"
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
+      <div id="submit-content">
+        <form className="register-form right">
           <h1>Sign Up</h1>
           <input
             className="form-input"
             type="text"
             placeholder="Username"
-            ref={username}
             required
           />
           <input
             className="form-input"
-            type={"email"}
+            type="email"
             placeholder="Email"
-            ref={email}
             required
           />
           <input
             className="form-input"
             type="password"
-            ref={password}
             placeholder="Password"
             required
           />
@@ -61,16 +47,7 @@ function SubmitSignup() {
             placeholder="Confirm password"
             required
           />
-          <button
-            onClick={(e) => {
-              content.current?.classList.add("switch");
-              setTimeout(() => {
-                navigate("/register/success");
-              }, 300);
-            }}
-            className="submit-btn"
-            type="submit"
-          >
+          <button className="submit-btn" type="submit">
             SIGN UP
           </button>
         </form>
@@ -81,9 +58,9 @@ function SubmitSignup() {
             play={true}
             loop={true}
           />
-          <h1 id="title">Lit!</h1>
-          <p>The party is about to start.</p>
-          <p id="last">Verify your email and we'll start right away!</p>
+          <h1 id="success-title">Lit!</h1>
+          <p id="success-sub1">The party is about to start.</p>
+          <p id="success-sub2">Verify your email and we'll start right away!</p>
           <CustomLink
             to="/login"
             style={{ color: "inherit", textDecoration: "inherit" }}
@@ -97,4 +74,4 @@ function SubmitSignup() {
   );
 }
 
-export default SubmitSignup;
+export default SubmitRegister;

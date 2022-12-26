@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../../assets/config";
 
 function ConfirmEmail() {
-  const content = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [animationData, setAnimationData] =
     useState<Record<string | number, any>>();
@@ -37,7 +36,7 @@ function ConfirmEmail() {
     );
   return (
     <div id="verified-container">
-      <div id="verified-content" ref={content}>
+      <div id="verified-content">
         <Lottie
           className="confirm-animation"
           animationData={animationData}
