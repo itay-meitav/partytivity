@@ -50,7 +50,7 @@
       @media only screen and (max-width: 600px) {
         font-size: 15pt;
       }
-      @media only screen and (min-width: 600px) and (max-width: 1000px) {
+      @media only screen and (min-width: 600px) and (max-width: 1050px) {
         font-size: 20pt;
       }
       @media only screen and (max-width: 1050px) {
@@ -88,7 +88,7 @@
 
 .balloons-mobile {
   display: none;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1050px) {
     display: unset;
     position: fixed;
     top: 0;
