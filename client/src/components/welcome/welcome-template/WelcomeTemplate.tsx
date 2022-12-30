@@ -26,66 +26,58 @@ function WelcomeTemplate(props: React.PropsWithChildren) {
     );
   return (
     <div className="welcomePage">
-      <div style={{ height: 50 }} />
-      <div className="navbar">
-        <CustomLink
-          to="/"
-          style={{ color: "inherit", textDecoration: "inherit" }}
-        >
-          <div className="nav-logo">
-            <div className="nav-logo-text">
-              <p>
-                P
-                <img src={hat} className="nav-logo-img" />
-                RTYTIVITY
-              </p>
-            </div>
+      <nav className="navbar">
+        <CustomLink className="nav-logo" to="/">
+          <div className="nav-logo-text">
+            P
+            <img src={hat} className="nav-logo-img" />
+            RTYTIVITY
           </div>
         </CustomLink>
-        <nav>
-          <div
-            style={{ display: showPhoneNav ? "flex" : "" }}
-            className="textButtons"
+        <div
+          style={showPhoneNav ? { display: "flex" } : {}}
+          className="nav-links"
+        >
+          <CustomLink
+            onClick={() => setShowPhoneNav(false)}
+            style={{ color: "inherit", textDecoration: "inherit" }}
+            to="/welcome/about"
           >
-            <CustomLink
-              onClick={() => setShowPhoneNav(false)}
-              style={{ color: "inherit", textDecoration: "inherit" }}
-              to="/welcome/about"
-            >
-              What We Do
-            </CustomLink>
-            <CustomLink
-              onClick={() => setShowPhoneNav(false)}
-              style={{ color: "inherit", textDecoration: "inherit" }}
-              to="/welcome/providers"
-            >
-              Providers
-            </CustomLink>
-            <CustomLink
-              onClick={() => setShowPhoneNav(false)}
-              style={{ color: "inherit", textDecoration: "inherit" }}
-              to="/dashboard/my-parties"
-            >
-              Lets Party
-            </CustomLink>
-            <CustomLink
-              onClick={() => setShowPhoneNav(false)}
-              style={{ color: "inherit", textDecoration: "inherit" }}
-              to="/login"
-            >
-              Login
-            </CustomLink>
-          </div>
-        </nav>
-      </div>
-      <IconButton
-        className="nav-icon"
-        style={{ position: showPhoneNav ? "fixed" : "absolute" }}
-        onClick={() => setShowPhoneNav(!showPhoneNav)}
-      >
-        {!showPhoneNav ? <MenuIcon /> : <CloseIcon />}
-      </IconButton>
-      {showPhoneNav ? (
+            What We Do
+          </CustomLink>
+          <CustomLink
+            onClick={() => setShowPhoneNav(false)}
+            style={{ color: "inherit", textDecoration: "inherit" }}
+            to="/welcome/providers"
+          >
+            Providers
+          </CustomLink>
+          <CustomLink
+            onClick={() => setShowPhoneNav(false)}
+            style={{ color: "inherit", textDecoration: "inherit" }}
+            to="/dashboard/my-parties"
+          >
+            Lets Party
+          </CustomLink>
+          <CustomLink
+            onClick={() => setShowPhoneNav(false)}
+            style={{ color: "inherit", textDecoration: "inherit" }}
+            to="/login"
+          >
+            Login
+          </CustomLink>
+        </div>
+        <IconButton
+          className="nav-icon"
+          style={
+            showPhoneNav ? { position: "fixed", top: "5%", right: "5%" } : {}
+          }
+          onClick={() => setShowPhoneNav(!showPhoneNav)}
+        >
+          {!showPhoneNav ? <MenuIcon /> : <CloseIcon />}
+        </IconButton>
+      </nav>
+      {showPhoneNav && (
         <Lottie
           className="balloons-mobile"
           animationData={animationData}
@@ -93,8 +85,6 @@ function WelcomeTemplate(props: React.PropsWithChildren) {
           loop={true}
           rendererSettings={{ preserveAspectRatio: "xMidYMid slice" }}
         />
-      ) : (
-        ""
       )}
       <div
         style={{
