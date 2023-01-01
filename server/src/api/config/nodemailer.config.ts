@@ -3,9 +3,9 @@ import fs from 'fs/promises'
 import nodemailer from 'nodemailer'
 
 const transporter = nodemailer.createTransport({
-    service: 'mailjet',
-    host: 'in-v3.mailjet.com',
-    port: 507,
+    service: 'sendinblue',
+    host: 'smtp-relay.sendinblue.com',
+    port: 587,
     auth: {
         user: envConfig.EMAIL_API_KEY
             ? envConfig.EMAIL_API_KEY

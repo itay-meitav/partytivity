@@ -1,5 +1,5 @@
 import express from 'express'
-import { isAuthenticated } from '../middleware/auth.middleware'
+import { authenticationMiddle } from '../middleware/auth.middleware'
 import {
     removePhotoController,
     uploadPhotoController,
@@ -7,7 +7,7 @@ import {
 
 const router = express.Router()
 // router.use("/photos", express.static(__dirname + "/photos/"));
-router.post('/', isAuthenticated, uploadPhotoController)
-router.post('/remove', isAuthenticated, removePhotoController)
+router.post('/', authenticationMiddle, uploadPhotoController)
+router.post('/remove', authenticationMiddle, removePhotoController)
 
 export default router

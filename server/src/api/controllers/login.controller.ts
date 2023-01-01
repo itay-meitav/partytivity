@@ -6,73 +6,40 @@ import {
     checkIfUserExist,
     checkUserEmail,
 } from '../../database/users'
-import {
-    sendConfirmationEmail,
-    sendResetEmail,
-} from '../config/nodemailer.config'
+import { sendResetEmail } from '../config/nodemailer.config'
 import envConfig from '../config/environment.config'
 
 export async function loginController(req: Request, res: Response) {
-    const { username, password, location } = req.body
-    const cookie = req.cookies.verify
-    const checkUser = await checkIfUserExist(username)
-    if (checkUser) {
-        if (checkUser.status == 'active') {
-            const checkPass = await bcryptjs.compare(
-                password,
-                checkUser.password
-            )
-            if (checkPass) {
-                const token = jwt.sign(
-                    { id: checkUser.id },
-                    envConfig.JWT_SECRET,
-                    {
-                        expiresIn: '24h',
-                    }
-                )
-                return res
-                    .cookie('token', token, {
-                        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-                        httpOnly: true,
-                        sameSite: 'none',
-                        secure: true,
-                    })
-                    .json({
-                        success: true,
-                    })
-            }
-            return res.status(401).json({
-                message: 'The password entered is incorrect',
-                success: false,
+    const { username, password } = req.body
+    const userData = await checkIfUserExist(username)
+    try {
+        await bcryptjs.compare(password, userData.password)
+        const token = jwt.sign({ id: userData.id }, envConfig.JWT_SECRET, {
+            expiresIn: '24h',
+        })
+        return res
+            .cookie('token', token, {
+                expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+                httpOnly: true,
+                sameSite: 'none',
+                secure: true,
             })
-        } else if (!cookie) {
-            await sendVerificationEmail(checkUser, location, res)
-        }
+            .json({
+                success: true,
+            })
+    } catch (error) {
         return res.status(401).json({
-            message: 'Please complete the email verification process',
+            message: 'The password entered is incorrect',
             success: false,
         })
     }
-    return res.status(401).json({
-        message: 'The username entered is incorrect',
-        success: false,
-    })
 }
 
 export async function sendResetController(req: Request, res: Response) {
     const { email, location } = req.body
-    const cookie = req.cookies.verify
+    const cookie = req.cookies.reset
     const checkUser = await checkUserEmail(email)
-    if (checkUser) {
-        if (checkUser.status !== 'active') {
-            if (cookie) {
-                return res.status(401).json({
-                    message: 'Please complete the email verification process',
-                    success: false,
-                })
-            }
-            await sendVerificationEmail(checkUser, location, res)
-        }
+    if (!cookie) {
         const token = jwt.sign(
             { email: checkUser.email },
             envConfig.JWT_SECRET,
@@ -100,7 +67,7 @@ export async function sendResetController(req: Request, res: Response) {
             })
     }
     return res.status(401).json({
-        message: 'No user is associated with this email',
+        message: 'A reset link has already been sent to this email',
         success: false,
     })
 }
@@ -162,33 +129,4 @@ export async function changePasswordController(req: Request, res: Response) {
 
 export async function logoutController(req: Request, res: Response) {
     return res.clearCookie('token').json({ success: true })
-}
-
-async function sendVerificationEmail(
-    checkUser: any,
-    location: any,
-    res: Response
-) {
-    const token = jwt.sign({ email: checkUser.email }, envConfig.JWT_SECRET, {
-        expiresIn: '24h',
-    })
-    await sendConfirmationEmail(checkUser.email, token, location)
-    return res
-        .cookie(
-            'verify',
-            jwt.sign({ name: checkUser.name }, envConfig.JWT_SECRET, {
-                expiresIn: '10m',
-            }),
-            {
-                expires: new Date(Date.now() + 1000 * 60 * 10),
-                httpOnly: true,
-                sameSite: 'none',
-                secure: true,
-            }
-        )
-        .status(401)
-        .json({
-            message: 'A verification email has been sent to you',
-            success: false,
-        })
 }

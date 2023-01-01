@@ -17,6 +17,7 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
 } from "react-share";
+import { Paper } from "@mui/material";
 
 const initialPartyDetails = {
   title: "" as string,
@@ -70,60 +71,61 @@ function PartyInvite() {
     );
   return (
     <div className="partyInvite">
-      <div className="upperSection">
-        <div className="upperLeftSection">
-          <p>If you came here, this is a sign that</p>
-          <div className="upperText">
-            <big id="begin">The party is about to begin!</big>
-            <p>And this time... </p>
-            <big id="title">{partyDetails.title}</big>
+      <Paper className="upperSectionOut">
+        <Paper className="upperSectionIn" elevation={7}>
+          <div className="upperLeftSection">
+            <p>If you came here, this is a sign that</p>
+            <div className="upperText">
+              <big id="begin">The party is about to begin!</big>
+              <p>And this time... </p>
+              <big id="title">{partyDetails.title}</big>
+            </div>
+            <p>
+              By <big>{partyDetails.partyOwner}</big>
+            </p>
+            <big style={{ whiteSpace: "pre" }}>{partyDetails.date}</big>
           </div>
-          <p>
-            By <big>{partyDetails.partyOwner}</big>
-          </p>
-          <big style={{ whiteSpace: "pre" }}>{partyDetails.date}</big>
-        </div>
-        <div className="upperRightSection">
-          <div style={{ height: 150 }} />
-          <div className="discoBall">
-            <img style={{ width: 150, height: 150 }} src={discoBallSvg} />
-            <Lottie
-              style={{ width: 100 }}
-              animationData={sparklesAnimation}
-              play
-              loop
-            />
-          </div>
-          {partyDetails.photos.length ? (
-            <Carousel
-              width={"100%"}
-              showThumbs={false}
-              showStatus={false}
-              showArrows={false}
-              interval={4000}
-              infiniteLoop
-              autoPlay
-            >
-              {partyDetails.photos.map((x) => (
-                <div>
-                  <img
-                    className="d-block w-100 h-100"
-                    style={{ borderRadius: 10 }}
-                    src={x}
-                    alt="Photo"
-                  />
-                </div>
-              ))}
-            </Carousel>
-          ) : (
-            <Lottie
-              className="partyAnimation"
-              animationData={partyAnimation}
-              play={true}
-              loop={true}
-            />
-          )}
-          {/* <p>{partyDetails.description}</p>
+          <div className="upperRightSection">
+            <div style={{ height: 150 }} />
+            <div className="discoBall">
+              <img style={{ width: 150, height: 150 }} src={discoBallSvg} />
+              <Lottie
+                style={{ width: 100 }}
+                animationData={sparklesAnimation}
+                play
+                loop
+              />
+            </div>
+            {partyDetails.photos.length ? (
+              <Carousel
+                width={"100%"}
+                showThumbs={false}
+                showStatus={false}
+                showArrows={false}
+                interval={4000}
+                infiniteLoop
+                autoPlay
+              >
+                {partyDetails.photos.map((x) => (
+                  <div>
+                    <img
+                      className="d-block w-100 h-100"
+                      style={{ borderRadius: 10 }}
+                      src={x}
+                      alt="Photo"
+                    />
+                  </div>
+                ))}
+              </Carousel>
+            ) : (
+              <Lottie
+                className="partyAnimation"
+                animationData={partyAnimation}
+                play={true}
+                loop={true}
+              />
+            )}
+            {/* <p>{partyDetails.description}</p>
           Place: {partyDetails.locationService || "currently none"}
           <br />
           Music by: {partyDetails.musicService || "currently none"}
@@ -132,8 +134,9 @@ function PartyInvite() {
           <br />
           On the artistic part:{" "}
           {partyDetails.entertainmentService || "currently none"} */}
-        </div>
-      </div>
+          </div>
+        </Paper>
+      </Paper>
       <PartyInviteForm />
       <PartyInviteFooter />
     </div>

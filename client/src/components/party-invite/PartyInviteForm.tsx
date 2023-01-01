@@ -42,10 +42,6 @@ function PartyInviteForm() {
 
   return (
     <Paper className="formPaper" elevation={7}>
-      <p>
-        Fill in the form below with the details
-        <br /> and reserve a place right away!
-      </p>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -89,7 +85,6 @@ function PartyInviteForm() {
           placeholder="Your phone number"
           required
         />
-        <br />
         <FormControl
           required
           error={error}
