@@ -11,15 +11,10 @@ import { useRecoilState } from "recoil";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Dayjs } from "dayjs";
 import { newPartyDetailsState } from "./globalStates";
 
 function BasicInformation() {
   const [partyDetails, setPartyDetails] = useRecoilState(newPartyDetailsState);
-  const handleChange = (newValue: Dayjs | null) => {
-    setPartyDetails({ ...partyDetails, date: newValue });
-  };
-
   return (
     <div className="basicInformation">
       <div className="left-section">
@@ -38,11 +33,14 @@ function BasicInformation() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
             label="Party Date"
-            value={partyDetails.date}
-            onChange={handleChange}
+            value={partyDetails.date || Date.now()}
+            onChange={(e) => {
+              setPartyDetails({ ...partyDetails, date: e.toDate() });
+            }}
             renderInput={(params: any) => (
               <TextField fullWidth required {...params} />
             )}
+            disablePast
           />
         </LocalizationProvider>
         <FormControl fullWidth>

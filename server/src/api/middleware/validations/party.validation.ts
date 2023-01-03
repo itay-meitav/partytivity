@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+import { fromZodError } from 'zod-validation-error'
 import { z } from 'zod'
 
 export function partyValidation(
@@ -20,7 +21,7 @@ export function partyValidation(
             .regex(/^[a-zA-Z0-9\s]+$/)
             .min(1),
         description: z.string().optional(),
-        date: z.date(),
+        date: z.string(),
         collaborators: z.array(z.string()).optional(),
         services: z
             .object({
@@ -35,6 +36,7 @@ export function partyValidation(
     })
     const results = partyDetailsSchema.safeParse(partyDetails)
     if (!results.success) {
+        console.log(fromZodError(results.error))
         return res.status(400).json({
             success: false,
             message: "The details entered don't match the system requirements",

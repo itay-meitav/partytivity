@@ -1,27 +1,25 @@
 import { Dayjs } from "dayjs";
 import { atom } from "recoil";
+import { newPartyDetails } from "./types";
 
 export const newPartyDetailsState = atom({
   key: "newPartyDetails",
-  default: JSON.parse(localStorage.getItem("details")!) || {
-    title: "" as string,
-    des: "" as string,
-    date: null as Dayjs | null,
-    collaborators: [] as string[],
-    services: {
-      entertainmentService: "" as string,
-      foodService: "" as string,
-      musicService: "" as string,
-      generalService: "" as string,
-      locationService: "" as string,
-    },
-    photos: [] as string[],
-  },
-});
-
-export const newPartySubmitState = atom({
-  key: "partySubmit",
-  default: { errorMessage: "", partyToken: "" },
+  default:
+    JSON.parse(localStorage.getItem("details")!) ||
+    ({
+      title: "",
+      description: "",
+      date: null as Dayjs | null,
+      collaborators: [],
+      services: {
+        entertainmentService: "",
+        foodService: "",
+        musicService: "",
+        generalService: "",
+        locationService: "",
+      },
+      photos: [],
+    } as newPartyDetails),
 });
 
 export const addServicesInputsState = atom({

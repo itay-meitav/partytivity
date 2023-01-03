@@ -101,6 +101,9 @@ function PartyInviteForm() {
           variant="standard"
         >
           <FormLabel component="legend">How sure are you of coming?</FormLabel>
+          <FormHelperText style={{ display: error ? "unset" : "none" }}>
+            Pick at least 1 option
+          </FormHelperText>
           <FormGroup>
             <FormControlLabel
               control={
@@ -133,11 +136,6 @@ function PartyInviteForm() {
               label="Maybe"
             />
           </FormGroup>
-          <FormHelperText
-            style={errorMessage ? { display: "unset" } : { display: "none" }}
-          >
-            Pick at least 1 option
-          </FormHelperText>
         </FormControl>
         <TextField
           id="filled-textarea"

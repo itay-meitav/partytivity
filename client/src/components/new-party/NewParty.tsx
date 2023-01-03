@@ -13,6 +13,7 @@ function NewParty() {
   const resetServiceTypes = useResetRecoilState(addServicesInputsState);
   const resetPartyDetails = useResetRecoilState(newPartyDetailsState);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     localStorage.setItem("details", JSON.stringify(partyDetails));

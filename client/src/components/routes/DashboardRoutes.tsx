@@ -12,9 +12,6 @@ import NewParty from "../new-party/NewParty";
 import PhotosMain from "../new-party/add-photos/PhotosMain";
 import PartyDetails from "../my-parties/party-details/PartyDetailsMain";
 import config from "../../assets/config";
-import Success from "../new-party/Success";
-import Unknown from "../unknown/Unknown";
-import ErrorPage from "../error/ErrorPage";
 
 export const DashboardRoutes: RouteObject[] = [
   { element: <Dashboard />, index: true },
@@ -41,7 +38,6 @@ export const DashboardRoutes: RouteObject[] = [
         children: [
           { element: <NewParty />, index: true },
           { path: "photos", element: <PhotosMain /> },
-          { path: "success", element: <Success /> },
         ],
       },
     ],
