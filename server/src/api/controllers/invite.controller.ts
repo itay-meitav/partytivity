@@ -9,7 +9,7 @@ import authConfig from '../config/environment.config'
 export async function PartyExistenceController(req: Request, res: Response) {
     try {
         const { id } = jwt.verify(
-            req.body.partyToken,
+            req.params.partyToken,
             authConfig.JWT_SECRET
         ) as JwtPayload
         const partyDetails = await getPartyDetailsByID(id)
@@ -18,6 +18,7 @@ export async function PartyExistenceController(req: Request, res: Response) {
             success: true,
         })
     } catch (err) {
+        console.log(err)
         return res
             .status(404)
             .json({ message: 'There is no party with that ID', success: false })

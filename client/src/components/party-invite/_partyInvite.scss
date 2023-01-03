@@ -3,90 +3,80 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
   min-height: 100vh;
   width: 100%;
-  gap: 50px;
+  gap: 100px;
   background: linear-gradient(
       darken($color: #a6b1e1, $amount: 6),
       darken($color: #f4eeff, $amount: 7)
     )
     no-repeat center center fixed;
-  .upperSectionOut {
+  .upperSection {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    position: relative;
-    width: 80%;
-    height: calc(95vh - 50px);
+    width: 100%;
+    height: 100%;
+    padding: 70px 100px 70px 100px;
     font-weight: lighter;
     font-size: larger;
-    border-radius: 15px;
-    margin-top: 50px;
-    background-color: #ced2fd;
-    .upperSectionIn {
+    color: white;
+
+    .upperRightSection {
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      width: 90%;
-      padding: 50px;
-      height: calc(95vh - 100px);
-      font-weight: lighter;
-      font-size: larger;
-      border-radius: 15px;
-
-      .upperRightSection {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        height: 100%;
-        width: 50%;
-        .discoBall {
-          position: absolute;
-          right: 2%;
-          top: 0;
-        }
-        .partyAnimation {
-          width: 90%;
-          pointer-events: none;
-        }
+      height: 100%;
+      width: 50%;
+      .discoBall {
+        position: absolute;
+        right: 15%;
+        top: 0;
       }
-      .upperLeftSection {
+      .partyAnimation {
+        width: 90%;
+        margin: 0;
+        padding: 0;
+        pointer-events: none;
+      }
+    }
+    .upperLeftSection {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      width: 50%;
+      height: 100%;
+
+      .upperText {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
-        gap: 20px;
-        width: 50%;
-        height: 100%;
-
-        .upperText {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 70%;
-          gap: 25px;
-          text-align: center;
-          #begin {
-            font-size: 19pt;
-            font-weight: 500;
-          }
-          #title {
-            line-height: 75px;
-            font-size: 56pt;
-            font-weight: bold;
-          }
+        align-items: center;
+        width: 70%;
+        gap: 25px;
+        text-align: center;
+        #begin {
+          font-size: 19pt;
+          font-weight: 500;
+        }
+        #title {
+          line-height: 75px;
+          font-size: 56pt;
+          font-weight: bold;
         }
       }
     }
   }
   .formPaper {
-    padding: 20px;
-    width: 85%;
-    height: calc(95vh - 50px);
+    padding: 35px;
+    width: 70%;
+    height: max-content;
     border-radius: 25px;
-    background-color: #ced2fd;
+    background-color: #eef1ffce;
     text-align: center;
     p {
       margin-bottom: 30px;
@@ -96,7 +86,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      gap: 10px;
+      gap: 15px;
     }
   }
 }

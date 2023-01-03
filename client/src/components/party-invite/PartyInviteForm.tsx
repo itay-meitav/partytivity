@@ -16,28 +16,41 @@ import config from "../../assets/config";
 function PartyInviteForm() {
   const { partyToken } = useParams();
   const [registrationDetails, setRegistrationDetails] = useState({
-    partyToken: partyToken as string,
-    name: "" as string,
-    phone: "" as string,
-    isComing: "" as string,
-    comment: "" as string,
+    partyToken: partyToken,
+    name: "",
+    phone: "",
+    isComing: "",
+    comment: "",
   });
   const [checkboxes, setCheckboxes] = useState({
     sure: false,
     maybe: false,
   });
-  const [msg, setMsg] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const error = !Object.values(checkboxes).filter((v) => v === true).length;
 
   async function submitRegistrationToParty() {
-    const req = await fetch(`${config.apiHost}/api/invite/guest`, {
+    setRegistrationDetails({
+      ...registrationDetails,
+      isComing: checkboxes.sure ? "yes" : "maybe",
+    });
+    fetch(`${config.apiHost}/api/invite/guest`, {
       method: "post",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(registrationDetails),
-    });
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        if (res.ok) {
+          setErrorMessage("Your party registration was successful");
+        } else {
+          setErrorMessage(data.message);
+        }
+      })
+      .catch((err) => setErrorMessage("Server connection error"));
   }
 
   return (
@@ -45,12 +58,7 @@ function PartyInviteForm() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          if (!error) {
-            return;
-            submitRegistrationToParty();
-          } else {
-            setMsg(true);
-          }
+          submitRegistrationToParty();
         }}
         className="form"
       >
@@ -81,7 +89,7 @@ function PartyInviteForm() {
             });
           }}
           value={registrationDetails.phone}
-          inputProps={{ maxLength: 10, minLength: 10 }}
+          inputProps={{ maxLength: 15, minLength: 5 }}
           placeholder="Your phone number"
           required
         />
@@ -126,7 +134,7 @@ function PartyInviteForm() {
             />
           </FormGroup>
           <FormHelperText
-            style={msg ? { display: "unset" } : { display: "none" }}
+            style={errorMessage ? { display: "unset" } : { display: "none" }}
           >
             Pick at least 1 option
           </FormHelperText>
@@ -141,6 +149,7 @@ function PartyInviteForm() {
           }}
           placeholder="Any Comment"
           multiline
+          inputProps={{ maxLength: 200 }}
           minRows={3}
           maxRows={5}
         />

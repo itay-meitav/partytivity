@@ -67,20 +67,8 @@ export const router = createBrowserRouter([
     path: "/invite",
     errorElement: <ErrorPage />,
     children: [
-      { element: <Unknown />, index: true },
       {
         path: ":token",
-        loader: async ({ params }) => {
-          const req = await fetch(`${config.apiHost}/api/invite`, {
-            method: "post",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ partyToken: params.token }),
-          });
-          if (!req.ok) return redirect("/welcome");
-        },
         element: <PartyInvite />,
       },
     ],
